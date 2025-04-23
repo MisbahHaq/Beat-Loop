@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:milife/Services/Dot.dart';
 import 'package:milife/Services/Less.dart';
 import 'package:milife/Services/Tea.dart';
 import 'package:milife/Services/Wallet.dart';
@@ -120,6 +121,13 @@ class _MinimalUIState extends State<MinimalUI> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => const TeaPage(),
+                            ),
+                          );
+                        } else if (items[index] == 'dot matrix') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DotMatrix(),
                             ),
                           );
                         } else {
