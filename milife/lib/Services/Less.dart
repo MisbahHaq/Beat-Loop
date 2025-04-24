@@ -13,6 +13,7 @@ class _LessIsMoreState extends State<LessIsMore> {
     "Believe you can and you're halfway there.",
     "Your time is limited, don’t waste it.",
     "The best time to plant a tree was 20 years ago.",
+    "What a fucking Nigger",
   ];
 
   String currentQuote = "";
