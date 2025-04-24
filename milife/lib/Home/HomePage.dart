@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:milife/Services/Apollo.dart';
 import 'package:milife/Services/Dot.dart';
 import 'package:milife/Services/Less.dart';
 import 'package:milife/Services/Tea.dart';
@@ -111,6 +112,11 @@ class _MinimalUIState extends State<MinimalUI> {
                             MaterialPageRoute(
                               builder: (context) => const LessIsMore(),
                             ),
+                          );
+                        } else if (items[index] == 'apollo') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Apollo()),
                           );
                         } else if (items[index] == 'time for tea') {
                           Navigator.push(
