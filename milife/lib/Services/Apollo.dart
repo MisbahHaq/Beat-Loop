@@ -83,9 +83,37 @@ class _ApolloState extends State<Apollo> {
 
   // List of image paths for song album covers
   List<String> songImages = [
-    'assets/images/dan.jpg', // Album cover for BTS song
-    'assets/images/dan.jpg', // Album cover for Escape song
-    'assets/images/dan.jpg', // Album cover for Lucid song
+    'assets/images/v.jpg', // Album cover for BTS song
+    'assets/images/na.png', // Album cover for Escape song
+    'assets/images/j.jpg', // Album cover for Lucid song
+    'assets/images/zim.jpg',
+    'assets/images/gul.jfif',
+    'assets/images/uzair.jpg',
+    'assets/images/funk.png',
+    'assets/images/dan.jpg',
+    'assets/images/ka.jpeg',
+    'assets/images/sha.jpg',
+    'assets/images/tra.jpg',
+    'assets/images/it.jpg',
+    'assets/images/de.jpeg',
+    'assets/images/016.jpg',
+    'assets/images/sab.jpg',
+    'assets/images/shan.jpg',
+    'assets/images/sha.jpg',
+    'assets/images/kate.png',
+    'assets/images/maya.jpg',
+    'assets/images/avg.jpg',
+    'assets/images/malang.webp',
+    'assets/images/b.jpg',
+    'assets/images/uzair.jpg',
+    'assets/images/uzair.jpg',
+    'assets/images/p.jpg',
+    'assets/images/m.jfif',
+    'assets/images/uzair.jpg',
+    'assets/images/r.jfif',
+    'assets/images/lig.jpg',
+    'assets/images/ac.avif',
+    'assets/images/n.webp',
   ];
 
   // To handle the audio session (required for background play)
