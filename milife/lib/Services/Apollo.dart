@@ -112,7 +112,7 @@ class _ApolloState extends State<Apollo> {
     'assets/images/uzair.jpg',
     'assets/images/r.jfif',
     'assets/images/lig.jpg',
-    'assets/images/ac.avif',
+    'assets/images/ac.jpg',
     'assets/images/n.webp',
   ];
 

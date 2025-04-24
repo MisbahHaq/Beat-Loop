@@ -293,7 +293,7 @@ class _WalletPageState extends State<WalletPage> {
                       barRods: [
                         BarChartRodData(
                           toY: totalExpense,
-                          color: Colors.black,
+                          color: Colors.white,
                           width: 10,
                         ),
                       ],
