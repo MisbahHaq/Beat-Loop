@@ -21,21 +21,38 @@ class _DotMatrixState extends State<DotMatrix> {
     _loadBirthdays();
   }
 
+  // Load saved birthdays from SharedPreferences
   Future<void> _loadBirthdays() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString('birthdays');
     if (saved != null) {
-      setState(() {
-        birthdays = List<Map<String, String>>.from(jsonDecode(saved));
-      });
+      try {
+        List<dynamic> loadedData = jsonDecode(saved);
+        setState(() {
+          birthdays =
+              loadedData.map((e) => Map<String, String>.from(e)).toList();
+        });
+        print("Birthdays loaded successfully: $birthdays");
+      } catch (e) {
+        print("Error loading birthdays: $e");
+      }
+    } else {
+      print("No birthdays found in SharedPreferences.");
     }
   }
 
+  // Save birthdays to SharedPreferences
   Future<void> _saveBirthdays() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('birthdays', jsonEncode(birthdays));
+    try {
+      await prefs.setString('birthdays', jsonEncode(birthdays));
+      print("Birthdays saved: $birthdays");
+    } catch (e) {
+      print("Error saving birthdays: $e");
+    }
   }
 
+  // Add or update a birthday
   void _addOrUpdateBirthday() {
     final name = _nameController.text.trim();
     if (name.isEmpty || _selectedDate == null) return;
@@ -59,6 +76,7 @@ class _DotMatrixState extends State<DotMatrix> {
     _saveBirthdays(); // save after UI update
   }
 
+  // Delete a birthday
   void _deleteBirthday(int index) {
     setState(() {
       birthdays.removeAt(index);
@@ -66,6 +84,7 @@ class _DotMatrixState extends State<DotMatrix> {
     _saveBirthdays();
   }
 
+  // Edit a birthday
   void _editBirthday(int index) {
     final birthday = birthdays[index];
     _nameController.text = birthday['name']!;
@@ -80,6 +99,7 @@ class _DotMatrixState extends State<DotMatrix> {
     });
   }
 
+  // Pick a date for the birthday
   Future<void> _pickDate() async {
     final now = DateTime.now();
     final picked = await showDatePicker(
