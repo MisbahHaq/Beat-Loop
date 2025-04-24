@@ -246,7 +246,7 @@ class _ApolloState extends State<Apollo> {
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
                   songImages[_currentSongIndex % songImages.length],
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
