@@ -18,24 +18,46 @@ class _TeaPageState extends State<TeaPage> {
   @override
   void initState() {
     super.initState();
-    _loadNotes();
+    _loadNotes(); // Load notes when the widget is initialized.
   }
 
+  // Load notes from SharedPreferences
   Future<void> _loadNotes() async {
     final prefs = await SharedPreferences.getInstance();
     final savedNotes = prefs.getString('notes');
     if (savedNotes != null) {
-      setState(() {
-        notes = List<Map<String, String>>.from(jsonDecode(savedNotes));
-      });
+      try {
+        List<dynamic> decodedNotes = jsonDecode(savedNotes);
+        setState(() {
+          notes =
+              decodedNotes.map((note) {
+                return {
+                  'title': note['title'] as String,
+                  'description': note['description'] as String,
+                };
+              }).toList();
+        });
+        print("Notes loaded: $notes"); // Debugging: print the loaded notes.
+      } catch (e) {
+        print("Error decoding notes: $e");
+      }
+    } else {
+      print("No notes found in SharedPreferences.");
     }
   }
 
+  // Save notes to SharedPreferences
   Future<void> _saveNotes() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('notes', jsonEncode(notes));
+    try {
+      await prefs.setString('notes', jsonEncode(notes));
+      print("Notes saved: $notes"); // Debugging: print the saved notes.
+    } catch (e) {
+      print("Error saving notes: $e");
+    }
   }
 
+  // Add a new note
   void _addNote() {
     final title = _titleController.text.trim();
     final description = _descController.text.trim();
@@ -44,15 +66,24 @@ class _TeaPageState extends State<TeaPage> {
         notes.add({'title': title, 'description': description});
         _titleController.clear();
         _descController.clear();
-        _saveNotes();
+        _saveNotes(); // Save the notes after adding a new one
+        print(
+          "Note added: $title - $description",
+        ); // Debugging: print added note.
       });
+    } else {
+      print("Title or Description is empty, not adding note.");
     }
   }
 
+  // Delete a note
   void _deleteNote(int index) {
     setState(() {
       notes.removeAt(index);
-      _saveNotes();
+      _saveNotes(); // Save the notes after deleting one
+      print(
+        "Note deleted at index: $index",
+      ); // Debugging: print deleted note index.
     });
   }
 

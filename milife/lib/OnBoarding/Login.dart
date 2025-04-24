@@ -1,62 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:milife/Home/HomePage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function onToggleTheme; // Add this line to accept the callback
-
-  const LoginPage({
-    super.key,
-    required this.onToggleTheme,
-  }); // Modify the constructor
+  LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isDark = false;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String errorMessage = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _loadTheme();
-  }
-
-  Future<void> _loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isDark = prefs.getBool('isDark') ?? false;
-    });
-  }
-
-  void _toggleTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() => isDark = !isDark);
-    prefs.setBool('isDark', isDark);
-    widget.onToggleTheme(); // Use the passed callback here
-  }
-
+  // Validate login and navigate
   void _validateLogin() {
-    // Check if the entered username and password match the expected ones
     if (_usernameController.text == 'admin' &&
         _passwordController.text == '6969420') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder:
-              (context) =>
-                  MinimalUI(isDark: isDark, onToggleTheme: _toggleTheme),
-        ),
+        MaterialPageRoute(builder: (_) => MinimalUI()),
       );
     } else {
-      setState(() {
-        errorMessage = 'Invalid username or password';
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid username or password'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -70,14 +41,11 @@ class _LoginPageState extends State<LoginPage> {
         height: screenHeight,
         child: Stack(
           children: [
-            // Top Image
             SizedBox(
               height: screenHeight * 0.4,
               width: double.infinity,
               child: Image.asset('assets/images/eye.jpg', fit: BoxFit.cover),
             ),
-
-            // Bottom Form (slightly overlapping the image)
             Positioned(
               top: screenHeight * 0.36,
               left: 0,
@@ -128,31 +96,15 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                labelText: "Password",
-                                labelStyle: TextStyle(color: Colors.black54),
-                                border: UnderlineInputBorder(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      // Display error message if login fails
-                      if (errorMessage.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Text(
-                            errorMessage,
-                            style: TextStyle(color: Colors.red),
-                          ),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: "Password",
+                          labelStyle: TextStyle(color: Colors.black54),
+                          border: UnderlineInputBorder(),
                         ),
+                      ),
                       const SizedBox(height: 30),
                       Center(
                         child: ElevatedButton(
@@ -173,7 +125,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
                     ],
                   ),
                 ),
