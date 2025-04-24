@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:milife/Home/HomePage.dart';
+import 'package:milife/OnBoarding/Login.dart';
 import 'package:milife/Services/Less.dart';
 import 'package:milife/Services/Tea.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,7 +41,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: isDark ? ThemeData.dark() : ThemeData.light(),
       debugShowCheckedModeBanner: false,
-      home: MinimalUI(isDark: isDark, onToggleTheme: _toggleTheme),
+      // home: MinimalUI(isDark: isDark, onToggleTheme: _toggleTheme),
+      home: LoginPage(onToggleTheme: _toggleTheme),
     );
   }
 }
