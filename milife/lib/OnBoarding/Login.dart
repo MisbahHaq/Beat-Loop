@@ -17,6 +17,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isDark = false;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -36,6 +39,25 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => isDark = !isDark);
     prefs.setBool('isDark', isDark);
     widget.onToggleTheme(); // Use the passed callback here
+  }
+
+  void _validateLogin() {
+    // Check if the entered username and password match the expected ones
+    if (_usernameController.text == 'admin' &&
+        _passwordController.text == '6969420') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) =>
+                  MinimalUI(isDark: isDark, onToggleTheme: _toggleTheme),
+        ),
+      );
+    } else {
+      setState(() {
+        errorMessage = 'Invalid username or password';
+      });
+    }
   }
 
   @override
@@ -98,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 30),
                       TextField(
+                        controller: _usernameController,
                         decoration: const InputDecoration(
                           labelText: "User Name",
                           labelStyle: TextStyle(color: Colors.black54),
@@ -109,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Expanded(
                             child: TextField(
+                              controller: _passwordController,
                               obscureText: true,
                               decoration: const InputDecoration(
                                 labelText: "Password",
@@ -119,21 +143,20 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 20),
+                      // Display error message if login fails
+                      if (errorMessage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            errorMessage,
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
                       const SizedBox(height: 30),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => MinimalUI(
-                                      isDark: isDark,
-                                      onToggleTheme: _toggleTheme,
-                                    ),
-                              ),
-                            );
-                          },
+                          onPressed: _validateLogin,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             padding: const EdgeInsets.symmetric(
