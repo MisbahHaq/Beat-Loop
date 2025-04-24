@@ -13,8 +13,6 @@ class _ApolloState extends State<Apollo> {
   int _currentSongIndex = 0;
   Duration _currentPosition = Duration.zero;
   Duration _songDuration = Duration.zero;
-
-  // List of songs stored in the assets directory
   List<String> songs = [
     'audio/bts.mp3',
     'audio/escape.mp3',
@@ -40,25 +38,25 @@ class _ApolloState extends State<Apollo> {
 
   // List of actual song names
   List<String> songNames = [
-    'BTS Song',
-    'Escape',
-    'Lucid',
+    'Boy With LUV',
+    'You\'re my Escape',
+    'Lucid Dreams',
     'Zimmedaar',
     'GULABO',
-    'Nindiya',
-    'Funka',
+    'Nindiya k Par',
+    'Full Funka',
     'Dandelions',
-    'Kakashi',
-    'Tumhi Ho',
-    'Tra',
-    'Itachi',
-    'Tim',
+    'Without You',
+    'Tum hi Ho',
+    'In Love With an Angel',
+    'Love and Honour',
+    'Timmy Turner',
     'End of Me',
-    'Sabrina',
-    'It\'s Over',
-    'Kitna',
-    'Katy',
-    'Maya',
+    'Espresso',
+    'It\'s Not Over',
+    'Kitna Chahne Lage hyn',
+    'Friday Night',
+    'MayaBee',
     'Kaisa Mai',
   ];
 
