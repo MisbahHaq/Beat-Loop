@@ -337,6 +337,10 @@
 //   }
 // }
 
+// Make sure you already have intl in pubspec.yaml
+// dependencies:
+//   intl: ^0.18.1 (or latest)
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -671,6 +675,11 @@ class _WalletPageState extends State<WalletPage> {
               itemCount: filteredExpenses.length,
               itemBuilder: (context, index) {
                 final expense = filteredExpenses[index];
+                final parsedDate = DateTime.tryParse(expense['date'] ?? '');
+                final formattedDate =
+                    parsedDate != null
+                        ? DateFormat.yMMMd().format(parsedDate)
+                        : 'Unknown Date';
                 return Container(
                   margin: const EdgeInsets.only(bottom: 15),
                   padding: const EdgeInsets.all(16),
@@ -698,6 +707,14 @@ class _WalletPageState extends State<WalletPage> {
                               style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              formattedDate,
+                              style: const TextStyle(
+                                color: Colors.white38,
+                                fontSize: 12,
                               ),
                             ),
                           ],
