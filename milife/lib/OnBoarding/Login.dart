@@ -15,8 +15,8 @@ class _LoginPageState extends State<LoginPage> {
 
   // Validate login and navigate
   void _validateLogin() {
-    if (_usernameController.text == 'admin' &&
-        _passwordController.text == '6969420') {
+    if (_usernameController.text == 'Misbah' &&
+        _passwordController.text == 'ojana') {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => MinimalUI()),

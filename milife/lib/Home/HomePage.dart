@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:milife/Services/Apollo.dart';
 import 'package:milife/Services/Dot.dart';
 import 'package:milife/Services/Less.dart';
@@ -23,10 +24,10 @@ class _MinimalUIState extends State<MinimalUI> {
   final List<String> items = [
     'apollo',
     'less is more',
-    'time for tea',
+    // 'time for tea',
     'fish and chips',
-    'dot matrix',
-    'back',
+    // 'dot matrix',
+    'quit',
   ];
 
   @override
@@ -119,19 +120,21 @@ class _MinimalUIState extends State<MinimalUI> {
                             MaterialPageRoute(builder: (context) => Apollo()),
                           );
                         } else if (items[index] == 'time for tea') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const TeaPage(),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const TeaPage(),
+                          //   ),
+                          // );
                         } else if (items[index] == 'dot matrix') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DotMatrix(),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const DotMatrix(),
+                          //   ),
+                          // );
+                        } else if (items[index] == 'quit') {
+                          SystemNavigator.pop();
                         } else {
                           _updateSelectedIndex(index);
                         }
