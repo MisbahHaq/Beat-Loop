@@ -144,7 +144,7 @@ class _ApolloState extends State<Apollo> {
 
     // Listen to when a song finishes
     _audioPlayer.onPlayerComplete.listen((event) {
-      _nextSong(); // Automatically play next song when current song finishes
+      _nextSong();
     });
 
     // Track the current position of the song
