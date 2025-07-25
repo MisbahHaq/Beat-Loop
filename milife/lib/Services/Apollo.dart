@@ -308,9 +308,7 @@ class _ApolloState extends State<Apollo> {
               min: 0,
               max: _songDuration.inSeconds.toDouble(),
               onChanged: (double value) {
-                _seekTo(
-                  value,
-                ); // Seek to the new position when user drags the slider
+                _seekTo(value);
               },
               activeColor: Colors.white,
               inactiveColor: Colors.grey,
