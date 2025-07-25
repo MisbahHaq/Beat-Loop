@@ -229,7 +229,7 @@ class _ApolloState extends State<Apollo> {
   void dispose() {
     super.dispose();
     _audioPlayer.dispose();
-    _audioSession.setActive(false); // Deactivate session when not needed
+    _audioSession.setActive(false);
   }
 
   @override
