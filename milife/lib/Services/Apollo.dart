@@ -332,7 +332,7 @@ class _ApolloState extends State<Apollo> {
                   tileColor:
                       _currentSongIndex == index
                           ? Colors.grey[800]
-                          : Colors.transparent, // Highlight current song
+                          : Colors.transparent,
                 );
               },
             ),
