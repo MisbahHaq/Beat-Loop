@@ -249,7 +249,7 @@ class _ApolloState extends State<Apollo> {
           if (songs.isNotEmpty)
             Container(
               width: double.infinity,
-              height: 250, // Fixed height for the image
+              height: 250,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
