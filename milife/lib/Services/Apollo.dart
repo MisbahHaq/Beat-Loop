@@ -327,7 +327,7 @@ class _ApolloState extends State<Apollo> {
                     height: 50,
                     fit: BoxFit.cover,
                   ),
-                  title: Text(songNames[index]), // Display the song name here
+                  title: Text(songNames[index]),
                   onTap: () => _playSong(index),
                   tileColor:
                       _currentSongIndex == index
