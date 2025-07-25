@@ -271,7 +271,7 @@ class _ApolloState extends State<Apollo> {
           SizedBox(height: 20),
           if (songs.isNotEmpty)
             Text(
-              songNames[_currentSongIndex], // Display the song name instead of file name
+              songNames[_currentSongIndex],
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           SizedBox(height: 20),
