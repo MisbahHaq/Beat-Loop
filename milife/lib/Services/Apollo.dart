@@ -253,15 +253,29 @@ class _ApolloState extends State<Apollo> {
       body: Stack(
         children: [
           // Blurred background
-          if (bgImage != null)
-            Positioned.fill(child: Image.asset(bgImage, fit: BoxFit.cover)),
-          if (bgImage != null)
-            Positioned.fill(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                child: Container(color: Colors.black.withOpacity(0.5)),
-              ),
-            ),
+          // Smooth background transition
+          AnimatedSwitcher(
+            duration: Duration(seconds: 1),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            child:
+                bgImage != null
+                    ? Container(
+                      key: ValueKey(bgImage), // important for AnimatedSwitcher
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(bgImage),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                        child: Container(color: Colors.black.withOpacity(0.5)),
+                      ),
+                    )
+                    : SizedBox.shrink(),
+          ),
+
           // Foreground content
           Column(
             children: [
