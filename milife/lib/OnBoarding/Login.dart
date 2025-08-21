@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:milife/Home/HomePage.dart';
+import 'package:milife/Services/Apollo.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text == 'ojana') {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => MinimalUI()),
+        MaterialPageRoute(builder: (_) => Apollo()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

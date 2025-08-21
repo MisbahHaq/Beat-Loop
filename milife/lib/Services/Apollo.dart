@@ -4,6 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audio_session/audio_session.dart';
 
+// Song Model
+class Song {
+  final String path;
+  final String title;
+  final String image;
+  Song({required this.path, required this.title, required this.image});
+}
+
 class Apollo extends StatefulWidget {
   @override
   _ApolloState createState() => _ApolloState();
@@ -18,124 +26,143 @@ class _ApolloState extends State<Apollo> {
   Duration _currentPosition = Duration.zero;
   Duration _songDuration = Duration.zero;
 
-  final List<String> songs = [
-    'audio/butter.mp3',
-    'audio/dilruba.mp3',
-    'audio/jani.mp3',
-    'audio/faltu.mp3',
-    'audio/beloved.mp3',
-    'audio/bayaan.mp3',
-    'audio/aarzu.mp3',
-    'audio/gila.mp3',
-    'audio/wishes.mp3',
-    'audio/you.mp3',
-    'audio/joona.mp3',
-    'audio/disconnect.mp3',
-    'audio/humgama.mp3',
-    'audio/fursat.mp3',
-    'audio/Zimmedaar.mp3',
-    'audio/tuhai.mp3',
-    'audio/roop.mp3',
-    'audio/radha.mp3',
-    'audio/memories.mp3',
-    'audio/dilkikahani.mp3',
-    'audio/turri.mp3',
-    'audio/Udjana.mp3',
-    'audio/KaisaMai.mp3',
-    'audio/tumhiho.mp3',
-    'audio/GULABO.mp3',
-    'audio/funka.mp3',
-    'audio/end.mp3',
-    'audio/escape.mp3',
-    'audio/tra.mp3',
-    'audio/endofme.mp3',
-    'audio/maya.mp3',
-    'audio/itsover.mp3',
-    'audio/raabta.mp3',
-    'audio/itachi.mp3',
-    'audio/tim.mp3',
-    'audio/sabrina.mp3',
-    'audio/kakashi.mp3',
-  ];
-
-  final List<String> songNames = [
-    'Peanut Butter',
-    'Dil Ruba',
-    'Jani',
-    'Faltu Pyar',
-    'Beloved',
-    'Bayaan',
-    'Aarzu',
-    'Gila',
-    'Wishes',
-    'You',
-    'Joona',
-    'Disconnect',
-    'Hungama',
-    'Fursat',
-    'Zimmedaar',
-    'Tu Hai Tou',
-    'Roop',
-    'Radha',
-    'Memories',
-    'Dil ki Kahani',
-    'Turri Jandi',
-    'Ud Jana',
-    'Kaisa Mai',
-    'Tum hi Ho',
-    'Gulabo',
-    'Full Funka',
-    'End of Heroes',
-    'You\'re my Escape',
-    'In Love With an Angel',
-    'End of Me',
-    'MayaBee',
-    'It\'s Not Over',
-    'Raabta',
-    'Love and Honour',
-    'Timmy Turner',
-    'Espresso',
-    'Without You',
-  ];
-
-  final List<String> songImages = [
-    'assets/images/butter.jpg',
-    'assets/images/joon.jfif',
-    'assets/images/jani.jpg',
-    'assets/images/pyar.jpg',
-    'assets/images/y.jfif',
-    'assets/images/bayaan.jpg',
-    'assets/images/aarzu.jpg',
-    'assets/images/shae.jpg',
-    'assets/images/wish.jpg',
-    'assets/images/discon.webp',
-    'assets/images/joon.jfif',
-    'assets/images/discon.webp',
-    'assets/images/has.jpg',
-    'assets/images/uzair.jpg',
-    'assets/images/zim.jpg',
-    'assets/images/uzair.jpg',
-    'assets/images/has.jpg',
-    'assets/images/radha.jpg',
-    'assets/images/mem.png',
-    'assets/images/uzair.jpg',
-    'assets/images/tur.jpg',
-    'assets/images/uzair.jpg',
-    'assets/images/avg.jpg',
-    'assets/images/sha.jpg',
-    'assets/images/gul.jfif',
-    'assets/images/funk.png',
-    'assets/images/n.jpg',
-    'assets/images/na.png',
-    'assets/images/tra.jpg',
-    'assets/images/016.jpg',
-    'assets/images/maya.jpg',
-    'assets/images/shan.jpg',
-    'assets/images/r.jfif',
-    'assets/images/it.jpg',
-    'assets/images/de.jpeg',
-    'assets/images/sab.jpg',
-    'assets/images/ka.jpeg',
+  final List<Song> songs = [
+    Song(
+        path: 'audio/butter.mp3',
+        title: 'Peanut Butter',
+        image: 'assets/images/butter.jpg'),
+    Song(
+        path: 'audio/jhol.mp3', title: 'Jhol', image: 'assets/images/jhol.jpg'),
+    Song(
+        path: 'audio/dilruba.mp3',
+        title: 'Dil Ruba',
+        image: 'assets/images/dilruba.jpg'),
+    Song(
+        path: 'audio/jani.mp3', title: 'Jani', image: 'assets/images/jani.jpg'),
+    Song(
+        path: 'audio/faltu.mp3',
+        title: 'Faltu Pyar',
+        image: 'assets/images/pyar.jpg'),
+    Song(
+        path: 'audio/beloved.mp3',
+        title: 'Beloved',
+        image: 'assets/images/y.jfif'),
+    Song(
+        path: 'audio/bayaan.mp3',
+        title: 'Bayaan',
+        image: 'assets/images/bayaan.jpg'),
+    Song(
+        path: 'audio/aarzu.mp3',
+        title: 'Aarzu',
+        image: 'assets/images/aarzu.jpg'),
+    Song(
+        path: 'audio/gila.mp3', title: 'Gila', image: 'assets/images/shae.jpg'),
+    Song(
+        path: 'audio/wishes.mp3',
+        title: 'Wishes',
+        image: 'assets/images/wish.jpg'),
+    Song(path: 'audio/you.mp3', title: 'You', image: 'assets/images/you.jpg'),
+    Song(
+        path: 'audio/joona.mp3',
+        title: 'Joona',
+        image: 'assets/images/joon.jfif'),
+    Song(
+        path: 'audio/disconnect.mp3',
+        title: 'Disconnect',
+        image: 'assets/images/discon.webp'),
+    Song(
+        path: 'audio/humgama.mp3',
+        title: 'Hungama',
+        image: 'assets/images/hun.jpg'),
+    Song(
+        path: 'audio/fursat.mp3',
+        title: 'Fursat',
+        image: 'assets/images/uzair.jpg'),
+    Song(
+        path: 'audio/Zimmedaar.mp3',
+        title: 'Zimmedaar',
+        image: 'assets/images/zim.jpg'),
+    Song(
+        path: 'audio/tuhai.mp3',
+        title: 'Tu Hai Tou',
+        image: 'assets/images/uzair.jpg'),
+    Song(path: 'audio/roop.mp3', title: 'Roop', image: 'assets/images/has.jpg'),
+    Song(
+        path: 'audio/radha.mp3',
+        title: 'Radha',
+        image: 'assets/images/radha.jpg'),
+    Song(
+        path: 'audio/memories.mp3',
+        title: 'Memories',
+        image: 'assets/images/mem.png'),
+    Song(
+        path: 'audio/dilkikahani.mp3',
+        title: 'Dil Ki Kahani',
+        image: 'assets/images/uzair.jpg'),
+    Song(
+        path: 'audio/turri.mp3',
+        title: 'Turri Jandi',
+        image: 'assets/images/tur.jpg'),
+    Song(
+        path: 'audio/Udjana.mp3',
+        title: 'Ud Jana',
+        image: 'assets/images/uzair.jpg'),
+    Song(
+        path: 'audio/KaisaMai.mp3',
+        title: 'Kaisa Mai',
+        image: 'assets/images/avg.jpg'),
+    Song(
+        path: 'audio/tumhiho.mp3',
+        title: 'Tum Hi Ho',
+        image: 'assets/images/sha.jpg'),
+    Song(
+        path: 'audio/GULABO.mp3',
+        title: 'Gulabo',
+        image: 'assets/images/gul.jfif'),
+    Song(
+        path: 'audio/funka.mp3',
+        title: 'Full Funka',
+        image: 'assets/images/funk.png'),
+    Song(
+        path: 'audio/end.mp3',
+        title: 'End of Heroes',
+        image: 'assets/images/n.jpg'),
+    Song(
+        path: 'audio/escape.mp3',
+        title: 'You\'re my Escape',
+        image: 'assets/images/na.png'),
+    Song(
+        path: 'audio/tra.mp3',
+        title: 'In Love With an Angel',
+        image: 'assets/images/tra.jpg'),
+    Song(
+        path: 'audio/endofme.mp3',
+        title: 'End of Me',
+        image: 'assets/images/0016.jpg'),
+    Song(
+        path: 'audio/maya.mp3',
+        title: 'MayaBee',
+        image: 'assets/images/maya.jpg'),
+    Song(
+        path: 'audio/itsover.mp3',
+        title: 'It\'s Not Over',
+        image: 'assets/images/shan.jpg'),
+    Song(
+        path: 'audio/raabta.mp3',
+        title: 'Raabta',
+        image: 'assets/images/r.jfif'),
+    Song(
+        path: 'audio/itachi.mp3',
+        title: 'Love and Honour',
+        image: 'assets/images/it.jpg'),
+    Song(
+        path: 'audio/tim.mp3',
+        title: 'Timmy Turner',
+        image: 'assets/images/de.jpeg'),
+    Song(
+        path: 'audio/kakashi.mp3',
+        title: 'Without You',
+        image: 'assets/images/ka.jpeg'),
   ];
 
   @override
@@ -164,8 +191,8 @@ class _ApolloState extends State<Apollo> {
     if (songs.isEmpty || index >= songs.length) return;
 
     await _audioSession.setActive(true);
-    await _audioPlayer.setPlaybackRate(1.0);
-    await _audioPlayer.play(AssetSource(songs[index]));
+    await _audioPlayer.stop();
+    await _audioPlayer.play(AssetSource(songs[index].path));
 
     setState(() {
       _isPlaying = true;
@@ -215,23 +242,15 @@ class _ApolloState extends State<Apollo> {
 
   @override
   Widget build(BuildContext context) {
-    final bgImage =
-        songs.isNotEmpty
-            ? songImages[_currentSongIndex % songImages.length]
-            : null;
+    final Song? currentSong =
+        songs.isNotEmpty ? songs[_currentSongIndex] : null;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
       body: Stack(
         children: [
-          if (bgImage != null) ...[
-            Positioned.fill(child: Image.asset(bgImage, fit: BoxFit.cover)),
+          if (currentSong != null) ...[
+            Positioned.fill(
+                child: Image.asset(currentSong.image, fit: BoxFit.cover)),
             Positioned.fill(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
@@ -239,113 +258,101 @@ class _ApolloState extends State<Apollo> {
               ),
             ),
           ],
-          Column(
-            children: [
-              SizedBox(height: 20),
-              if (songs.isNotEmpty)
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final size = min(constraints.maxWidth, 300.0);
-                    return GestureDetector(
-                      onPanDown:
-                          (details) => _onSeekTap(
-                            details.localPosition,
-                            Size(size, size),
-                          ),
-                      onPanUpdate:
-                          (details) => _onSeekTap(
-                            details.localPosition,
-                            Size(size, size),
-                          ),
-                      child: Container(
-                        width: size,
-                        height: size,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              width: size,
-                              height: size,
-                              child: CircularProgressIndicator(
-                                value:
-                                    _songDuration.inSeconds > 0
-                                        ? _currentPosition.inSeconds /
-                                            _songDuration.inSeconds
-                                        : 0,
-                                strokeWidth: 6,
-                                backgroundColor: Colors.grey[800],
-                                valueColor: AlwaysStoppedAnimation(
-                                  Colors.white,
+          Padding(
+            padding: const EdgeInsets.only(top: 60),
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                if (currentSong != null)
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final size = min(constraints.maxWidth, 300.0);
+                      return GestureDetector(
+                        onPanDown: (details) =>
+                            _onSeekTap(details.localPosition, Size(size, size)),
+                        onPanUpdate: (details) =>
+                            _onSeekTap(details.localPosition, Size(size, size)),
+                        child: Container(
+                          width: size,
+                          height: size,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                width: size,
+                                height: size,
+                                child: CircularProgressIndicator(
+                                  value: _songDuration.inSeconds > 0
+                                      ? _currentPosition.inSeconds /
+                                          _songDuration.inSeconds
+                                      : 0,
+                                  strokeWidth: 6,
+                                  backgroundColor: Colors.grey[800],
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
                                 ),
                               ),
-                            ),
-                            ClipOval(
-                              child: Image.asset(
-                                songImages[_currentSongIndex %
-                                    songImages.length],
-                                width: size - 30,
-                                height: size - 30,
-                                fit: BoxFit.cover,
+                              ClipOval(
+                                child: Image.asset(
+                                  currentSong.image,
+                                  width: size - 30,
+                                  height: size - 30,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                      );
+                    },
+                  ),
+                SizedBox(height: 20),
+                if (currentSong != null)
+                  Text(
+                    currentSong.title,
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                SizedBox(height: 20),
+                if (currentSong != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.skip_previous, color: Colors.white),
+                        onPressed: _prevSong,
                       ),
-                    );
-                  },
-                ),
-              SizedBox(height: 20),
-              if (songs.isNotEmpty)
-                Text(
-                  songNames[_currentSongIndex],
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              SizedBox(height: 20),
-              if (songs.isNotEmpty)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.skip_previous, color: Colors.white),
-                      onPressed: _prevSong,
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        _isPlaying ? Icons.pause : Icons.play_arrow,
-                        color: Colors.white,
-                        size: 40,
+                      IconButton(
+                        icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow,
+                            color: Colors.white, size: 40),
+                        onPressed: _isPlaying ? _pauseSong : _resumeSong,
                       ),
-                      onPressed: _isPlaying ? _pauseSong : _resumeSong,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.skip_next, color: Colors.white),
-                      onPressed: _nextSong,
-                    ),
-                  ],
-                ),
-              SizedBox(height: 20),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: songs.length,
-                  itemBuilder:
-                      (context, index) => ListTile(
+                      IconButton(
+                        icon: Icon(Icons.skip_next, color: Colors.white),
+                        onPressed: _nextSong,
+                      ),
+                    ],
+                  ),
+                SizedBox(height: 20),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: songs.length,
+                    itemBuilder: (context, index) {
+                      final song = songs[index];
+                      return ListTile(
                         textColor: Colors.white,
-                        leading: Image.asset(
-                          songImages[index % songImages.length],
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
-                        title: Text(songNames[index]),
-                        tileColor:
-                            _currentSongIndex == index
-                                ? Colors.grey[800]
-                                : Colors.transparent,
+                        leading: Image.asset(song.image,
+                            width: 50, height: 50, fit: BoxFit.cover),
+                        title: Text(song.title),
+                        tileColor: _currentSongIndex == index
+                            ? Colors.grey[800]
+                            : Colors.transparent,
                         onTap: () => _playSong(index),
-                      ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
