@@ -44,6 +44,10 @@ class _ApolloState extends State<Apollo> {
         title: 'Faltu Pyar',
         image: 'assets/images/pyar.jpg'),
     Song(
+        path: 'audio/piya.mp3',
+        title: 'Piya Calling',
+        image: 'assets/images/piya.jpg'),
+    Song(
         path: 'audio/beloved.mp3',
         title: 'Beloved',
         image: 'assets/images/y.jfif'),
