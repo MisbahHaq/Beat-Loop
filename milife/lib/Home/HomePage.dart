@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:milife/Services/Apollo.dart';
-import 'package:milife/Services/Dot.dart';
-import 'package:milife/Services/Less.dart';
-import 'package:milife/Services/Tea.dart';
-import 'package:milife/Services/Wallet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -21,14 +17,7 @@ class _MinimalUIState extends State<MinimalUI> {
   int openCount = 0;
   double totalExpense = 0.0;
 
-  final List<String> items = [
-    'apollo',
-    'less is more',
-    // 'time for tea',
-    'fish and chips',
-    // 'dot matrix',
-    'quit',
-  ];
+  final List<String> items = ['apollo', 'quit'];
 
   @override
   void initState() {
@@ -99,44 +88,12 @@ class _MinimalUIState extends State<MinimalUI> {
                   ...List.generate(items.length, (index) {
                     return GestureDetector(
                       onTap: () {
-                        _updateSelectedIndex(index);
-                        if (items[index] == 'fish and chips') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const WalletPage(),
-                            ),
-                          );
-                        } else if (items[index] == 'less is more') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LessIsMore(),
-                            ),
-                          );
-                        } else if (items[index] == 'apollo') {
+                        final item = items[index];
+                        if (item == 'apollo') {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Apollo()),
                           );
-                        } else if (items[index] == 'time for tea') {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const TeaPage(),
-                          //   ),
-                          // );
-                        } else if (items[index] == 'dot matrix') {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const DotMatrix(),
-                          //   ),
-                          // );
-                        } else if (items[index] == 'quit') {
-                          SystemNavigator.pop();
-                        } else {
-                          _updateSelectedIndex(index);
                         }
                       },
                       child: AnimatedMenuItem(

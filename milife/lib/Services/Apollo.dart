@@ -11,12 +11,14 @@ class Apollo extends StatefulWidget {
 
 class _ApolloState extends State<Apollo> {
   final AudioPlayer _audioPlayer = AudioPlayer();
+  late AudioSession _audioSession;
+
   bool _isPlaying = false;
   int _currentSongIndex = 0;
   Duration _currentPosition = Duration.zero;
   Duration _songDuration = Duration.zero;
 
-  List<String> songs = [
+  final List<String> songs = [
     'audio/butter.mp3',
     'audio/dilruba.mp3',
     'audio/jani.mp3',
@@ -56,7 +58,7 @@ class _ApolloState extends State<Apollo> {
     'audio/kakashi.mp3',
   ];
 
-  List<String> songNames = [
+  final List<String> songNames = [
     'Peanut Butter',
     'Dil Ruba',
     'Jani',
@@ -96,7 +98,7 @@ class _ApolloState extends State<Apollo> {
     'Without You',
   ];
 
-  List<String> songImages = [
+  final List<String> songImages = [
     'assets/images/butter.jpg',
     'assets/images/joon.jfif',
     'assets/images/jani.jpg',
@@ -136,28 +138,11 @@ class _ApolloState extends State<Apollo> {
     'assets/images/ka.jpeg',
   ];
 
-  late AudioSession _audioSession;
-
   @override
   void initState() {
     super.initState();
     _initializeAudioSession();
-
-    _audioPlayer.onPlayerComplete.listen((event) {
-      _nextSong();
-    });
-
-    _audioPlayer.onPositionChanged.listen((Duration duration) {
-      setState(() {
-        _currentPosition = duration;
-      });
-    });
-
-    _audioPlayer.onDurationChanged.listen((Duration duration) {
-      setState(() {
-        _songDuration = duration;
-      });
-    });
+    _listenAudioPlayerEvents();
   }
 
   Future<void> _initializeAudioSession() async {
@@ -165,58 +150,52 @@ class _ApolloState extends State<Apollo> {
     await _audioSession.configure(AudioSessionConfiguration.music());
   }
 
-  void _playSong(int index) async {
-    if (songs.isNotEmpty && index < songs.length) {
-      final song = songs[index];
-      await _audioSession.setActive(true);
-      await _audioPlayer.setPlaybackRate(1.0); // NORMAL SPEED
-      await _audioPlayer.play(
-        AssetSource(song),
-        // mode: PlayerMode.mediaPlayer, // optional for more stable playback
-      );
-      setState(() {
-        _isPlaying = true;
-        _currentSongIndex = index;
-      });
-    }
+  void _listenAudioPlayerEvents() {
+    _audioPlayer.onPlayerComplete.listen((_) => _nextSong());
+    _audioPlayer.onPositionChanged.listen((duration) {
+      setState(() => _currentPosition = duration);
+    });
+    _audioPlayer.onDurationChanged.listen((duration) {
+      setState(() => _songDuration = duration);
+    });
+  }
+
+  Future<void> _playSong(int index) async {
+    if (songs.isEmpty || index >= songs.length) return;
+
+    await _audioSession.setActive(true);
+    await _audioPlayer.setPlaybackRate(1.0);
+    await _audioPlayer.play(AssetSource(songs[index]));
+
+    setState(() {
+      _isPlaying = true;
+      _currentSongIndex = index;
+    });
   }
 
   void _pauseSong() {
     _audioPlayer.pause();
-    setState(() {
-      _isPlaying = false;
-    });
+    setState(() => _isPlaying = false);
   }
 
   void _resumeSong() {
     _audioPlayer.resume();
-    setState(() {
-      _isPlaying = true;
-    });
+    setState(() => _isPlaying = true);
   }
 
-  void _nextSong() {
-    int nextIndex = (_currentSongIndex + 1) % songs.length;
-    _playSong(nextIndex);
-  }
-
-  void _prevSong() {
-    int prevIndex = (_currentSongIndex - 1 + songs.length) % songs.length;
-    _playSong(prevIndex);
-  }
+  void _nextSong() => _playSong((_currentSongIndex + 1) % songs.length);
+  void _prevSong() =>
+      _playSong((_currentSongIndex - 1 + songs.length) % songs.length);
 
   void _onSeekTap(Offset localPosition, Size size) {
-    final radius = size.width / 2;
-    final center = Offset(radius, radius);
-
+    final center = Offset(size.width / 2, size.height / 2);
     final dx = localPosition.dx - center.dx;
     final dy = localPosition.dy - center.dy;
-    final distanceFromCenter = sqrt(dx * dx + dy * dy);
+    final distance = sqrt(dx * dx + dy * dy);
 
-    if (distanceFromCenter > radius) return;
+    if (distance > size.width / 2) return;
 
-    double angle = atan2(dy, dx);
-    angle += pi / 2;
+    double angle = atan2(dy, dx) + pi / 2;
     if (angle < 0) angle += 2 * pi;
 
     final percent = angle / (2 * pi);
@@ -224,7 +203,6 @@ class _ApolloState extends State<Apollo> {
       0,
       _songDuration.inSeconds,
     );
-
     _audioPlayer.seek(Duration(seconds: seconds.toInt()));
   }
 
@@ -252,31 +230,15 @@ class _ApolloState extends State<Apollo> {
       ),
       body: Stack(
         children: [
-          // Blurred background
-          // Smooth background transition
-          AnimatedSwitcher(
-            duration: Duration(seconds: 1),
-            switchInCurve: Curves.easeIn,
-            switchOutCurve: Curves.easeOut,
-            child:
-                bgImage != null
-                    ? Container(
-                      key: ValueKey(bgImage), // important for AnimatedSwitcher
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(bgImage),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                        child: Container(color: Colors.black.withOpacity(0.5)),
-                      ),
-                    )
-                    : SizedBox.shrink(),
-          ),
-
-          // Foreground content
+          if (bgImage != null) ...[
+            Positioned.fill(child: Image.asset(bgImage, fit: BoxFit.cover)),
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                child: Container(color: Colors.black.withOpacity(0.5)),
+              ),
+            ),
+          ],
           Column(
             children: [
               SizedBox(height: 20),
@@ -312,7 +274,7 @@ class _ApolloState extends State<Apollo> {
                                         : 0,
                                 strokeWidth: 6,
                                 backgroundColor: Colors.grey[800],
-                                valueColor: AlwaysStoppedAnimation<Color>(
+                                valueColor: AlwaysStoppedAnimation(
                                   Colors.white,
                                 ),
                               ),
@@ -365,23 +327,22 @@ class _ApolloState extends State<Apollo> {
               Expanded(
                 child: ListView.builder(
                   itemCount: songs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      textColor: Colors.white,
-                      leading: Image.asset(
-                        songImages[index % songImages.length],
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
+                  itemBuilder:
+                      (context, index) => ListTile(
+                        textColor: Colors.white,
+                        leading: Image.asset(
+                          songImages[index % songImages.length],
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        ),
+                        title: Text(songNames[index]),
+                        tileColor:
+                            _currentSongIndex == index
+                                ? Colors.grey[800]
+                                : Colors.transparent,
+                        onTap: () => _playSong(index),
                       ),
-                      title: Text(songNames[index]),
-                      onTap: () => _playSong(index),
-                      tileColor:
-                          _currentSongIndex == index
-                              ? Colors.grey[800]
-                              : Colors.transparent,
-                    );
-                  },
                 ),
               ),
             ],
