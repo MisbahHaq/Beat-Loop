@@ -41,6 +41,7 @@ dependencies:
   just_audio:
   video_player: ^2.9.2
   audio_session: ^0.1.10
+  audio_service:
   audioplayers: ^6.1.1
   flutter_launcher_icons: ^0.14.3
   google_fonts: ^6.2.1

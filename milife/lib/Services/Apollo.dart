@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audio_session/audio_session.dart';
@@ -13,6 +14,7 @@ class _ApolloState extends State<Apollo> {
   int _currentSongIndex = 0;
   Duration _currentPosition = Duration.zero;
   Duration _songDuration = Duration.zero;
+
   List<String> songs = [
     'audio/butter.mp3',
     'audio/dilruba.mp3',
@@ -93,7 +95,6 @@ class _ApolloState extends State<Apollo> {
     'Without You',
   ];
 
-  // List of image paths for song album covers
   List<String> songImages = [
     'assets/images/butter.jpg',
     'assets/images/joon.jfif',
@@ -134,7 +135,6 @@ class _ApolloState extends State<Apollo> {
     'assets/images/ka.jpeg',
   ];
 
-  // To handle the audio session (required for background play)
   late AudioSession _audioSession;
 
   @override
@@ -142,19 +142,16 @@ class _ApolloState extends State<Apollo> {
     super.initState();
     _initializeAudioSession();
 
-    // Listen to when a song finishes
     _audioPlayer.onPlayerComplete.listen((event) {
       _nextSong();
     });
 
-    // Track the current position of the song
     _audioPlayer.onPositionChanged.listen((Duration duration) {
       setState(() {
         _currentPosition = duration;
       });
     });
 
-    // Track the duration of the current song
     _audioPlayer.onDurationChanged.listen((Duration duration) {
       setState(() {
         _songDuration = duration;
@@ -162,20 +159,15 @@ class _ApolloState extends State<Apollo> {
     });
   }
 
-  // Initialize the audio session
   Future<void> _initializeAudioSession() async {
     _audioSession = await AudioSession.instance;
     await _audioSession.configure(AudioSessionConfiguration.music());
   }
 
-  // Play song
   void _playSong(int index) async {
     if (songs.isNotEmpty && index < songs.length) {
       final song = songs[index];
-
-      // Set audio session to active and handle background playback
       await _audioSession.setActive(true);
-
       await _audioPlayer.play(AssetSource(song));
       setState(() {
         _isPlaying = true;
@@ -184,7 +176,6 @@ class _ApolloState extends State<Apollo> {
     }
   }
 
-  // Pause song
   void _pauseSong() {
     _audioPlayer.pause();
     setState(() {
@@ -192,44 +183,51 @@ class _ApolloState extends State<Apollo> {
     });
   }
 
-  // Resume song
   void _resumeSong() {
-    if (songs.isNotEmpty) {
-      final song = songs[_currentSongIndex];
-      _audioPlayer.resume();
-      setState(() {
-        _isPlaying = true;
-      });
-    }
+    _audioPlayer.resume();
+    setState(() {
+      _isPlaying = true;
+    });
   }
 
-  // Play next song
   void _nextSong() {
-    if (songs.isNotEmpty) {
-      int nextIndex = (_currentSongIndex + 1) % songs.length;
-      _playSong(nextIndex);
-    }
+    int nextIndex = (_currentSongIndex + 1) % songs.length;
+    _playSong(nextIndex);
   }
 
-  // Play previous song
   void _prevSong() {
-    if (songs.isNotEmpty) {
-      int prevIndex = (_currentSongIndex - 1 + songs.length) % songs.length;
-      _playSong(prevIndex);
-    }
+    int prevIndex = (_currentSongIndex - 1 + songs.length) % songs.length;
+    _playSong(prevIndex);
   }
 
-  // Seek to a specific position in the song
-  void _seekTo(double value) {
-    final position = Duration(seconds: value.toInt());
-    _audioPlayer.seek(position);
+  void _onSeekTap(Offset localPosition, Size size) {
+    final radius = size.width / 2;
+    final center = Offset(radius, radius);
+
+    final dx = localPosition.dx - center.dx;
+    final dy = localPosition.dy - center.dy;
+    final distanceFromCenter = sqrt(dx * dx + dy * dy);
+
+    if (distanceFromCenter > radius) return;
+
+    double angle = atan2(dy, dx);
+    angle += pi / 2;
+    if (angle < 0) angle += 2 * pi;
+
+    final percent = angle / (2 * pi);
+    final seconds = (_songDuration.inSeconds * percent).clamp(
+      0,
+      _songDuration.inSeconds,
+    );
+
+    _audioPlayer.seek(Duration(seconds: seconds.toInt()));
   }
 
   @override
   void dispose() {
-    super.dispose();
     _audioPlayer.dispose();
     _audioSession.setActive(false);
+    super.dispose();
   }
 
   @override
@@ -245,28 +243,53 @@ class _ApolloState extends State<Apollo> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          // Song image and controls
+          SizedBox(height: 20),
           if (songs.isNotEmpty)
-            Container(
-              width: double.infinity,
-              height: 250,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    blurRadius: 10,
-                    spreadRadius: 2,
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final size = min(constraints.maxWidth, 300.0);
+                return GestureDetector(
+                  onPanDown:
+                      (details) =>
+                          _onSeekTap(details.localPosition, Size(size, size)),
+                  onPanUpdate:
+                      (details) =>
+                          _onSeekTap(details.localPosition, Size(size, size)),
+                  child: Container(
+                    width: size,
+                    height: size,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          width: size,
+                          height: size,
+                          child: CircularProgressIndicator(
+                            value:
+                                _songDuration.inSeconds > 0
+                                    ? _currentPosition.inSeconds /
+                                        _songDuration.inSeconds
+                                    : 0,
+                            strokeWidth: 6,
+                            backgroundColor: Colors.grey[800],
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        ),
+                        ClipOval(
+                          child: Image.asset(
+                            songImages[_currentSongIndex % songImages.length],
+                            width: size - 30,
+                            height: size - 30,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  songImages[_currentSongIndex % songImages.length],
-                  fit: BoxFit.contain,
-                ),
-              ),
+                );
+              },
             ),
           SizedBox(height: 20),
           if (songs.isNotEmpty)
@@ -298,23 +321,6 @@ class _ApolloState extends State<Apollo> {
               ],
             ),
           SizedBox(height: 20),
-          // Song Progress Bar
-          if (songs.isNotEmpty && _songDuration.inSeconds > 0)
-            Slider(
-              value:
-                  _currentPosition.inSeconds
-                      .clamp(0, _songDuration.inSeconds)
-                      .toDouble(),
-              min: 0,
-              max: _songDuration.inSeconds.toDouble(),
-              onChanged: (double value) {
-                _seekTo(value);
-              },
-              activeColor: Colors.white,
-              inactiveColor: Colors.grey,
-            ),
-          SizedBox(height: 20),
-          // List of songs in the expanded view
           Expanded(
             child: ListView.builder(
               itemCount: songs.length,
