@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audio_session/audio_session.dart';
@@ -168,7 +169,11 @@ class _ApolloState extends State<Apollo> {
     if (songs.isNotEmpty && index < songs.length) {
       final song = songs[index];
       await _audioSession.setActive(true);
-      await _audioPlayer.play(AssetSource(song));
+      await _audioPlayer.setPlaybackRate(1.0); // NORMAL SPEED
+      await _audioPlayer.play(
+        AssetSource(song),
+        // mode: PlayerMode.mediaPlayer, // optional for more stable playback
+      );
       setState(() {
         _isPlaying = true;
         _currentSongIndex = index;
@@ -232,6 +237,11 @@ class _ApolloState extends State<Apollo> {
 
   @override
   Widget build(BuildContext context) {
+    final bgImage =
+        songs.isNotEmpty
+            ? songImages[_currentSongIndex % songImages.length]
+            : null;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -240,108 +250,127 @@ class _ApolloState extends State<Apollo> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      backgroundColor: Colors.black,
-      body: Column(
+      body: Stack(
         children: [
-          SizedBox(height: 20),
-          if (songs.isNotEmpty)
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final size = min(constraints.maxWidth, 300.0);
-                return GestureDetector(
-                  onPanDown:
-                      (details) =>
-                          _onSeekTap(details.localPosition, Size(size, size)),
-                  onPanUpdate:
-                      (details) =>
-                          _onSeekTap(details.localPosition, Size(size, size)),
-                  child: Container(
-                    width: size,
-                    height: size,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          width: size,
-                          height: size,
-                          child: CircularProgressIndicator(
-                            value:
-                                _songDuration.inSeconds > 0
-                                    ? _currentPosition.inSeconds /
-                                        _songDuration.inSeconds
-                                    : 0,
-                            strokeWidth: 6,
-                            backgroundColor: Colors.grey[800],
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
+          // Blurred background
+          if (bgImage != null)
+            Positioned.fill(child: Image.asset(bgImage, fit: BoxFit.cover)),
+          if (bgImage != null)
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                child: Container(color: Colors.black.withOpacity(0.5)),
+              ),
+            ),
+          // Foreground content
+          Column(
+            children: [
+              SizedBox(height: 20),
+              if (songs.isNotEmpty)
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final size = min(constraints.maxWidth, 300.0);
+                    return GestureDetector(
+                      onPanDown:
+                          (details) => _onSeekTap(
+                            details.localPosition,
+                            Size(size, size),
+                          ),
+                      onPanUpdate:
+                          (details) => _onSeekTap(
+                            details.localPosition,
+                            Size(size, size),
+                          ),
+                      child: Container(
+                        width: size,
+                        height: size,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                              width: size,
+                              height: size,
+                              child: CircularProgressIndicator(
+                                value:
+                                    _songDuration.inSeconds > 0
+                                        ? _currentPosition.inSeconds /
+                                            _songDuration.inSeconds
+                                        : 0,
+                                strokeWidth: 6,
+                                backgroundColor: Colors.grey[800],
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
+                            ClipOval(
+                              child: Image.asset(
+                                songImages[_currentSongIndex %
+                                    songImages.length],
+                                width: size - 30,
+                                height: size - 30,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
                         ),
-                        ClipOval(
-                          child: Image.asset(
-                            songImages[_currentSongIndex % songImages.length],
-                            width: size - 30,
-                            height: size - 30,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ],
+                      ),
+                    );
+                  },
+                ),
+              SizedBox(height: 20),
+              if (songs.isNotEmpty)
+                Text(
+                  songNames[_currentSongIndex],
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              SizedBox(height: 20),
+              if (songs.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.skip_previous, color: Colors.white),
+                      onPressed: _prevSong,
                     ),
-                  ),
-                );
-              },
-            ),
-          SizedBox(height: 20),
-          if (songs.isNotEmpty)
-            Text(
-              songNames[_currentSongIndex],
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-          SizedBox(height: 20),
-          if (songs.isNotEmpty)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.skip_previous, color: Colors.white),
-                  onPressed: _prevSong,
+                    IconButton(
+                      icon: Icon(
+                        _isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      onPressed: _isPlaying ? _pauseSong : _resumeSong,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.skip_next, color: Colors.white),
+                      onPressed: _nextSong,
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(
-                    _isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                  onPressed: _isPlaying ? _pauseSong : _resumeSong,
+              SizedBox(height: 20),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: songs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      textColor: Colors.white,
+                      leading: Image.asset(
+                        songImages[index % songImages.length],
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                      title: Text(songNames[index]),
+                      onTap: () => _playSong(index),
+                      tileColor:
+                          _currentSongIndex == index
+                              ? Colors.grey[800]
+                              : Colors.transparent,
+                    );
+                  },
                 ),
-                IconButton(
-                  icon: Icon(Icons.skip_next, color: Colors.white),
-                  onPressed: _nextSong,
-                ),
-              ],
-            ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: songs.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  textColor: Colors.white,
-                  leading: Image.asset(
-                    songImages[index % songImages.length],
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-                  title: Text(songNames[index]),
-                  onTap: () => _playSong(index),
-                  tileColor:
-                      _currentSongIndex == index
-                          ? Colors.grey[800]
-                          : Colors.transparent,
-                );
-              },
-            ),
+              ),
+            ],
           ),
         ],
       ),
