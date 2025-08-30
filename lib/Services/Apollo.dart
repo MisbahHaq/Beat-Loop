@@ -212,7 +212,7 @@ class _ApolloState extends State<Apollo> {
     Song(
       path: 'audio/kakashi.mp3',
       title: 'Without You',
-      image: 'assets/images/ka.jpeg',
+      image: 'assets/images/ka.jpg',
     ),
   ];
 
@@ -293,9 +293,8 @@ class _ApolloState extends State<Apollo> {
 
   @override
   Widget build(BuildContext context) {
-    final Song? currentSong = songs.isNotEmpty
-        ? songs[_currentSongIndex]
-        : null;
+    final Song? currentSong =
+        songs.isNotEmpty ? songs[_currentSongIndex] : null;
 
     return Scaffold(
       body: Stack(
@@ -337,7 +336,7 @@ class _ApolloState extends State<Apollo> {
                                 child: CircularProgressIndicator(
                                   value: _songDuration.inSeconds > 0
                                       ? _currentPosition.inSeconds /
-                                            _songDuration.inSeconds
+                                          _songDuration.inSeconds
                                       : 0,
                                   strokeWidth: 6,
                                   backgroundColor: Colors.grey[800],
