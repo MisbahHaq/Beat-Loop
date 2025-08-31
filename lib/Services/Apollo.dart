@@ -17,9 +17,10 @@ class Apollo extends StatefulWidget {
   _ApolloState createState() => _ApolloState();
 }
 
-class _ApolloState extends State<Apollo> {
+class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   final AudioPlayer _audioPlayer = AudioPlayer();
   late AudioSession _audioSession;
+  late AnimationController _rotationController;
 
   bool _isPlaying = false;
   int _currentSongIndex = 0;
@@ -28,192 +29,149 @@ class _ApolloState extends State<Apollo> {
 
   final List<Song> songs = [
     Song(
-      path: 'audio/exes.mp3',
-      title: 'E X E S',
-      image: 'assets/images/exes.jpg',
-    ),
+        path: 'audio/exes.mp3',
+        title: 'E X E S',
+        image: 'assets/images/exes.jpg'),
     Song(
-      path: 'audio/butter.mp3',
-      title: 'Peanut Butter',
-      image: 'assets/images/butter.jpg',
-    ),
+        path: 'audio/butter.mp3',
+        title: 'Peanut Butter',
+        image: 'assets/images/butter.jpg'),
     Song(
-      path: 'audio/jhol.mp3',
-      title: 'Jhol',
-      image: 'assets/images/jhol.jpg',
-    ),
+        path: 'audio/jhol.mp3', title: 'Jhol', image: 'assets/images/jhol.jpg'),
     Song(
-      path: 'audio/dilruba.mp3',
-      title: 'Dil Ruba',
-      image: 'assets/images/dilruba.jpg',
-    ),
+        path: 'audio/dilruba.mp3',
+        title: 'Dil Ruba',
+        image: 'assets/images/dilruba.jpg'),
     Song(
-      path: 'audio/jani.mp3',
-      title: 'Jani',
-      image: 'assets/images/jani.jpg',
-    ),
+        path: 'audio/jani.mp3', title: 'Jani', image: 'assets/images/jani.jpg'),
     Song(
-      path: 'audio/faltu.mp3',
-      title: 'Faltu Pyar',
-      image: 'assets/images/pyar.jpg',
-    ),
+        path: 'audio/faltu.mp3',
+        title: 'Faltu Pyar',
+        image: 'assets/images/pyar.jpg'),
     Song(
-      path: 'audio/piya.mp3',
-      title: 'Piya Calling',
-      image: 'assets/images/piya.jpg',
-    ),
+        path: 'audio/piya.mp3',
+        title: 'Piya Calling',
+        image: 'assets/images/piya.jpg'),
     Song(
-      path: 'audio/beloved.mp3',
-      title: 'Beloved',
-      image: 'assets/images/y.jfif',
-    ),
+        path: 'audio/beloved.mp3',
+        title: 'Beloved',
+        image: 'assets/images/y.jfif'),
     Song(
-      path: 'audio/bayaan.mp3',
-      title: 'Bayaan',
-      image: 'assets/images/bayaan.jpg',
-    ),
+        path: 'audio/bayaan.mp3',
+        title: 'Bayaan',
+        image: 'assets/images/bayaan.jpg'),
     Song(
-      path: 'audio/aarzu.mp3',
-      title: 'Aarzu',
-      image: 'assets/images/aarzu.jpg',
-    ),
+        path: 'audio/aarzu.mp3',
+        title: 'Aarzu',
+        image: 'assets/images/aarzu.jpg'),
     Song(
-      path: 'audio/gila.mp3',
-      title: 'Gila',
-      image: 'assets/images/shae.jpg',
-    ),
+        path: 'audio/gila.mp3', title: 'Gila', image: 'assets/images/shae.jpg'),
     Song(
-      path: 'audio/wishes.mp3',
-      title: 'Wishes',
-      image: 'assets/images/wish.jpg',
-    ),
+        path: 'audio/wishes.mp3',
+        title: 'Wishes',
+        image: 'assets/images/wish.jpg'),
     Song(path: 'audio/you.mp3', title: 'You', image: 'assets/images/you.jpg'),
     Song(
-      path: 'audio/joona.mp3',
-      title: 'Joona',
-      image: 'assets/images/joon.jfif',
-    ),
+        path: 'audio/joona.mp3',
+        title: 'Joona',
+        image: 'assets/images/joon.jfif'),
     Song(
-      path: 'audio/disconnect.mp3',
-      title: 'Disconnect',
-      image: 'assets/images/discon.webp',
-    ),
+        path: 'audio/disconnect.mp3',
+        title: 'Disconnect',
+        image: 'assets/images/discon.webp'),
     Song(
-      path: 'audio/humgama.mp3',
-      title: 'Hungama',
-      image: 'assets/images/hun.jpg',
-    ),
+        path: 'audio/humgama.mp3',
+        title: 'Hungama',
+        image: 'assets/images/hun.jpg'),
     Song(
-      path: 'audio/fursat.mp3',
-      title: 'Fursat',
-      image: 'assets/images/uzair.jpg',
-    ),
+        path: 'audio/fursat.mp3',
+        title: 'Fursat',
+        image: 'assets/images/uzair.jpg'),
     Song(
-      path: 'audio/Zimmedaar.mp3',
-      title: 'Zimmedaar',
-      image: 'assets/images/zim.jpg',
-    ),
+        path: 'audio/Zimmedaar.mp3',
+        title: 'Zimmedaar',
+        image: 'assets/images/zim.jpg'),
     Song(
-      path: 'audio/tuhai.mp3',
-      title: 'Tu Hai Tou',
-      image: 'assets/images/uzair.jpg',
-    ),
+        path: 'audio/tuhai.mp3',
+        title: 'Tu Hai Tou',
+        image: 'assets/images/uzair.jpg'),
     Song(path: 'audio/roop.mp3', title: 'Roop', image: 'assets/images/has.jpg'),
     Song(
-      path: 'audio/radha.mp3',
-      title: 'Radha',
-      image: 'assets/images/radha.jpg',
-    ),
+        path: 'audio/radha.mp3',
+        title: 'Radha',
+        image: 'assets/images/radha.jpg'),
     Song(
-      path: 'audio/memories.mp3',
-      title: 'Memories',
-      image: 'assets/images/mem.png',
-    ),
+        path: 'audio/memories.mp3',
+        title: 'Memories',
+        image: 'assets/images/mem.png'),
     Song(
-      path: 'audio/dilkikahani.mp3',
-      title: 'Dil Ki Kahani',
-      image: 'assets/images/uzair.jpg',
-    ),
+        path: 'audio/dilkikahani.mp3',
+        title: 'Dil Ki Kahani',
+        image: 'assets/images/uzair.jpg'),
     Song(
-      path: 'audio/turri.mp3',
-      title: 'Turri Jandi',
-      image: 'assets/images/tur.jpg',
-    ),
+        path: 'audio/turri.mp3',
+        title: 'Turri Jandi',
+        image: 'assets/images/tur.jpg'),
     Song(
-      path: 'audio/Udjana.mp3',
-      title: 'Ud Jana',
-      image: 'assets/images/uzair.jpg',
-    ),
+        path: 'audio/Udjana.mp3',
+        title: 'Ud Jana',
+        image: 'assets/images/uzair.jpg'),
     Song(
-      path: 'audio/KaisaMai.mp3',
-      title: 'Kaisa Mai',
-      image: 'assets/images/avg.jpg',
-    ),
+        path: 'audio/KaisaMai.mp3',
+        title: 'Kaisa Mai',
+        image: 'assets/images/avg.jpg'),
     Song(
-      path: 'audio/tumhiho.mp3',
-      title: 'Tum Hi Ho',
-      image: 'assets/images/sha.jpg',
-    ),
+        path: 'audio/tumhiho.mp3',
+        title: 'Tum Hi Ho',
+        image: 'assets/images/sha.jpg'),
     Song(
-      path: 'audio/GULABO.mp3',
-      title: 'Gulabo',
-      image: 'assets/images/gul.jfif',
-    ),
+        path: 'audio/GULABO.mp3',
+        title: 'Gulabo',
+        image: 'assets/images/gul.jfif'),
     Song(
-      path: 'audio/funka.mp3',
-      title: 'Full Funka',
-      image: 'assets/images/funk.png',
-    ),
+        path: 'audio/funka.mp3',
+        title: 'Full Funka',
+        image: 'assets/images/funk.png'),
     Song(
-      path: 'audio/end.mp3',
-      title: 'End of Heroes',
-      image: 'assets/images/n.jpg',
-    ),
+        path: 'audio/end.mp3',
+        title: 'End of Heroes',
+        image: 'assets/images/n.jpg'),
     Song(
-      path: 'audio/escape.mp3',
-      title: 'You\'re my Escape',
-      image: 'assets/images/na.png',
-    ),
+        path: 'audio/escape.mp3',
+        title: 'You\'re my Escape',
+        image: 'assets/images/na.png'),
     Song(
-      path: 'audio/tra.mp3',
-      title: 'In Love With an Angel',
-      image: 'assets/images/tra.jpg',
-    ),
+        path: 'audio/tra.mp3',
+        title: 'In Love With an Angel',
+        image: 'assets/images/tra.jpg'),
     Song(
-      path: 'audio/endofme.mp3',
-      title: 'End of Me',
-      image: 'assets/images/0016.jpg',
-    ),
+        path: 'audio/endofme.mp3',
+        title: 'End of Me',
+        image: 'assets/images/0016.jpg'),
     Song(
-      path: 'audio/maya.mp3',
-      title: 'MayaBee',
-      image: 'assets/images/maya.jpg',
-    ),
+        path: 'audio/maya.mp3',
+        title: 'MayaBee',
+        image: 'assets/images/maya.jpg'),
     Song(
-      path: 'audio/itsover.mp3',
-      title: 'It\'s Not Over',
-      image: 'assets/images/shan.jpg',
-    ),
+        path: 'audio/itsover.mp3',
+        title: 'It\'s Not Over',
+        image: 'assets/images/shan.jpg'),
     Song(
-      path: 'audio/raabta.mp3',
-      title: 'Raabta',
-      image: 'assets/images/r.jfif',
-    ),
+        path: 'audio/raabta.mp3',
+        title: 'Raabta',
+        image: 'assets/images/r.jfif'),
     Song(
-      path: 'audio/itachi.mp3',
-      title: 'Love and Honour',
-      image: 'assets/images/it.jpg',
-    ),
+        path: 'audio/itachi.mp3',
+        title: 'Love and Honour',
+        image: 'assets/images/it.jpg'),
     Song(
-      path: 'audio/tim.mp3',
-      title: 'Timmy Turner',
-      image: 'assets/images/de.jpeg',
-    ),
+        path: 'audio/tim.mp3',
+        title: 'Timmy Turner',
+        image: 'assets/images/de.jpeg'),
     Song(
-      path: 'audio/kakashi.mp3',
-      title: 'Without You',
-      image: 'assets/images/ka.jpg',
-    ),
+        path: 'audio/kakashi.mp3',
+        title: 'Without You',
+        image: 'assets/images/ka.jpg'),
   ];
 
   @override
@@ -221,6 +179,11 @@ class _ApolloState extends State<Apollo> {
     super.initState();
     _initializeAudioSession();
     _listenAudioPlayerEvents();
+
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 20),
+    );
   }
 
   Future<void> _initializeAudioSession() async {
@@ -249,16 +212,19 @@ class _ApolloState extends State<Apollo> {
       _isPlaying = true;
       _currentSongIndex = index;
     });
+    _rotationController.repeat();
   }
 
   void _pauseSong() {
     _audioPlayer.pause();
     setState(() => _isPlaying = false);
+    _rotationController.stop();
   }
 
   void _resumeSong() {
     _audioPlayer.resume();
     setState(() => _isPlaying = true);
+    _rotationController.repeat();
   }
 
   void _nextSong() => _playSong((_currentSongIndex + 1) % songs.length);
@@ -286,6 +252,7 @@ class _ApolloState extends State<Apollo> {
 
   @override
   void dispose() {
+    _rotationController.dispose();
     _audioPlayer.dispose();
     _audioSession.setActive(false);
     super.dispose();
@@ -300,8 +267,16 @@ class _ApolloState extends State<Apollo> {
       body: Stack(
         children: [
           if (currentSong != null) ...[
+            // 🔹 Fade transition background
             Positioned.fill(
-              child: Image.asset(currentSong.image, fit: BoxFit.cover),
+              child: AnimatedSwitcher(
+                duration: Duration(seconds: 1),
+                child: Image.asset(
+                  currentSong.image,
+                  key: ValueKey(currentSong.image),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             Positioned.fill(
               child: BackdropFilter(
@@ -345,12 +320,23 @@ class _ApolloState extends State<Apollo> {
                                   ),
                                 ),
                               ),
-                              ClipOval(
-                                child: Image.asset(
-                                  currentSong.image,
-                                  width: size - 30,
-                                  height: size - 30,
-                                  fit: BoxFit.cover,
+                              // 🔹 Fade + Rotate album art
+                              AnimatedSwitcher(
+                                duration: Duration(milliseconds: 700),
+                                transitionBuilder: (child, animation) =>
+                                    FadeTransition(
+                                        opacity: animation, child: child),
+                                child: RotationTransition(
+                                  key: ValueKey(currentSong.image),
+                                  turns: _rotationController,
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      currentSong.image,
+                                      width: size - 30,
+                                      height: size - 30,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -361,9 +347,14 @@ class _ApolloState extends State<Apollo> {
                   ),
                 SizedBox(height: 20),
                 if (currentSong != null)
-                  Text(
-                    currentSong.title,
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  // 🔹 Fade transition for title
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 500),
+                    child: Text(
+                      currentSong.title,
+                      key: ValueKey(currentSong.title),
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
                   ),
                 SizedBox(height: 20),
                 if (currentSong != null)
