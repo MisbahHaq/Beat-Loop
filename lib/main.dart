@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:Beatloop/Services/Apollo.dart';
+import 'package:beatloop/Services/Apollo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
