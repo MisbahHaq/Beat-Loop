@@ -243,10 +243,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     if (angle < 0) angle += 2 * pi;
 
     final percent = angle / (2 * pi);
-    final seconds = (_songDuration.inSeconds * percent).clamp(
-      0,
-      _songDuration.inSeconds,
-    );
+    final seconds =
+        (_songDuration.inSeconds * percent).clamp(0, _songDuration.inSeconds);
     _audioPlayer.seek(Duration(seconds: seconds.toInt()));
   }
 
@@ -315,17 +313,27 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                       : 0,
                                   strokeWidth: 6,
                                   backgroundColor: Colors.grey[800],
-                                  valueColor: AlwaysStoppedAnimation(
-                                    Colors.white,
-                                  ),
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
                                 ),
                               ),
-                              // 🔹 Fade + Rotate album art
+                              // 🔹 Fade + Scale + Rotate album art
                               AnimatedSwitcher(
                                 duration: Duration(milliseconds: 700),
-                                transitionBuilder: (child, animation) =>
-                                    FadeTransition(
-                                        opacity: animation, child: child),
+                                transitionBuilder: (child, animation) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: ScaleTransition(
+                                      scale: Tween<double>(begin: 0.9, end: 1.0)
+                                          .animate(
+                                        CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.easeOutBack),
+                                      ),
+                                      child: child,
+                                    ),
+                                  );
+                                },
                                 child: RotationTransition(
                                   key: ValueKey(currentSong.image),
                                   turns: _rotationController,
@@ -347,13 +355,36 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                   ),
                 SizedBox(height: 20),
                 if (currentSong != null)
-                  // 🔹 Fade transition for title
+                  // 🔹 Fade + Bounce Scale transition for title
                   AnimatedSwitcher(
-                    duration: Duration(milliseconds: 500),
+                    duration: Duration(milliseconds: 600),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                            CurvedAnimation(
+                                parent: animation, curve: Curves.easeOutBack),
+                          ),
+                          child: child,
+                        ),
+                      );
+                    },
                     child: Text(
                       currentSong.title,
                       key: ValueKey(currentSong.title),
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 8,
+                            color: Colors.black54,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 SizedBox(height: 20),
@@ -366,11 +397,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                         onPressed: _prevSong,
                       ),
                       IconButton(
-                        icon: Icon(
-                          _isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.white,
-                          size: 40,
-                        ),
+                        icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow,
+                            color: Colors.white, size: 40),
                         onPressed: _isPlaying ? _pauseSong : _resumeSong,
                       ),
                       IconButton(
@@ -387,12 +415,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                       final song = songs[index];
                       return ListTile(
                         textColor: Colors.white,
-                        leading: Image.asset(
-                          song.image,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
+                        leading: Image.asset(song.image,
+                            width: 50, height: 50, fit: BoxFit.cover),
                         title: Text(song.title),
                         tileColor: _currentSongIndex == index
                             ? Colors.grey[800]
