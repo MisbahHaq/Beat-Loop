@@ -1,6 +1,6 @@
+import 'package:Beatloop/Services/Apollo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:milife/Services/Apollo.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});

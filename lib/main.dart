@@ -1,8 +1,7 @@
 import 'dart:math';
+import 'package:Beatloop/Services/Apollo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:milife/OnBoarding/Login.dart';
-import 'package:milife/Services/Apollo.dart';
 
 void main() {
   debugPaintSizeEnabled = false;
