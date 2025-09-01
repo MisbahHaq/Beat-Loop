@@ -269,13 +269,16 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
             Positioned.fill(
               child: AnimatedSwitcher(
                 duration: Duration(seconds: 1),
-                child: Image.asset(
-                  currentSong.image,
+                child: SizedBox.expand(
                   key: ValueKey(currentSong.image),
-                  fit: BoxFit.cover,
+                  child: Image.asset(
+                    currentSong.image,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
+
             Positioned.fill(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),

@@ -1,9 +1,9 @@
-import 'dart:math';
 import 'package:beatloop/Services/Apollo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   debugPaintSizeEnabled = false;
   runApp(const MyApp());
 }
