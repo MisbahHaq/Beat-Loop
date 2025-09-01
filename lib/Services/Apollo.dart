@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 // Song Model
 class Song {
@@ -29,149 +32,251 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
 
   final List<Song> songs = [
     Song(
-        path: 'audio/exes.mp3',
-        title: 'E X E S',
-        image: 'assets/images/exes.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718212/flutter_audio_uploads/kwvresbginpk5nymxcss.mp3',
+      title: 'Hungama',
+      image: 'assets/images/hun.jpg',
+    ),
     Song(
-        path: 'audio/butter.mp3',
-        title: 'Peanut Butter',
-        image: 'assets/images/butter.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718158/flutter_audio_uploads/jnal119rxvlnk8wmwsaa.mp3',
+      title: 'Gila',
+      image: 'assets/images/shae.jpg',
+    ),
     Song(
-        path: 'audio/jhol.mp3', title: 'Jhol', image: 'assets/images/jhol.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718154/flutter_audio_uploads/uanfoccblio4l0mpd72z.mp3',
+      title: 'Fursat',
+      image: 'assets/images/uzair.jpg',
+    ),
     Song(
-        path: 'audio/dilruba.mp3',
-        title: 'Dil Ruba',
-        image: 'assets/images/dilruba.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718031/flutter_audio_uploads/oulmx7xjqjpgonrmqw7x.mp3',
+      title: 'Aarzu',
+      image: 'assets/images/aarzu.jpg',
+    ),
     Song(
-        path: 'audio/jani.mp3', title: 'Jani', image: 'assets/images/jani.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718070/flutter_audio_uploads/efxhz2iefqxzzldtr6g2.mp3',
+      title: 'E X E S',
+      image: 'assets/images/exes.jpg',
+    ),
     Song(
-        path: 'audio/faltu.mp3',
-        title: 'Faltu Pyar',
-        image: 'assets/images/pyar.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718045/flutter_audio_uploads/xbaylg4m1wjz6ovzbs80.mp3',
+      title: 'Peanut Butter',
+      image: 'assets/images/butter.jpg',
+    ),
     Song(
-        path: 'audio/piya.mp3',
-        title: 'Piya Calling',
-        image: 'assets/images/piya.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718243/flutter_audio_uploads/hewivwsv14j4fgn1mk7f.mp3',
+      title: 'Jhol',
+      image: 'assets/images/jhol.jpg',
+    ),
     Song(
-        path: 'audio/beloved.mp3',
-        title: 'Beloved',
-        image: 'assets/images/y.jfif'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718052/flutter_audio_uploads/zsniujekdp6zpry5ix7w.mp3',
+      title: 'Dil Ruba',
+      image: 'assets/images/dilruba.jpg',
+    ),
     Song(
-        path: 'audio/bayaan.mp3',
-        title: 'Bayaan',
-        image: 'assets/images/bayaan.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718239/flutter_audio_uploads/icwosxltqwljckztj48a.mp3',
+      title: 'Jani',
+      image: 'assets/images/jani.jpg',
+    ),
     Song(
-        path: 'audio/aarzu.mp3',
-        title: 'Aarzu',
-        image: 'assets/images/aarzu.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718377/flutter_audio_uploads/twjmipbdgdhnkbkx9zw1.mp4',
+      title: 'Ud Jana',
+      image: 'assets/images/uzair.jpg',
+    ),
     Song(
-        path: 'audio/gila.mp3', title: 'Gila', image: 'assets/images/shae.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718074/flutter_audio_uploads/o7ajkztjixdzilaurewj.mp3',
+      title: 'Faltu Pyar',
+      image: 'assets/images/pyar.jpg',
+    ),
     Song(
-        path: 'audio/wishes.mp3',
-        title: 'Wishes',
-        image: 'assets/images/wish.jpg'),
-    Song(path: 'audio/you.mp3', title: 'You', image: 'assets/images/you.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718303/flutter_audio_uploads/cnjh3rezvaqfexladsc5.mp3',
+      title: 'Piya Calling',
+      image: 'assets/images/piya.jpg',
+    ),
     Song(
-        path: 'audio/joona.mp3',
-        title: 'Joona',
-        image: 'assets/images/joon.jfif'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718038/flutter_audio_uploads/d109u5y9fvkfgedaoyfm.mp3',
+      title: 'Beloved',
+      image: 'assets/images/y.jfif',
+    ),
     Song(
-        path: 'audio/disconnect.mp3',
-        title: 'Disconnect',
-        image: 'assets/images/discon.webp'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718366/flutter_audio_uploads/ckn1qgh2b86utlrppwrb.mp4',
+      title: 'Tu Hai Tou',
+      image: 'assets/images/uzair.jpg',
+    ),
     Song(
-        path: 'audio/humgama.mp3',
-        title: 'Hungama',
-        image: 'assets/images/hun.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718035/flutter_audio_uploads/dhhged7ryrlebqsoukuy.mp3',
+      title: 'Bayaan',
+      image: 'assets/images/bayaan.jpg',
+    ),
     Song(
-        path: 'audio/fursat.mp3',
-        title: 'Fursat',
-        image: 'assets/images/uzair.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718387/flutter_audio_uploads/x0iqcxfux9yai0gz75pv.mp3',
+      title: 'Wishes',
+      image: 'assets/images/wish.jpg',
+    ),
     Song(
-        path: 'audio/Zimmedaar.mp3',
-        title: 'Zimmedaar',
-        image: 'assets/images/zim.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718392/flutter_audio_uploads/ls41ahrbehlntkxoabf7.mp3',
+      title: 'You',
+      image: 'assets/images/you.jpg',
+    ),
     Song(
-        path: 'audio/tuhai.mp3',
-        title: 'Tu Hai Tou',
-        image: 'assets/images/uzair.jpg'),
-    Song(path: 'audio/roop.mp3', title: 'Roop', image: 'assets/images/has.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718048/flutter_audio_uploads/qlisr0o2rzqozncibtpv.mp4',
+      title: 'Dil Ki Kahani',
+      image: 'assets/images/uzair.jpg',
+    ),
     Song(
-        path: 'audio/radha.mp3',
-        title: 'Radha',
-        image: 'assets/images/radha.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718246/flutter_audio_uploads/aydyma6zz6afvkqww11m.mp3',
+      title: 'Joona',
+      image: 'assets/images/joon.jfif',
+    ),
     Song(
-        path: 'audio/memories.mp3',
-        title: 'Memories',
-        image: 'assets/images/mem.png'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718056/flutter_audio_uploads/pgenxxbgwmifvzpaokgn.mp3',
+      title: 'Disconnect',
+      image: 'assets/images/discon.webp',
+    ),
     Song(
-        path: 'audio/dilkikahani.mp3',
-        title: 'Dil Ki Kahani',
-        image: 'assets/images/uzair.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718396/flutter_audio_uploads/iphtgvyzsbmecqi3f3wf.mp3',
+      title: 'Zimmedaar',
+      image: 'assets/images/zim.jpg',
+    ),
     Song(
-        path: 'audio/turri.mp3',
-        title: 'Turri Jandi',
-        image: 'assets/images/tur.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718369/flutter_audio_uploads/gesvgvnp22fq6na9rewi.mp3',
+      title: 'Tum Hi Ho',
+      image: 'assets/images/sha.jpg',
+    ),
     Song(
-        path: 'audio/Udjana.mp3',
-        title: 'Ud Jana',
-        image: 'assets/images/uzair.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718374/flutter_audio_uploads/dn4cxjc8aryn4gopewmb.mp3',
+      title: 'Turri Jandi',
+      image: 'assets/images/tur.jpg',
+    ),
     Song(
-        path: 'audio/KaisaMai.mp3',
-        title: 'Kaisa Mai',
-        image: 'assets/images/avg.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718204/flutter_audio_uploads/e4i2ce11x424ato8vsfb.mp3',
+      title: 'Gulabo',
+      image: 'assets/images/gul.jfif',
+    ),
     Song(
-        path: 'audio/tumhiho.mp3',
-        title: 'Tum Hi Ho',
-        image: 'assets/images/sha.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718086/flutter_audio_uploads/p4zjewn376yi7n4tztdk.mp3',
+      title: 'Full Funka',
+      image: 'assets/images/funk.png',
+    ),
     Song(
-        path: 'audio/GULABO.mp3',
-        title: 'Gulabo',
-        image: 'assets/images/gul.jfif'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718356/flutter_audio_uploads/lcj1rkl7arpc9ybv7ohk.mp3',
+      title: 'Roop',
+      image: 'assets/images/has.jpg',
+    ),
     Song(
-        path: 'audio/funka.mp3',
-        title: 'Full Funka',
-        image: 'assets/images/funk.png'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718359/flutter_audio_uploads/lavoijbtt3gf8grwuidz.mp3',
+      title: 'Timmy Turner',
+      image: 'assets/images/de.jpeg',
+    ),
     Song(
-        path: 'audio/end.mp3',
-        title: 'End of Heroes',
-        image: 'assets/images/n.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718286/flutter_audio_uploads/h6mshsr6llunvfy3bxo8.mp3',
+      title: 'Memories',
+      image: 'assets/images/mem.png',
+    ),
     Song(
-        path: 'audio/escape.mp3',
-        title: 'You\'re my Escape',
-        image: 'assets/images/na.png'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718352/flutter_audio_uploads/smt2hf6i1eqotksmidst.mp3',
+      title: 'Radha',
+      image: 'assets/images/radha.jpg',
+    ),
     Song(
-        path: 'audio/tra.mp3',
-        title: 'In Love With an Angel',
-        image: 'assets/images/tra.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718363/flutter_audio_uploads/ianrhclpu6dkel3n615n.mp3',
+      title: 'In Love With an Angel',
+      image: 'assets/images/tra.jpg',
+    ),
     Song(
-        path: 'audio/endofme.mp3',
-        title: 'End of Me',
-        image: 'assets/images/0016.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718208/flutter_audio_uploads/nsw89lwoxw5u7andmfrl.mp3',
+      title: 'Gurenge',
+      image: 'assets/images/Gurenge.jpg',
+    ),
     Song(
-        path: 'audio/maya.mp3',
-        title: 'MayaBee',
-        image: 'assets/images/maya.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718381/flutter_audio_uploads/lurawunm9lcsqytxnajp.mp3',
+      title: 'Unravel',
+      image: 'assets/images/Unravel.jpg',
+    ),
     Song(
-        path: 'audio/itsover.mp3',
-        title: 'It\'s Not Over',
-        image: 'assets/images/shan.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718290/flutter_audio_uploads/zr0gowitfof4jid1a8qy.mp3',
+      title: 'Namae Yobu',
+      image: 'assets/images/namae.jpg',
+    ),
     Song(
-        path: 'audio/raabta.mp3',
-        title: 'Raabta',
-        image: 'assets/images/r.jfif'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718083/flutter_audio_uploads/hz50ay4i0zrsm6xczurr.mp3',
+      title: 'Catch Fire',
+      image: 'assets/images/fire.jpg',
+    ),
     Song(
-        path: 'audio/itachi.mp3',
-        title: 'Love and Honour',
-        image: 'assets/images/it.jpg'),
+      path:
+          ' https://res.cloudinary.com/drcpslfrz/video/upload/v1756718060/flutter_audio_uploads/xkoj7qaw86myeponb2f0.mp4',
+      title: 'End Of Heroes',
+      image: 'assets/images/n.jpg',
+    ),
     Song(
-        path: 'audio/tim.mp3',
-        title: 'Timmy Turner',
-        image: 'assets/images/de.jpeg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718063/flutter_audio_uploads/qwdwfwdi2truo8ayotny.mp3',
+      title: 'End Of Me',
+      image: 'assets/images/shan.jpg',
+    ),
     Song(
-        path: 'audio/kakashi.mp3',
-        title: 'Without You',
-        image: 'assets/images/ka.jpg'),
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718067/flutter_audio_uploads/xhr5qgaf8ktuuo8obxeu.mp3',
+      title: 'Youre My Escape',
+      image: 'assets/images/na.png',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718216/flutter_audio_uploads/rmx40qxjarrkrrnlxa43.mp3',
+      title: 'Love and Honor',
+      image: 'assets/images/it.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718254/flutter_audio_uploads/bfihilwr0qti0zx68cqq.mp3',
+      title: 'Call Me Now',
+      image: 'assets/images/ka.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718235/flutter_audio_uploads/kisbfqwkoj491bn3rtm1.mp3',
+      title: 'Its Not Over',
+      image: 'assets/images/0016.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718363/flutter_audio_uploads/ianrhclpu6dkel3n615n.mp3',
+      title: 'In Love With An Angel',
+      image: 'assets/images/tra.jpg',
+    ),
   ];
 
   @override
@@ -206,13 +311,106 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
 
     await _audioSession.setActive(true);
     await _audioPlayer.stop();
-    await _audioPlayer.play(AssetSource(songs[index].path));
+
+    final song = songs[index];
+    final file = await _getLocalFile(song);
+
+    // 🔽 If file doesn’t exist, download and show snackbar
+    if (!file.existsSync()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Downloading ${song.title}..."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      await _downloadFile(song.path, file);
+    }
+
+    await _audioPlayer.play(DeviceFileSource(file.path));
 
     setState(() {
       _isPlaying = true;
       _currentSongIndex = index;
     });
+
     _rotationController.repeat();
+  }
+
+  Future<void> _downloadAllSongsWithProgress(BuildContext context) async {
+    final total = songs.length;
+    int completed = 0;
+    bool started = false; // ✅ prevent multiple runs
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            // Start download ONCE
+            if (!started) {
+              started = true;
+              Future(() async {
+                for (final song in songs) {
+                  final file = await _getLocalFile(song);
+                  if (!file.existsSync()) {
+                    await _downloadFile(song.path, file);
+                  }
+                  completed++;
+                  setDialogState(() {}); // refresh dialog
+                }
+                Navigator.of(context).pop(); // close dialog
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('All songs downloaded!')),
+                  );
+                }
+              });
+            }
+
+            return AlertDialog(
+              title: Text("Downloading Songs"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  LinearProgressIndicator(value: completed / total),
+                  SizedBox(height: 16),
+                  Text("Downloading $completed of $total"),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  child: Text("Cancel"),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<File> _getLocalFile(Song song, [int? index]) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final sanitizedTitle = song.title.replaceAll(RegExp(r'[^\w\s]+'), '');
+    final extension = song.path.split('.').last.split('?').first;
+    final uniquePart = song.path.hashCode.toString();
+    final fileName = '${sanitizedTitle}_$uniquePart.$extension';
+    return File('${dir.path}/$fileName');
+  }
+
+  Future<void> _downloadFile(String url, File file) async {
+    try {
+      final response = await Dio().download(url, file.path);
+      if (response.statusCode == 200) {
+        print("Download success: ${file.path}");
+      } else {
+        print("Download failed with status ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Download error: $e");
+    }
   }
 
   void _pauseSong() {
@@ -265,7 +463,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
       body: Stack(
         children: [
           if (currentSong != null) ...[
-            // 🔹 Fade transition background
+            // 🔹 Background
             Positioned.fill(
               child: AnimatedSwitcher(
                 duration: Duration(seconds: 1),
@@ -278,7 +476,6 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 ),
               ),
             ),
-
             Positioned.fill(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
@@ -320,23 +517,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                       AlwaysStoppedAnimation(Colors.white),
                                 ),
                               ),
-                              // 🔹 Fade + Scale + Rotate album art
                               AnimatedSwitcher(
                                 duration: Duration(milliseconds: 700),
-                                transitionBuilder: (child, animation) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: ScaleTransition(
-                                      scale: Tween<double>(begin: 0.9, end: 1.0)
-                                          .animate(
-                                        CurvedAnimation(
-                                            parent: animation,
-                                            curve: Curves.easeOutBack),
-                                      ),
-                                      child: child,
-                                    ),
-                                  );
-                                },
                                 child: RotationTransition(
                                   key: ValueKey(currentSong.image),
                                   turns: _rotationController,
@@ -357,22 +539,36 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                     },
                   ),
                 SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4), // small radius
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 20),
+                      elevation: 0,
+                    ),
+                    onPressed: () async {
+                      await _downloadAllSongsWithProgress(context);
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min, // keep button compact
+                      children: const [
+                        Text("Download All"),
+                        SizedBox(width: 8), // space between text & icon
+                        Icon(Icons.download),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
                 if (currentSong != null)
-                  // 🔹 Fade + Bounce Scale transition for title
                   AnimatedSwitcher(
                     duration: Duration(milliseconds: 600),
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: ScaleTransition(
-                          scale: Tween<double>(begin: 0.8, end: 1.0).animate(
-                            CurvedAnimation(
-                                parent: animation, curve: Curves.easeOutBack),
-                          ),
-                          child: child,
-                        ),
-                      );
-                    },
                     child: Text(
                       currentSong.title,
                       key: ValueKey(currentSong.title),
