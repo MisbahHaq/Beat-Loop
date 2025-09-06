@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audio_session/audio_session.dart';
-import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -559,7 +559,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                       mainAxisSize: MainAxisSize.min, // keep button compact
                       children: const [
                         Text("Download All"),
-                        SizedBox(width: 8), // space between text & icon
+                        SizedBox(width: 8),
                         Icon(Icons.download),
                       ],
                     ),
