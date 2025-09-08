@@ -556,7 +556,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                       await _downloadAllSongsWithProgress(context);
                     },
                     child: Row(
-                      mainAxisSize: MainAxisSize.min, // keep button compact
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Text("Download All"),
                         SizedBox(width: 8), // space between text & icon
