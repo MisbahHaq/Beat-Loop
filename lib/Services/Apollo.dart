@@ -33,6 +33,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   final List<Song> songs = [
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1758533156/Accusations_gep28z.mp3',
+      title: 'Accusations',
+      image: 'assets/images/discon.webp',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718212/flutter_audio_uploads/kwvresbginpk5nymxcss.mp3',
       title: 'Hungama',
       image: 'assets/images/hun.jpg',
@@ -99,9 +105,21 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718275/flutter_audio_uploads/lu2cvh66maicstu2yepl.mp3',
+      title: 'Maya Bee',
+      image: 'assets/images/maya.jpg',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718303/flutter_audio_uploads/cnjh3rezvaqfexladsc5.mp3',
       title: 'Piya Calling',
       image: 'assets/images/piya.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718154/flutter_audio_uploads/uanfoccblio4l0mpd72z.mp3',
+      title: 'Tu Hai K Nhi',
+      image: 'assets/images/uzair.jpg',
     ),
     Song(
       path:
@@ -126,6 +144,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718387/flutter_audio_uploads/x0iqcxfux9yai0gz75pv.mp3',
       title: 'Wishes',
       image: 'assets/images/wish.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718251/flutter_audio_uploads/jl7vdpo8mujewxdcbs1v.mp3',
+      title: 'Kaisa Mein',
+      image: 'assets/images/avg.jpg',
     ),
     Song(
       path:
@@ -483,150 +507,150 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
               ),
             ),
           ],
-          Padding(
-            padding: const EdgeInsets.only(top: 60),
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                if (currentSong != null)
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final size = min(constraints.maxWidth, 300.0);
-                      return GestureDetector(
-                        onPanDown: (details) =>
-                            _onSeekTap(details.localPosition, Size(size, size)),
-                        onPanUpdate: (details) =>
-                            _onSeekTap(details.localPosition, Size(size, size)),
-                        child: Container(
-                          width: size,
-                          height: size,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SizedBox(
-                                width: size,
-                                height: size,
-                                child: CircularProgressIndicator(
-                                  value: _songDuration.inSeconds > 0
-                                      ? _currentPosition.inSeconds /
-                                          _songDuration.inSeconds
-                                      : 0,
-                                  strokeWidth: 6,
-                                  backgroundColor: Colors.grey[800],
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white),
-                                ),
-                              ),
-                              AnimatedSwitcher(
-                                duration: Duration(milliseconds: 700),
-                                child: RotationTransition(
-                                  key: ValueKey(currentSong.image),
-                                  turns: _rotationController,
-                                  child: ClipOval(
-                                    child: Image.asset(
-                                      currentSong.image,
-                                      width: size - 30,
-                                      height: size - 30,
-                                      fit: BoxFit.cover,
-                                    ),
+          Positioned(
+            top: 20,
+            right: 20,
+            child: IconButton(
+              icon: Icon(Icons.download, color: Colors.white, size: 30),
+              onPressed: () async {
+                await _downloadAllSongsWithProgress(context);
+              },
+            ),
+          ),
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: false,
+                floating: false,
+                expandedHeight: MediaQuery.of(context).size.height * 0.6,
+                backgroundColor: Colors.transparent,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    padding: const EdgeInsets.only(top: 80, bottom: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (currentSong != null)
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              final size =
+                                  min(constraints.maxWidth * 0.8, 250.0);
+                              return GestureDetector(
+                                onPanDown: (details) => _onSeekTap(
+                                    details.localPosition, Size(size, size)),
+                                onPanUpdate: (details) => _onSeekTap(
+                                    details.localPosition, Size(size, size)),
+                                child: Container(
+                                  width: size,
+                                  height: size,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: size,
+                                        height: size,
+                                        child: CircularProgressIndicator(
+                                          value: _songDuration.inSeconds > 0
+                                              ? _currentPosition.inSeconds /
+                                                  _songDuration.inSeconds
+                                              : 0,
+                                          strokeWidth: 6,
+                                          backgroundColor: Colors.grey[800],
+                                          valueColor: AlwaysStoppedAnimation(
+                                              Colors.white),
+                                        ),
+                                      ),
+                                      AnimatedSwitcher(
+                                        duration: Duration(milliseconds: 700),
+                                        child: RotationTransition(
+                                          key: ValueKey(currentSong.image),
+                                          turns: _rotationController,
+                                          child: ClipOval(
+                                            child: Image.asset(
+                                              currentSong.image,
+                                              width: size - 30,
+                                              height: size - 30,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                              );
+                            },
+                          ),
+                        SizedBox(height: 20),
+                        if (currentSong != null)
+                          AnimatedSwitcher(
+                            duration: Duration(milliseconds: 600),
+                            child: Text(
+                              currentSong.title,
+                              key: ValueKey(currentSong.title),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 8,
+                                    color: Colors.black54,
+                                    offset: Offset(2, 2),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        SizedBox(height: 20),
+                        if (currentSong != null)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.skip_previous,
+                                    color: Colors.white),
+                                onPressed: _prevSong,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                    _isPlaying ? Icons.pause : Icons.play_arrow,
+                                    color: Colors.white,
+                                    size: 40),
+                                onPressed:
+                                    _isPlaying ? _pauseSong : _resumeSong,
+                              ),
+                              IconButton(
+                                icon:
+                                    Icon(Icons.skip_next, color: Colors.white),
+                                onPressed: _nextSong,
                               ),
                             ],
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4), // small radius
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 20),
-                      elevation: 0,
-                    ),
-                    onPressed: () async {
-                      await _downloadAllSongsWithProgress(context);
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text("Download All"),
-                        SizedBox(width: 8),
-                        Icon(Icons.download),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
-                if (currentSong != null)
-                  AnimatedSwitcher(
-                    duration: Duration(milliseconds: 600),
-                    child: Text(
-                      currentSong.title,
-                      key: ValueKey(currentSong.title),
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 8,
-                            color: Colors.black54,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                SizedBox(height: 20),
-                if (currentSong != null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.skip_previous, color: Colors.white),
-                        onPressed: _prevSong,
-                      ),
-                      IconButton(
-                        icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow,
-                            color: Colors.white, size: 40),
-                        onPressed: _isPlaying ? _pauseSong : _resumeSong,
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.skip_next, color: Colors.white),
-                        onPressed: _nextSong,
-                      ),
-                    ],
-                  ),
-                SizedBox(height: 20),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: songs.length,
-                    itemBuilder: (context, index) {
-                      final song = songs[index];
-                      return ListTile(
-                        textColor: Colors.white,
-                        leading: Image.asset(song.image,
-                            width: 50, height: 50, fit: BoxFit.cover),
-                        title: Text(song.title),
-                        tileColor: _currentSongIndex == index
-                            ? Colors.grey[800]
-                            : Colors.transparent,
-                        onTap: () => _playSong(index),
-                      );
-                    },
-                  ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final song = songs[index];
+                    return ListTile(
+                      textColor: Colors.white,
+                      leading: Image.asset(song.image,
+                          width: 50, height: 50, fit: BoxFit.cover),
+                      title: Text(song.title),
+                      tileColor: _currentSongIndex == index
+                          ? Colors.grey[800]
+                          : Colors.transparent,
+                      onTap: () => _playSong(index),
+                    );
+                  },
+                  childCount: songs.length,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
