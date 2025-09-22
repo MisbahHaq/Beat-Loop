@@ -29,6 +29,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   int _currentSongIndex = 0;
   Duration _currentPosition = Duration.zero;
   Duration _songDuration = Duration.zero;
+  bool _isLooping = false;
+  bool _isShuffling = false;
 
   final List<Song> songs = [
     Song(
@@ -93,6 +95,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1758534975/Faaslay_pdrhtt.mp3',
+      title: 'Faaslay',
+      image: 'assets/images/discon.webp',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718377/flutter_audio_uploads/twjmipbdgdhnkbkx9zw1.mp4',
       title: 'Ud Jana',
       image: 'assets/images/uzair.jpg',
@@ -117,6 +125,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1758535340/IDK_g8cnrp.mp3',
+      title: 'IDK',
+      image: 'assets/images/discon.webp',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718154/flutter_audio_uploads/uanfoccblio4l0mpd72z.mp3',
       title: 'Tu Hai K Nhi',
       image: 'assets/images/uzair.jpg',
@@ -129,6 +143,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1758535980/Tareekhi_oq0rq4.mp3',
+      title: 'Tareekhi',
+      image: 'assets/images/discon.webp',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718366/flutter_audio_uploads/ckn1qgh2b86utlrppwrb.mp4',
       title: 'Tu Hai Tou',
       image: 'assets/images/uzair.jpg',
@@ -138,6 +158,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718035/flutter_audio_uploads/dhhged7ryrlebqsoukuy.mp3',
       title: 'Bayaan',
       image: 'assets/images/bayaan.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1758534815/Lana_Del_Rey_-_West_Coast_whhppw.mp3',
+      title: 'West Coast',
+      image: 'assets/images/lana.jpg',
     ),
     Song(
       path:
@@ -198,6 +224,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718204/flutter_audio_uploads/e4i2ce11x424ato8vsfb.mp3',
       title: 'Gulabo',
       image: 'assets/images/gul.jfif',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1758535262/Fana_gajiyp.mp3',
+      title: 'F A N A',
+      image: 'assets/images/discon.webp',
     ),
     Song(
       path:
@@ -361,7 +393,22 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _downloadAllSongsWithProgress(BuildContext context) async {
-    final total = songs.length;
+    // First, count how many need downloading
+    int toDownload = 0;
+    for (final song in songs) {
+      final file = await _getLocalFile(song);
+      if (!file.existsSync()) {
+        toDownload++;
+      }
+    }
+
+    if (toDownload == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('All songs are already downloaded!')),
+      );
+      return;
+    }
+
     int completed = 0;
     bool started = false; // ✅ prevent multiple runs
 
@@ -379,9 +426,9 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                   final file = await _getLocalFile(song);
                   if (!file.existsSync()) {
                     await _downloadFile(song.path, file);
+                    completed++;
+                    setDialogState(() {}); // refresh dialog
                   }
-                  completed++;
-                  setDialogState(() {}); // refresh dialog
                 }
                 Navigator.of(context).pop(); // close dialog
                 if (mounted) {
@@ -397,9 +444,9 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  LinearProgressIndicator(value: completed / total),
+                  LinearProgressIndicator(value: completed / toDownload),
                   SizedBox(height: 16),
-                  Text("Downloading $completed of $total"),
+                  Text("Downloading $completed of $toDownload"),
                 ],
               ),
               actions: [
@@ -449,9 +496,43 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     _rotationController.repeat();
   }
 
-  void _nextSong() => _playSong((_currentSongIndex + 1) % songs.length);
-  void _prevSong() =>
+  void _nextSong() {
+    if (_isShuffling) {
+      int newIndex;
+      do {
+        newIndex = Random().nextInt(songs.length);
+      } while (newIndex == _currentSongIndex && songs.length > 1);
+      _playSong(newIndex);
+    } else {
+      _playSong((_currentSongIndex + 1) % songs.length);
+    }
+  }
+
+  void _prevSong() {
+    if (_isShuffling) {
+      int newIndex;
+      do {
+        newIndex = Random().nextInt(songs.length);
+      } while (newIndex == _currentSongIndex && songs.length > 1);
+      _playSong(newIndex);
+    } else {
       _playSong((_currentSongIndex - 1 + songs.length) % songs.length);
+    }
+  }
+
+  void _toggleLoop() {
+    setState(() {
+      _isLooping = !_isLooping;
+    });
+    _audioPlayer
+        .setReleaseMode(_isLooping ? ReleaseMode.loop : ReleaseMode.release);
+  }
+
+  void _toggleShuffle() {
+    setState(() {
+      _isShuffling = !_isShuffling;
+    });
+  }
 
   void _onSeekTap(Offset localPosition, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
@@ -507,16 +588,6 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
               ),
             ),
           ],
-          Positioned(
-            top: 20,
-            right: 20,
-            child: IconButton(
-              icon: Icon(Icons.download, color: Colors.white, size: 30),
-              onPressed: () async {
-                await _downloadAllSongsWithProgress(context);
-              },
-            ),
-          ),
           CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -625,6 +696,20 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                     Icon(Icons.skip_next, color: Colors.white),
                                 onPressed: _nextSong,
                               ),
+                              IconButton(
+                                icon: Icon(Icons.loop,
+                                    color: _isLooping
+                                        ? Colors.blue
+                                        : Colors.white),
+                                onPressed: _toggleLoop,
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.shuffle,
+                                    color: _isShuffling
+                                        ? Colors.blue
+                                        : Colors.white),
+                                onPressed: _toggleShuffle,
+                              ),
                             ],
                           ),
                       ],
@@ -651,6 +736,16 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 ),
               ),
             ],
+          ),
+          Positioned(
+            top: 30,
+            right: 20,
+            child: IconButton(
+              icon: Icon(Icons.download, color: Colors.white, size: 30),
+              onPressed: () async {
+                await _downloadAllSongsWithProgress(context);
+              },
+            ),
           ),
         ],
       ),
