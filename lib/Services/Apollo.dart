@@ -239,12 +239,6 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
-          'https://res.cloudinary.com/drcpslfrz/video/upload/v1758535262/Fana_gajiyp.mp3',
-      title: 'F A N A',
-      image: 'assets/images/discon.webp',
-    ),
-    Song(
-      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1759053779/Mehbooba_nhfndj.mp3',
       title: 'Mehbooba',
       image: 'assets/images/discon.webp',
