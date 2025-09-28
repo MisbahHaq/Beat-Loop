@@ -221,6 +221,18 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051814/Talha_Anjum_-_Departure_Lane___Prod._by_Umair_Official_Music_Video_tclapz.mp3',
+      title: 'Departure Lane',
+      image: 'assets/images/y.jfif',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1759053650/Bandar_-_Arpit_Bala_X_SangeetKir_kinzko.mp3',
+      title: 'Bandar',
+      image: 'assets/images/arpit.jpg',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718204/flutter_audio_uploads/e4i2ce11x424ato8vsfb.mp3',
       title: 'Gulabo',
       image: 'assets/images/gul.jfif',
@@ -233,15 +245,33 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1759053779/Mehbooba_nhfndj.mp3',
+      title: 'Mehbooba',
+      image: 'assets/images/discon.webp',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718086/flutter_audio_uploads/p4zjewn376yi7n4tztdk.mp3',
       title: 'Full Funka',
       image: 'assets/images/funk.png',
     ),
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051303/Dil_Fareb_kp2pex.mp3',
+      title: 'Dil Fareb',
+      image: 'assets/images/exes.jpg',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718356/flutter_audio_uploads/lcj1rkl7arpc9ybv7ohk.mp3',
       title: 'Roop',
       image: 'assets/images/has.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051151/Fana_qpj72r.mp3',
+      title: 'Fana',
+      image: 'assets/images/you.jpg',
     ),
     Song(
       path:
@@ -260,6 +290,18 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718352/flutter_audio_uploads/smt2hf6i1eqotksmidst.mp3',
       title: 'Radha',
       image: 'assets/images/radha.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051478/Kaleji_qgqrhc.mp3',
+      title: 'Kaleji',
+      image: 'assets/images/exes.jpg',
+    ),
+    Song(
+      path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051702/JE_KOTA_DIN_TUMI_CHILE_PASHE_FULL_SONG_gdwpy0.mp3',
+      title: 'Je Kota Din',
+      image: 'assets/images/maya.jpg',
     ),
     Song(
       path:
@@ -293,7 +335,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     ),
     Song(
       path:
-          ' https://res.cloudinary.com/drcpslfrz/video/upload/v1756718060/flutter_audio_uploads/xkoj7qaw86myeponb2f0.mp4',
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718060/flutter_audio_uploads/xkoj7qaw86myeponb2f0.mp4',
       title: 'End Of Heroes',
       image: 'assets/images/n.jpg',
     ),
