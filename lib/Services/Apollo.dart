@@ -35,6 +35,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   final List<Song> songs = [
     Song(
       path:
+          'https://res.cloudinary.com/drcpslfrz/video/upload/v1760176728/DARD_-_Hasan_Raheem___Prod_by_Shamsher_Rana_Lyrics_hzrmnw.mp3',
+      title: 'Dard',
+      image: 'assets/images/exes.jpg',
+    ),
+    Song(
+      path:
           'https://res.cloudinary.com/drcpslfrz/video/upload/v1758533156/Accusations_gep28z.mp3',
       title: 'Accusations',
       image: 'assets/images/discon.webp',
