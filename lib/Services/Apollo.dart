@@ -189,15 +189,17 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
               SliverAppBar(
                 pinned: false,
                 floating: false,
-                expandedHeight: MediaQuery.of(context).size.height * 0.6,
+                expandedHeight:
+                    isSearching ? 0 : MediaQuery.of(context).size.height * 0.6,
                 backgroundColor: Colors.transparent,
                 title: isSearching
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(8),
+                            border: Border(
+                                bottom:
+                                    BorderSide(color: Colors.black, width: 1)),
                           ),
                           child: TextField(
                             style: TextStyle(color: Colors.white),
@@ -208,7 +210,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 16),
+                                  horizontal: 16, vertical: 8),
                             ),
                             onChanged: (value) {
                               setState(() {
@@ -268,29 +270,25 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                   background: Container(
                     padding: const EdgeInsets.only(top: 80, bottom: 20),
                     child: showingPlaylists
-                        ? Center(
-                            child: Text(
-                              isSearching
-                                  ? (searchQuery.isEmpty
-                                      ? "Enter text to search a song"
-                                      : searchResults.isEmpty
-                                          ? "Ask Misbah to add the song"
-                                          : "Select a Playlist")
-                                  : "Select a Playlist",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                shadows: [
-                                  Shadow(
-                                    blurRadius: 8,
-                                    color: Colors.black54,
-                                    offset: Offset(2, 2),
+                        ? isSearching
+                            ? Container()
+                            : Center(
+                                child: Text(
+                                  "Select a Playlist",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 8,
+                                        color: Colors.black54,
+                                        offset: Offset(2, 2),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
+                                ),
+                              )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -422,35 +420,53 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
               ),
               showingPlaylists
                   ? isSearching
-                      ? SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final song = searchResults[index];
-                              return ListTile(
-                                textColor: Colors.white,
-                                leading: Image.asset(song.image,
-                                    width: 50, height: 50, fit: BoxFit.cover),
-                                title: Text(song.title),
-                                onTap: () {
-                                  setState(() {
-                                    currentSongs = [song];
-                                    showingPlaylists = false;
-                                    isSearching = false;
-                                    searchQuery = '';
-                                    searchResults = [];
-                                    _currentSongIndex = 0;
-                                    audioService.audioPlayer.stop();
-                                    _isPlaying = false;
-                                    _currentPosition = Duration.zero;
-                                    _songDuration = Duration.zero;
-                                  });
-                                  _playSong(0);
-                                },
-                              );
-                            },
-                            childCount: searchResults.length,
-                          ),
-                        )
+                      ? searchResults.isEmpty && searchQuery.isNotEmpty
+                          ? SliverFillRemaining(
+                              child: Center(
+                                child: Text(
+                                  "Ask Misbah to add the song",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SliverPadding(
+                              padding: EdgeInsets.only(top: 16),
+                              sliver: SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final song = searchResults[index];
+                                    return ListTile(
+                                      textColor: Colors.white,
+                                      leading: Image.asset(song.image,
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover),
+                                      title: Text(song.title),
+                                      onTap: () {
+                                        setState(() {
+                                          currentSongs = [song];
+                                          showingPlaylists = false;
+                                          isSearching = false;
+                                          searchQuery = '';
+                                          searchResults = [];
+                                          _currentSongIndex = 0;
+                                          audioService.audioPlayer.stop();
+                                          _isPlaying = false;
+                                          _currentPosition = Duration.zero;
+                                          _songDuration = Duration.zero;
+                                        });
+                                        _playSong(0);
+                                      },
+                                    );
+                                  },
+                                  childCount: searchResults.length,
+                                ),
+                              ),
+                            )
                       : SliverPadding(
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           sliver: SliverGrid(
