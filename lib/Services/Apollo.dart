@@ -473,7 +473,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                     imagePath = 'assets/images/uzair.jpg';
                                     break;
                                   case 'All Songs':
-                                    imagePath = 'assets/images/0016.jpg';
+                                    imagePath = 'assets/images/shae.jpg';
                                     break;
                                   case 'AMVs':
                                     imagePath = 'assets/images/Gurenge.jpg';
