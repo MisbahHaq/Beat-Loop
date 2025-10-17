@@ -3,7 +3,12 @@ class Song {
   final String path;
   final String title;
   final String image;
-  Song({required this.path, required this.title, required this.image});
+  final String artist;
+  Song(
+      {required this.path,
+      required this.title,
+      required this.image,
+      required this.artist});
 }
 
 // Playlist Model

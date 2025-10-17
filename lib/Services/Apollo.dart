@@ -121,11 +121,29 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
         (duration) => audioService.audioPlayer.seek(duration));
   }
 
+  Widget _buildGenreTab(String label, String count, bool isActive) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: isActive ? Colors.black : Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black.withOpacity(0.3)),
+      ),
+      child: Text(
+        '$label $count',
+        style: TextStyle(
+          color: isActive ? Colors.white : Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     currentGradient = LinearGradient(
-      colors: [Colors.black, Colors.grey[900]!],
+      colors: [Color(0xFFFFD900), Color(0xFFFFD900)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     );
@@ -272,22 +290,162 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                     child: showingPlaylists
                         ? isSearching
                             ? Container()
-                            : Center(
-                                child: Text(
-                                  "Select a Playlist",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 8,
-                                        color: Colors.black54,
-                                        offset: Offset(2, 2),
+                            : Column(
+                                children: [
+                                  SizedBox(height: 60),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Artists",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        "Playlists",
+                                        style: TextStyle(
+                                          color: Colors.black.withOpacity(0.5),
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
+                                  SizedBox(height: 20),
+                                  Container(
+                                    height: 120,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: playlists.length,
+                                      itemBuilder: (context, index) {
+                                        final playlist = playlists[index];
+                                        String imagePath;
+                                        switch (playlist.name) {
+                                          case 'Hasan Raheem':
+                                            imagePath = 'assets/images/has.jpg';
+                                            break;
+                                          case 'Uzair Jaswal':
+                                            imagePath =
+                                                'assets/images/uzair.jpg';
+                                            break;
+                                          case 'All Songs':
+                                            imagePath =
+                                                'assets/images/shae.jpg';
+                                            break;
+                                          case 'AMVs':
+                                            imagePath =
+                                                'assets/images/Gurenge.jpg';
+                                            break;
+                                          default:
+                                            imagePath =
+                                                'assets/images/0016.jpg';
+                                        }
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              currentSongs = playlist.songs;
+                                              showingPlaylists = false;
+                                              _currentSongIndex = 0;
+                                            });
+                                          },
+                                          child: Container(
+                                            width: 120,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                image: AssetImage(imagePath),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Text(
+                                      "Most Played",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    height: 120,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: allSongs.take(10).length,
+                                      itemBuilder: (context, index) {
+                                        final song = allSongs[index];
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              currentSongs = [allSongs[index]];
+                                              showingPlaylists = false;
+                                              _currentSongIndex = 0;
+                                            });
+                                            audioService.playSong(
+                                                0,
+                                                currentSongs,
+                                                _setCurrentSongIndex,
+                                                _setIsPlaying,
+                                                _rotationController);
+                                          },
+                                          child: Container(
+                                            width: 120,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  width: 80,
+                                                  height: 80,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    image: DecorationImage(
+                                                      image: AssetImage(
+                                                          song.image),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  song.title,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                ],
                               )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -479,82 +637,9 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                             ),
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                final playlist = playlists[index];
-                                String imagePath;
-                                switch (playlist.name) {
-                                  case 'Hasan Raheem':
-                                    imagePath = 'assets/images/has.jpg';
-                                    break;
-                                  case 'Uzair Jaswal':
-                                    imagePath = 'assets/images/uzair.jpg';
-                                    break;
-                                  case 'All Songs':
-                                    imagePath = 'assets/images/shae.jpg';
-                                    break;
-                                  case 'AMVs':
-                                    imagePath = 'assets/images/Gurenge.jpg';
-                                    break;
-                                  default:
-                                    imagePath = 'assets/images/0016.jpg';
-                                }
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      currentSongs = playlist.songs;
-                                      showingPlaylists = false;
-                                      _currentSongIndex = 0;
-                                      audioService.audioPlayer.stop();
-                                      _isPlaying = false;
-                                      _currentPosition = Duration.zero;
-                                      _songDuration = Duration.zero;
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      image: DecorationImage(
-                                        image: AssetImage(imagePath),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.black.withOpacity(0.7),
-                                            Colors.transparent
-                                          ],
-                                          begin: Alignment.bottomCenter,
-                                          end: Alignment.topCenter,
-                                        ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12),
-                                          child: Text(
-                                            playlist.name,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              shadows: [
-                                                Shadow(
-                                                  blurRadius: 4,
-                                                  color: Colors.black,
-                                                  offset: Offset(1, 1),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                                return SizedBox.shrink();
                               },
-                              childCount: playlists.length,
+                              childCount: 0,
                             ),
                           ),
                         )
