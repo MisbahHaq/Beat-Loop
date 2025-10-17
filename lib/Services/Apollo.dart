@@ -143,7 +143,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     currentGradient = LinearGradient(
-      colors: [Color(0xFFFFD900), Color(0xFFFFD900)],
+      colors: [Colors.black, Colors.black],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     );
@@ -292,32 +292,41 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                             ? Container()
                             : Column(
                                 children: [
-                                  SizedBox(height: 60),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Artists",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
+                                  SizedBox(height: 40),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Your Library",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(width: 20),
-                                      Text(
-                                        "Playlists",
-                                        style: TextStyle(
-                                          color: Colors.black.withOpacity(0.5),
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Text(
+                                      "Playlists",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
                                   Container(
-                                    height: 120,
+                                    height: 130,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemCount: playlists.length,
@@ -356,13 +365,40 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                             width: 120,
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 8),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              image: DecorationImage(
-                                                image: AssetImage(imagePath),
-                                                fit: BoxFit.cover,
-                                              ),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  width: 110,
+                                                  height: 110,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    image: DecorationImage(
+                                                      image:
+                                                          AssetImage(imagePath),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 4),
+                                                SizedBox(
+                                                  height: 14,
+                                                  child: Text(
+                                                    playlist.name,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         );
@@ -374,9 +410,9 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16),
                                     child: Text(
-                                      "Most Played",
+                                      "Recently Played",
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.white,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -384,7 +420,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                   ),
                                   SizedBox(height: 10),
                                   Container(
-                                    height: 120,
+                                    height: 130,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemCount: allSongs.take(10).length,
@@ -411,8 +447,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                             child: Column(
                                               children: [
                                                 Container(
-                                                  width: 80,
-                                                  height: 80,
+                                                  width: 110,
+                                                  height: 110,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -424,18 +460,22 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(height: 8),
-                                                Text(
-                                                  song.title,
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12,
+                                                SizedBox(height: 4),
+                                                SizedBox(
+                                                  height: 14,
+                                                  child: Text(
+                                                    song.title,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                 ),
                                               ],
                                             ),
