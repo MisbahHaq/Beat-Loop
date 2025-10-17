@@ -124,7 +124,11 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    currentGradient = gradients[Random().nextInt(gradients.length)];
+    currentGradient = LinearGradient(
+      colors: [Colors.black, Colors.grey[900]!],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    );
     audioService.initializeAudioSession();
     audioService.listenAudioPlayerEvents(
         () => _nextSong(),
@@ -232,10 +236,6 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                         onPressed: () {
                           setState(() {
                             showingPlaylists = true;
-                            audioService.audioPlayer.stop();
-                            _isPlaying = false;
-                            _currentPosition = Duration.zero;
-                            _songDuration = Duration.zero;
                           });
                         },
                       )
