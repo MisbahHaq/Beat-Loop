@@ -206,501 +206,596 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
               ),
             ),
           ],
-          CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                pinned: false,
-                floating: false,
-                expandedHeight:
-                    isSearching ? 0 : MediaQuery.of(context).size.height * 0.6,
-                backgroundColor: Colors.transparent,
-                title: isSearching
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                                bottom:
-                                    BorderSide(color: Colors.black, width: 1)),
-                          ),
-                          child: TextField(
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: 'Search',
-                              hintStyle: TextStyle(color: Colors.grey[400]),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
+          Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    pinned: false,
+                    floating: false,
+                    expandedHeight: isSearching
+                        ? 0
+                        : MediaQuery.of(context).size.height * 0.6,
+                    backgroundColor: Colors.transparent,
+                    title: isSearching
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.black, width: 1)),
+                              ),
+                              child: TextField(
+                                style: TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(color: Colors.grey[400]),
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    searchQuery = value.toLowerCase();
+                                    searchResults = allSongs
+                                        .where((song) => song.title
+                                            .toLowerCase()
+                                            .contains(searchQuery))
+                                        .toList();
+                                  });
+                                },
+                              ),
                             ),
-                            onChanged: (value) {
+                          )
+                        : null,
+                    leading: !showingPlaylists
+                        ? IconButton(
+                            icon: Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: () {
                               setState(() {
-                                searchQuery = value.toLowerCase();
-                                searchResults = allSongs
-                                    .where((song) => song.title
-                                        .toLowerCase()
-                                        .contains(searchQuery))
-                                    .toList();
+                                showingPlaylists = true;
                               });
                             },
-                          ),
-                        ),
-                      )
-                    : null,
-                leading: !showingPlaylists
-                    ? IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () {
-                          setState(() {
-                            showingPlaylists = true;
-                          });
-                        },
-                      )
-                    : null,
-                actions: showingPlaylists
-                    ? [
-                        IconButton(
-                          icon: Icon(isSearching ? Icons.close : Icons.search,
-                              color: Colors.white, size: 30),
-                          onPressed: () {
-                            setState(() {
-                              isSearching = !isSearching;
-                              if (!isSearching) {
-                                searchQuery = '';
-                                searchResults = [];
-                              }
-                            });
-                          },
-                        ),
-                      ]
-                    : !showingPlaylists
+                          )
+                        : null,
+                    actions: showingPlaylists
                         ? [
                             IconButton(
-                              icon: Icon(Icons.download,
-                                  color: Colors.white, size: 30),
-                              onPressed: () =>
-                                  _downloadAllSongsWithProgress(context),
+                              icon: Icon(
+                                  isSearching ? Icons.close : Icons.search,
+                                  color: Colors.white,
+                                  size: 30),
+                              onPressed: () {
+                                setState(() {
+                                  isSearching = !isSearching;
+                                  if (!isSearching) {
+                                    searchQuery = '';
+                                    searchResults = [];
+                                  }
+                                });
+                              },
                             ),
                           ]
-                        : null,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    padding: const EdgeInsets.only(top: 80, bottom: 20),
-                    child: showingPlaylists
-                        ? isSearching
-                            ? Container()
-                            : Column(
-                                children: [
-                                  SizedBox(height: 40),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Your Library",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 28,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: Text(
-                                      "Playlists",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    height: 130,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: playlists.length,
-                                      itemBuilder: (context, index) {
-                                        final playlist = playlists[index];
-                                        String imagePath;
-                                        switch (playlist.name) {
-                                          case 'Hasan Raheem':
-                                            imagePath = 'assets/images/has.jpg';
-                                            break;
-                                          case 'Uzair Jaswal':
-                                            imagePath =
-                                                'assets/images/uzair.jpg';
-                                            break;
-                                          case 'All Songs':
-                                            imagePath =
-                                                'assets/images/shae.jpg';
-                                            break;
-                                          case 'AMVs':
-                                            imagePath =
-                                                'assets/images/Gurenge.jpg';
-                                            break;
-                                          default:
-                                            imagePath =
-                                                'assets/images/0016.jpg';
-                                        }
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentSongs = playlist.songs;
-                                              showingPlaylists = false;
-                                              _currentSongIndex = 0;
-                                            });
-                                          },
-                                          child: Container(
-                                            width: 120,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  width: 110,
-                                                  height: 110,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    image: DecorationImage(
-                                                      image:
-                                                          AssetImage(imagePath),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4),
-                                                SizedBox(
-                                                  height: 14,
-                                                  child: Text(
-                                                    playlist.name,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: Text(
-                                      "Recently Played",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    height: 130,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: allSongs.take(10).length,
-                                      itemBuilder: (context, index) {
-                                        final song = allSongs[index];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentSongs = [allSongs[index]];
-                                              showingPlaylists = false;
-                                              _currentSongIndex = 0;
-                                            });
-                                            audioService.playSong(
-                                                0,
-                                                currentSongs,
-                                                _setCurrentSongIndex,
-                                                _setIsPlaying,
-                                                _rotationController);
-                                          },
-                                          child: Container(
-                                            width: 120,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  width: 110,
-                                                  height: 110,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    image: DecorationImage(
-                                                      image: AssetImage(
-                                                          song.image),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4),
-                                                SizedBox(
-                                                  height: 14,
-                                                  child: Text(
-                                                    song.title,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                ],
-                              )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (currentSong != null)
-                                LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    final size =
-                                        min(constraints.maxWidth * 0.8, 250.0);
-                                    return GestureDetector(
-                                      onPanDown: (details) => _onSeekTap(
-                                          details.localPosition,
-                                          Size(size, size)),
-                                      onPanUpdate: (details) => _onSeekTap(
-                                          details.localPosition,
-                                          Size(size, size)),
-                                      child: Container(
-                                        width: size,
-                                        height: size,
-                                        child: Stack(
-                                          alignment: Alignment.center,
+                        : !showingPlaylists
+                            ? [
+                                IconButton(
+                                  icon: Icon(Icons.download,
+                                      color: Colors.white, size: 30),
+                                  onPressed: () =>
+                                      _downloadAllSongsWithProgress(context),
+                                ),
+                              ]
+                            : null,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Container(
+                        padding: const EdgeInsets.only(top: 80, bottom: 20),
+                        child: showingPlaylists
+                            ? isSearching
+                                ? Container()
+                                : Column(
+                                    children: [
+                                      SizedBox(height: 40),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
-                                            SizedBox(
-                                              width: size,
-                                              height: size,
-                                              child: CircularProgressIndicator(
-                                                value: _songDuration.inSeconds >
-                                                        0
-                                                    ? _currentPosition
-                                                            .inSeconds /
-                                                        _songDuration.inSeconds
-                                                    : 0,
-                                                strokeWidth: 6,
-                                                backgroundColor:
-                                                    Colors.grey[800],
-                                                valueColor:
-                                                    AlwaysStoppedAnimation(
-                                                        Colors.white),
-                                              ),
-                                            ),
-                                            AnimatedSwitcher(
-                                              duration:
-                                                  Duration(milliseconds: 700),
-                                              child: RotationTransition(
-                                                key:
-                                                    ValueKey(currentSong.image),
-                                                turns: _rotationController,
-                                                child: ClipOval(
-                                                  child: Image.asset(
-                                                    currentSong.image,
-                                                    width: size - 30,
-                                                    height: size - 30,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
+                                            Text(
+                                              "Your Library",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 28,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    );
-                                  },
-                                ),
-                              SizedBox(height: 20),
-                              if (currentSong != null)
-                                AnimatedSwitcher(
-                                  duration: Duration(milliseconds: 600),
-                                  child: Text(
-                                    currentSong.title,
-                                    key: ValueKey(currentSong.title),
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 8,
-                                          color: Colors.black54,
-                                          offset: Offset(2, 2),
+                                      SizedBox(height: 20),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Text(
+                                          "Playlists",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        height: 130,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: playlists.length,
+                                          itemBuilder: (context, index) {
+                                            final playlist = playlists[index];
+                                            String imagePath;
+                                            switch (playlist.name) {
+                                              case 'Hasan Raheem':
+                                                imagePath =
+                                                    'assets/images/has.jpg';
+                                                break;
+                                              case 'Uzair Jaswal':
+                                                imagePath =
+                                                    'assets/images/uzair.jpg';
+                                                break;
+                                              case 'All Songs':
+                                                imagePath =
+                                                    'assets/images/shae.jpg';
+                                                break;
+                                              case 'AMVs':
+                                                imagePath =
+                                                    'assets/images/Gurenge.jpg';
+                                                break;
+                                              default:
+                                                imagePath =
+                                                    'assets/images/0016.jpg';
+                                            }
+                                            return GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  currentSongs = playlist.songs;
+                                                  showingPlaylists = false;
+                                                  _currentSongIndex = 0;
+                                                });
+                                              },
+                                              child: Container(
+                                                width: 120,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 8),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 110,
+                                                      height: 110,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        image: DecorationImage(
+                                                          image: AssetImage(
+                                                              imagePath),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 4),
+                                                    SizedBox(
+                                                      height: 14,
+                                                      child: Text(
+                                                        playlist.name,
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(height: 20),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Text(
+                                          "Recently Played",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        height: 130,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: allSongs.take(10).length,
+                                          itemBuilder: (context, index) {
+                                            final song = allSongs[index];
+                                            return GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  currentSongs = [
+                                                    allSongs[index]
+                                                  ];
+                                                  showingPlaylists = false;
+                                                  _currentSongIndex = 0;
+                                                });
+                                                audioService.playSong(
+                                                    0,
+                                                    currentSongs,
+                                                    _setCurrentSongIndex,
+                                                    _setIsPlaying,
+                                                    _rotationController);
+                                              },
+                                              child: Container(
+                                                width: 120,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 8),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 110,
+                                                      height: 110,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        image: DecorationImage(
+                                                          image: AssetImage(
+                                                              song.image),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 4),
+                                                    SizedBox(
+                                                      height: 14,
+                                                      child: Text(
+                                                        song.title,
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(height: 20),
+                                    ],
+                                  )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (currentSong != null)
+                                    LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        final size = min(
+                                            constraints.maxWidth * 0.8, 250.0);
+                                        return GestureDetector(
+                                          onPanDown: (details) => _onSeekTap(
+                                              details.localPosition,
+                                              Size(size, size)),
+                                          onPanUpdate: (details) => _onSeekTap(
+                                              details.localPosition,
+                                              Size(size, size)),
+                                          child: Container(
+                                            width: size,
+                                            height: size,
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: size,
+                                                  height: size,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: _songDuration
+                                                                .inSeconds >
+                                                            0
+                                                        ? _currentPosition
+                                                                .inSeconds /
+                                                            _songDuration
+                                                                .inSeconds
+                                                        : 0,
+                                                    strokeWidth: 6,
+                                                    backgroundColor:
+                                                        Colors.grey[800],
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation(
+                                                            Colors.white),
+                                                  ),
+                                                ),
+                                                AnimatedSwitcher(
+                                                  duration: Duration(
+                                                      milliseconds: 700),
+                                                  child: RotationTransition(
+                                                    key: ValueKey(
+                                                        currentSong.image),
+                                                    turns: _rotationController,
+                                                    child: ClipOval(
+                                                      child: Image.asset(
+                                                        currentSong.image,
+                                                        width: size - 30,
+                                                        height: size - 30,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  SizedBox(height: 20),
+                                  if (currentSong != null)
+                                    AnimatedSwitcher(
+                                      duration: Duration(milliseconds: 600),
+                                      child: Text(
+                                        currentSong.title,
+                                        key: ValueKey(currentSong.title),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          shadows: [
+                                            Shadow(
+                                              blurRadius: 8,
+                                              color: Colors.black54,
+                                              offset: Offset(2, 2),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  SizedBox(height: 20),
+                                  if (currentSong != null)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.loop,
+                                              color: _isLooping
+                                                  ? Colors.blue
+                                                  : Colors.white),
+                                          onPressed: _toggleLoop,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.skip_previous,
+                                              color: Colors.white),
+                                          onPressed: _prevSong,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                              _isPlaying
+                                                  ? Icons.pause
+                                                  : Icons.play_arrow,
+                                              color: Colors.white,
+                                              size: 40),
+                                          onPressed: _isPlaying
+                                              ? _pauseSong
+                                              : _resumeSong,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.skip_next,
+                                              color: Colors.white),
+                                          onPressed: _nextSong,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.shuffle,
+                                              color: _isShuffling
+                                                  ? Colors.blue
+                                                  : Colors.white),
+                                          onPressed: _toggleShuffle,
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ),
-                              SizedBox(height: 20),
-                              if (currentSong != null)
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.loop,
-                                          color: _isLooping
-                                              ? Colors.blue
-                                              : Colors.white),
-                                      onPressed: _toggleLoop,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.skip_previous,
-                                          color: Colors.white),
-                                      onPressed: _prevSong,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(
-                                          _isPlaying
-                                              ? Icons.pause
-                                              : Icons.play_arrow,
-                                          color: Colors.white,
-                                          size: 40),
-                                      onPressed:
-                                          _isPlaying ? _pauseSong : _resumeSong,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.skip_next,
-                                          color: Colors.white),
-                                      onPressed: _nextSong,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.shuffle,
-                                          color: _isShuffling
-                                              ? Colors.blue
-                                              : Colors.white),
-                                      onPressed: _toggleShuffle,
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                  ),
-                ),
-              ),
-              showingPlaylists
-                  ? isSearching
-                      ? searchResults.isEmpty && searchQuery.isNotEmpty
-                          ? SliverFillRemaining(
-                              child: Center(
-                                child: Text(
-                                  "Ask Misbah to add the song",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                ],
                               ),
-                            )
-                          : SliverPadding(
-                              padding: EdgeInsets.only(top: 16),
-                              sliver: SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
-                                    final song = searchResults[index];
-                                    return ListTile(
-                                      textColor: Colors.white,
-                                      leading: Image.asset(song.image,
-                                          width: 50,
-                                          height: 50,
-                                          fit: BoxFit.cover),
-                                      title: Text(song.title),
-                                      onTap: () {
-                                        setState(() {
-                                          currentSongs = [song];
-                                          showingPlaylists = false;
-                                          isSearching = false;
-                                          searchQuery = '';
-                                          searchResults = [];
-                                          _currentSongIndex = 0;
-                                          audioService.audioPlayer.stop();
-                                          _isPlaying = false;
-                                          _currentPosition = Duration.zero;
-                                          _songDuration = Duration.zero;
-                                        });
-                                        _playSong(0);
-                                      },
-                                    );
-                                  },
-                                  childCount: searchResults.length,
-                                ),
-                              ),
-                            )
-                      : SliverPadding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          sliver: SliverGrid(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                              childAspectRatio: 0.8,
-                            ),
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                return SizedBox.shrink();
-                              },
-                              childCount: 0,
-                            ),
-                          ),
-                        )
-                  : SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final song = currentSongs[index];
-                          return ListTile(
-                            textColor: Colors.white,
-                            leading: Image.asset(song.image,
-                                width: 50, height: 50, fit: BoxFit.cover),
-                            title: Text(song.title),
-                            tileColor: _currentSongIndex == index
-                                ? Colors.grey[800]
-                                : Colors.transparent,
-                            onTap: () => _playSong(index),
-                          );
-                        },
-                        childCount: currentSongs.length,
                       ),
                     ),
+                  ),
+                  showingPlaylists
+                      ? isSearching
+                          ? searchResults.isEmpty && searchQuery.isNotEmpty
+                              ? SliverFillRemaining(
+                                  child: Center(
+                                    child: Text(
+                                      "Ask Misbah to add the song",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SliverPadding(
+                                  padding: EdgeInsets.only(top: 16),
+                                  sliver: SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                        final song = searchResults[index];
+                                        return ListTile(
+                                          textColor: Colors.white,
+                                          leading: Image.asset(song.image,
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.cover),
+                                          title: Text(song.title),
+                                          onTap: () {
+                                            setState(() {
+                                              currentSongs = [song];
+                                              showingPlaylists = false;
+                                              isSearching = false;
+                                              searchQuery = '';
+                                              searchResults = [];
+                                              _currentSongIndex = 0;
+                                              audioService.audioPlayer.stop();
+                                              _isPlaying = false;
+                                              _currentPosition = Duration.zero;
+                                              _songDuration = Duration.zero;
+                                            });
+                                            _playSong(0);
+                                          },
+                                        );
+                                      },
+                                      childCount: searchResults.length,
+                                    ),
+                                  ),
+                                )
+                          : SliverPadding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              sliver: SliverGrid(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 16,
+                                  mainAxisSpacing: 16,
+                                  childAspectRatio: 0.8,
+                                ),
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    return SizedBox.shrink();
+                                  },
+                                  childCount: 0,
+                                ),
+                              ),
+                            )
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final song = currentSongs[index];
+                              return ListTile(
+                                textColor: Colors.white,
+                                leading: Image.asset(song.image,
+                                    width: 50, height: 50, fit: BoxFit.cover),
+                                title: Text(song.title),
+                                tileColor: _currentSongIndex == index
+                                    ? Colors.grey[800]
+                                    : Colors.transparent,
+                                onTap: () => _playSong(index),
+                              );
+                            },
+                            childCount: currentSongs.length,
+                          ),
+                        ),
+                ],
+              ),
+              if (currentSongs.isNotEmpty && showingPlaylists)
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showingPlaylists = false;
+                      });
+                    },
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 16),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: AssetImage(currentSong!.image),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  currentSong.title,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  currentSong.artist,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.7),
+                                    fontSize: 12,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                                _isPlaying ? Icons.pause : Icons.play_arrow,
+                                color: Colors.white),
+                            onPressed: _isPlaying ? _pauseSong : _resumeSong,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.skip_next, color: Colors.white),
+                            onPressed: _nextSong,
+                          ),
+                          SizedBox(width: 8),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ],
