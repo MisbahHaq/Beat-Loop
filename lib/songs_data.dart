@@ -15,6 +15,12 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760679904/POST_YOU_-_Hasan_Raheem_ft_Afusic___Prod_by_Ali_Soomro_jkjkwb.mp3',
+    title: 'Post You',
+    image: 'assets/images/exes.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718212/flutter_audio_uploads/kwvresbginpk5nymxcss.mp3',
     title: 'Hungama',
     image: 'assets/images/hun.jpg',
@@ -24,6 +30,12 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718158/flutter_audio_uploads/jnal119rxvlnk8wmwsaa.mp3',
     title: 'Gila',
     image: 'assets/images/shae.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680006/DIL_KAY_PARDAY_-_Hasan_Raheem___Prod_by_Shehryar_Khan_Lyrics_btrlw3.mp3',
+    title: 'Dil K Parday',
+    image: 'assets/images/exes.jpg',
   ),
   Song(
     path:
@@ -51,6 +63,12 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680138/FLY_WITH_ME_-_Hasan_Raheem___Prod_by_Shehryar_Khan_Lyrics_gvl9zh.mp3',
+    title: 'Fly With Me',
+    image: 'assets/images/exes.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718243/flutter_audio_uploads/hewivwsv14j4fgn1mk7f.mp3',
     title: 'Jhol',
     image: 'assets/images/jhol.jpg',
@@ -60,6 +78,12 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718052/flutter_audio_uploads/zsniujekdp6zpry5ix7w.mp3',
     title: 'Dil Ruba',
     image: 'assets/images/dilruba.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680549/Kanwal_-_Afusic_ft._Hasan_Raheem_rvfdxi.mp3',
+    title: 'Kanwal',
+    image: 'assets/images/exes.jpg',
   ),
   Song(
     path:
@@ -78,6 +102,12 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718377/flutter_audio_uploads/twjmipbdgdhnkbkx9zw1.mp4',
     title: 'Ud Jana',
     image: 'assets/images/uzair.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680928/DEEWANA_-_Hasan_Raheem_Prod_by_Shehryar_Khan_sdvlig.mp3',
+    title: 'Dewana',
+    image: 'assets/images/exes.jpg',
   ),
   Song(
     path:
@@ -111,6 +141,12 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680929/NO_MORE_CARE_-_Hasan_Raheem___Prod_by_Varqa_Faraid_Lyrics_dtnkra.mp3',
+    title: 'No More Care',
+    image: 'assets/images/exes.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718038/flutter_audio_uploads/d109u5y9fvkfgedaoyfm.mp3',
     title: 'Beloved',
     image: 'assets/images/y.jfif',
@@ -120,6 +156,12 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1758535980/Tareekhi_oq0rq4.mp3',
     title: 'Tareekhi',
     image: 'assets/images/discon.webp',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760681064/Afusic_-_Pal_Pal_Official_Music_Video_Prod._AliSoomroMusic_qsl2qx.mp3',
+    title: 'Pal Pal',
+    image: 'assets/images/exes.jpg',
   ),
   Song(
     path:

@@ -9,15 +9,22 @@ class PlaylistService {
             .where((s) =>
                 s.title == 'Dard' ||
                 s.title == 'Accusations' ||
+                s.title == 'Post You' ||
                 s.title == 'E X E S' ||
+                s.title == 'Kanwal' ||
                 s.title == 'Faaslay' ||
                 s.title == 'Kaleji' ||
+                s.title == 'Dewana' ||
+                s.title == 'No More Care' ||
+                s.title == 'Dil K Parday' ||
+                s.title == 'Fly With Me' ||
                 s.title == 'Mehbooba' ||
                 s.title == 'Fana' ||
+                s.title == 'Pal Pal' ||
                 s.title == 'Dil Fareb' ||
                 s.title == 'Tareekhi' ||
                 s.title == 'IDK' ||
-                s.title == 'Roop' ||
+                s.title == 'Fly With Me' ||
                 s.title == 'Hungama' ||
                 s.title == 'Aarzu' ||
                 s.title == 'Peanut Butter' ||
