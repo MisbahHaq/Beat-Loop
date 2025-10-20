@@ -79,7 +79,7 @@ final List<Song> allSongs = [
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    artist: "Unknown",
+    artist: "Annural Khalid",
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718243/flutter_audio_uploads/hewivwsv14j4fgn1mk7f.mp3',
     title: 'Jhol',
