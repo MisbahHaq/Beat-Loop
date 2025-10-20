@@ -26,6 +26,8 @@ class _ApolloState extends State<Apollo>
 
   List<Playlist> playlists = [];
   List<Song> currentSongs = [];
+  List<Song> playingSongs = [];
+  int playingSongIndex = 0;
   bool showingPlaylists = true;
   bool isSearching = false;
   String searchQuery = '';
@@ -84,6 +86,8 @@ class _ApolloState extends State<Apollo>
       setState(() => _isShuffling = shuffling);
 
   void _playSong(int index) {
+    playingSongs = List.from(currentSongs);
+    playingSongIndex = index;
     audioService.playSong(index, currentSongs, _setCurrentSongIndex,
         _setIsPlaying, _rotationController);
   }
@@ -195,6 +199,9 @@ class _ApolloState extends State<Apollo>
     await prefs.setString('searchQuery', searchQuery);
     await prefs.setStringList(
         'currentSongs', currentSongs.map((s) => s.title).toList());
+    await prefs.setStringList(
+        'playingSongs', playingSongs.map((s) => s.title).toList());
+    await prefs.setInt('playingSongIndex', playingSongIndex);
   }
 
   Future<void> _loadAppState() async {
@@ -216,6 +223,13 @@ class _ApolloState extends State<Apollo>
             .where((s) => currentSongsTitles.contains(s.title))
             .toList();
       }
+      final playingSongsTitles = prefs.getStringList('playingSongs') ?? [];
+      if (playingSongsTitles.isNotEmpty) {
+        playingSongs = allSongs
+            .where((s) => playingSongsTitles.contains(s.title))
+            .toList();
+      }
+      playingSongIndex = prefs.getInt('playingSongIndex') ?? 0;
     });
 
     if (_isPlaying && currentSongs.isNotEmpty) {
@@ -229,6 +243,8 @@ class _ApolloState extends State<Apollo>
   Widget build(BuildContext context) {
     final Song? currentSong =
         currentSongs.isNotEmpty ? currentSongs[_currentSongIndex] : null;
+    final Song? playingSong =
+        playingSongs.isNotEmpty ? playingSongs[playingSongIndex] : null;
 
     return WillPopScope(
       onWillPop: () async {
@@ -796,7 +812,7 @@ class _ApolloState extends State<Apollo>
                           ),
                   ],
                 ),
-                if (currentSongs.isNotEmpty && showingPlaylists)
+                if (playingSongs.isNotEmpty && showingPlaylists)
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -804,6 +820,8 @@ class _ApolloState extends State<Apollo>
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
+                          currentSongs = List.from(playingSongs);
+                          _currentSongIndex = playingSongIndex;
                           showingPlaylists = false;
                         });
                       },
@@ -825,7 +843,7 @@ class _ApolloState extends State<Apollo>
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 image: DecorationImage(
-                                  image: AssetImage(currentSong!.image),
+                                  image: AssetImage(playingSong!.image),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -837,7 +855,7 @@ class _ApolloState extends State<Apollo>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    currentSong.title,
+                                    playingSong.title,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -847,7 +865,7 @@ class _ApolloState extends State<Apollo>
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    currentSong.artist,
+                                    playingSong.artist,
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.7),
                                       fontSize: 12,
