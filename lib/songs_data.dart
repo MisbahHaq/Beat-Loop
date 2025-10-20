@@ -79,7 +79,7 @@ final List<Song> allSongs = [
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    artist: "Unknown",
+    artist: "Annural Khalid",
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718243/flutter_audio_uploads/hewivwsv14j4fgn1mk7f.mp3',
     title: 'Jhol',
@@ -100,7 +100,7 @@ final List<Song> allSongs = [
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    artist: "Hasan Raheem",
+    artist: "Talha Anjum",
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718239/flutter_audio_uploads/icwosxltqwljckztj48a.mp3',
     title: 'Jani',
@@ -124,7 +124,7 @@ final List<Song> allSongs = [
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680928/DEEWANA_-_Hasan_Raheem_Prod_by_Shehryar_Khan_sdvlig.mp3',
     artist: "Hasan Raheem",
-    title: 'Dewana',
+    title: 'Deewana',
     image: 'assets/images/exes.jpg',
   ),
   Song(
@@ -137,14 +137,14 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718275/flutter_audio_uploads/lu2cvh66maicstu2yepl.mp3',
-    artist: "Hasan Raheem",
+    artist: "Maya Bee",
     title: 'Maya Bee',
     image: 'assets/images/maya.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718303/flutter_audio_uploads/cnjh3rezvaqfexladsc5.mp3',
-    artist: "Hasan Raheem",
+    artist: "Coke Studio",
     title: 'Piya Calling',
     image: 'assets/images/piya.jpg',
   ),
@@ -172,7 +172,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718038/flutter_audio_uploads/d109u5y9fvkfgedaoyfm.mp3',
-    artist: "Hasan Raheem",
+    artist: "Talha Anjum",
     title: 'Beloved',
     image: 'assets/images/y.jfif',
   ),
@@ -221,7 +221,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718251/flutter_audio_uploads/jl7vdpo8mujewxdcbs1v.mp3',
-    artist: "Hasan Raheem",
+    artist: "Arpit Bala",
     title: 'Kaisa Mein',
     image: 'assets/images/avg.jpg',
   ),
@@ -256,14 +256,14 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718396/flutter_audio_uploads/iphtgvyzsbmecqi3f3wf.mp3',
-    artist: "Hasan Raheem",
+    artist: "Arpit Bala",
     title: 'Zimmedaar',
     image: 'assets/images/zim.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718369/flutter_audio_uploads/gesvgvnp22fq6na9rewi.mp3',
-    artist: "Hasan Raheem",
+    artist: "Arijit Singh",
     title: 'Tum Hi Ho',
     image: 'assets/images/sha.jpg',
   ),
@@ -305,7 +305,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718086/flutter_audio_uploads/p4zjewn376yi7n4tztdk.mp3',
-    artist: "Hasan Raheem",
+    artist: "Arpit Bala",
     title: 'Full Funka',
     image: 'assets/images/funk.png',
   ),
@@ -333,7 +333,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718359/flutter_audio_uploads/lavoijbtt3gf8grwuidz.mp3',
-    artist: "Hasan Raheem",
+    artist: "Desiigner",
     title: 'Timmy Turner',
     image: 'assets/images/de.jpeg',
   ),
@@ -361,84 +361,84 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051702/JE_KOTA_DIN_TUMI_CHILE_PASHE_FULL_SONG_gdwpy0.mp3',
-    artist: "Hasan Raheem",
+    artist: "Anupam Roy",
     title: 'Je Kota Din',
     image: 'assets/images/maya.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718363/flutter_audio_uploads/ianrhclpu6dkel3n615n.mp3',
-    artist: "Hasan Raheem",
+    artist: "Theory of a Deadman",
     title: 'In Love With an Angel',
     image: 'assets/images/tra.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718208/flutter_audio_uploads/nsw89lwoxw5u7andmfrl.mp3',
-    artist: "Hasan Raheem",
+    artist: "LISA",
     title: 'Gurenge',
     image: 'assets/images/Gurenge.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718381/flutter_audio_uploads/lurawunm9lcsqytxnajp.mp3',
-    artist: "Hasan Raheem",
+    artist: "凛として時雨",
     title: 'Unravel',
     image: 'assets/images/Unravel.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718290/flutter_audio_uploads/zr0gowitfof4jid1a8qy.mp3',
-    artist: "Hasan Raheem",
-    title: 'Namae Yobu',
+    artist: "Luck Life",
+    title: 'Namae Wo Yobu',
     image: 'assets/images/namae.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718083/flutter_audio_uploads/hz50ay4i0zrsm6xczurr.mp3',
-    artist: "Hasan Raheem",
+    artist: "Jenix",
     title: 'Catch Fire',
     image: 'assets/images/fire.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718060/flutter_audio_uploads/xkoj7qaw86myeponb2f0.mp4',
-    artist: "Hasan Raheem",
+    artist: "FiveFold",
     title: 'End Of Heroes',
     image: 'assets/images/n.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718063/flutter_audio_uploads/qwdwfwdi2truo8ayotny.mp3',
-    artist: "Hasan Raheem",
+    artist: "Ashes Remain",
     title: 'End Of Me',
     image: 'assets/images/shan.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718067/flutter_audio_uploads/xhr5qgaf8ktuuo8obxeu.mp3',
-    artist: "Hasan Raheem",
+    artist: "Auracle",
     title: 'Youre My Escape',
     image: 'assets/images/na.png',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718216/flutter_audio_uploads/rmx40qxjarrkrrnlxa43.mp3',
-    artist: "Hasan Raheem",
+    artist: "FFH",
     title: 'Love and Honor',
     image: 'assets/images/it.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718254/flutter_audio_uploads/bfihilwr0qti0zx68cqq.mp3',
-    artist: "Hasan Raheem",
+    artist: "Ashes Remain",
     title: 'Call Me Now',
     image: 'assets/images/ka.jpg',
   ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718235/flutter_audio_uploads/kisbfqwkoj491bn3rtm1.mp3',
-    artist: "Hasan Raheem",
+    artist: "Daughtry",
     title: 'Its Not Over',
     image: 'assets/images/0016.jpg',
   ),
