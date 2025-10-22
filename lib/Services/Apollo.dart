@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models.dart';
 import '../audio_service.dart';
 import '../playlist_service.dart';
@@ -12,8 +11,7 @@ class Apollo extends StatefulWidget {
   _ApolloState createState() => _ApolloState();
 }
 
-class _ApolloState extends State<Apollo>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   late AnimationController _rotationController;
   AudioService audioService = AudioService();
 
@@ -26,8 +24,6 @@ class _ApolloState extends State<Apollo>
 
   List<Playlist> playlists = [];
   List<Song> currentSongs = [];
-  List<Song> playingSongs = [];
-  int playingSongIndex = 0;
   bool showingPlaylists = true;
   bool isSearching = false;
   String searchQuery = '';
@@ -86,8 +82,6 @@ class _ApolloState extends State<Apollo>
       setState(() => _isShuffling = shuffling);
 
   void _playSong(int index) {
-    playingSongs = List.from(currentSongs);
-    playingSongIndex = index;
     audioService.playSong(index, currentSongs, _setCurrentSongIndex,
         _setIsPlaying, _rotationController);
   }
@@ -148,7 +142,6 @@ class _ApolloState extends State<Apollo>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     currentGradient = LinearGradient(
       colors: [Colors.black, Colors.black],
       begin: Alignment.topCenter,
@@ -161,7 +154,6 @@ class _ApolloState extends State<Apollo>
         (duration) => setState(() => _songDuration = duration));
     playlists = PlaylistService.initializePlaylists(allSongs);
     currentSongs = [];
-    _loadAppState();
 
     _rotationController = AnimationController(
       vsync: this,
@@ -171,80 +163,15 @@ class _ApolloState extends State<Apollo>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _rotationController.dispose();
     audioService.dispose();
     super.dispose();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      _saveAppState();
-    } else if (state == AppLifecycleState.resumed) {
-      _loadAppState();
-    }
-  }
-
-  Future<void> _saveAppState() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isPlaying', _isPlaying);
-    await prefs.setInt('currentSongIndex', _currentSongIndex);
-    await prefs.setInt('currentPosition', _currentPosition.inSeconds);
-    await prefs.setInt('songDuration', _songDuration.inSeconds);
-    await prefs.setBool('isLooping', _isLooping);
-    await prefs.setBool('isShuffling', _isShuffling);
-    await prefs.setBool('showingPlaylists', showingPlaylists);
-    await prefs.setBool('isSearching', isSearching);
-    await prefs.setString('searchQuery', searchQuery);
-    await prefs.setStringList(
-        'currentSongs', currentSongs.map((s) => s.title).toList());
-    await prefs.setStringList(
-        'playingSongs', playingSongs.map((s) => s.title).toList());
-    await prefs.setInt('playingSongIndex', playingSongIndex);
-  }
-
-  Future<void> _loadAppState() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isPlaying = prefs.getBool('isPlaying') ?? false;
-      _currentSongIndex = prefs.getInt('currentSongIndex') ?? 0;
-      _currentPosition =
-          Duration(seconds: prefs.getInt('currentPosition') ?? 0);
-      _songDuration = Duration(seconds: prefs.getInt('songDuration') ?? 0);
-      _isLooping = prefs.getBool('isLooping') ?? false;
-      _isShuffling = prefs.getBool('isShuffling') ?? false;
-      showingPlaylists = prefs.getBool('showingPlaylists') ?? true;
-      isSearching = prefs.getBool('isSearching') ?? false;
-      searchQuery = prefs.getString('searchQuery') ?? '';
-      final currentSongsTitles = prefs.getStringList('currentSongs') ?? [];
-      if (currentSongsTitles.isNotEmpty) {
-        currentSongs = allSongs
-            .where((s) => currentSongsTitles.contains(s.title))
-            .toList();
-      }
-      final playingSongsTitles = prefs.getStringList('playingSongs') ?? [];
-      if (playingSongsTitles.isNotEmpty) {
-        playingSongs = allSongs
-            .where((s) => playingSongsTitles.contains(s.title))
-            .toList();
-      }
-      playingSongIndex = prefs.getInt('playingSongIndex') ?? 0;
-    });
-
-    if (_isPlaying && currentSongs.isNotEmpty) {
-      await audioService.audioPlayer.seek(_currentPosition);
-      _rotationController.repeat();
-      await audioService.audioPlayer.resume();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     final Song? currentSong =
         currentSongs.isNotEmpty ? currentSongs[_currentSongIndex] : null;
-    final Song? playingSong =
-        playingSongs.isNotEmpty ? playingSongs[playingSongIndex] : null;
 
     return WillPopScope(
       onWillPop: () async {
@@ -252,9 +179,9 @@ class _ApolloState extends State<Apollo>
           setState(() {
             showingPlaylists = true;
           });
-          return false; // Don't pop, just go back to playlists
+          return false; // Prevent popping the route
         }
-        return true; // Allow app to close if already on playlists
+        return true; // Allow popping if already on playlists view
       },
       child: Scaffold(
         body: Stack(
@@ -812,7 +739,7 @@ class _ApolloState extends State<Apollo>
                           ),
                   ],
                 ),
-                if (playingSongs.isNotEmpty && showingPlaylists)
+                if (currentSongs.isNotEmpty && showingPlaylists)
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -820,8 +747,6 @@ class _ApolloState extends State<Apollo>
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          currentSongs = List.from(playingSongs);
-                          _currentSongIndex = playingSongIndex;
                           showingPlaylists = false;
                         });
                       },
@@ -843,7 +768,7 @@ class _ApolloState extends State<Apollo>
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 image: DecorationImage(
-                                  image: AssetImage(playingSong!.image),
+                                  image: AssetImage(currentSong!.image),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -855,7 +780,7 @@ class _ApolloState extends State<Apollo>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    playingSong.title,
+                                    currentSong.title,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -865,7 +790,7 @@ class _ApolloState extends State<Apollo>
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    playingSong.artist,
+                                    currentSong.artist,
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.7),
                                       fontSize: 12,

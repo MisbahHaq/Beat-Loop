@@ -144,7 +144,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718303/flutter_audio_uploads/cnjh3rezvaqfexladsc5.mp3',
-    artist: "Coke Studio",
+    artist: "Delara",
     title: 'Piya Calling',
     image: 'assets/images/piya.jpg',
   ),
@@ -291,7 +291,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718204/flutter_audio_uploads/e4i2ce11x424ato8vsfb.mp3',
-    artist: "Hasan Raheem",
+    artist: "Arpit Bala",
     title: 'Gulabo',
     image: 'assets/images/gul.jfif',
   ),
@@ -375,7 +375,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718208/flutter_audio_uploads/nsw89lwoxw5u7andmfrl.mp3',
-    artist: "LISA",
+    artist: "L I S A",
     title: 'Gurenge',
     image: 'assets/images/Gurenge.jpg',
   ),
@@ -396,7 +396,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718083/flutter_audio_uploads/hz50ay4i0zrsm6xczurr.mp3',
-    artist: "Jenix",
+    artist: "J E N I X",
     title: 'Catch Fire',
     image: 'assets/images/fire.jpg',
   ),
@@ -424,7 +424,7 @@ final List<Song> allSongs = [
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718216/flutter_audio_uploads/rmx40qxjarrkrrnlxa43.mp3',
-    artist: "FFH",
+    artist: "F F H",
     title: 'Love and Honor',
     image: 'assets/images/it.jpg',
   ),

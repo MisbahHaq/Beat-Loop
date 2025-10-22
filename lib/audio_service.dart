@@ -16,7 +16,6 @@ class AudioService {
   Future<void> initializeAudioSession() async {
     _audioSession = await AudioSession.instance;
     await _audioSession.configure(AudioSessionConfiguration.music());
-    await _audioSession.setActive(true);
   }
 
   void listenAudioPlayerEvents(

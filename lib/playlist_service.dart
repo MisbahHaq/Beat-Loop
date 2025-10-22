@@ -2,49 +2,44 @@ import 'models.dart';
 
 class PlaylistService {
   static List<Playlist> initializePlaylists(List<Song> allSongs) {
-    final List<String> hasanRaheemTitles = [
-      'Dard',
-      'Accusations',
-      'Post You',
-      'E X E S',
-      'Kanwal',
-      'Faaslay',
-      'Kaleji',
-      'Dewana',
-      'No More Care',
-      'Dil K Parday',
-      'Fly With Me',
-      'Mehbooba',
-      'Fana',
-      'Pal Pal',
-      'Dil Fareb',
-      'Tareekhi',
-      'IDK',
-      'Fly With Me',
-      'Hungama',
-      'Bayaan',
-      'Wishes',
-      'You',
-      'Memories',
-      'Radha',
-      'Aarzu',
-      'Peanut Butter',
-      'Dil Ruba',
-      'Faltu Pyar',
-      'Joona',
-      'Disconnect',
-      'Turri Jandi',
-      'Roop',
-    ];
-
     return [
       Playlist(
         name: 'Hasan Raheem',
-        songs:
-            allSongs.where((s) => hasanRaheemTitles.contains(s.title)).toList()
-              ..sort((a, b) => hasanRaheemTitles
-                  .indexOf(a.title)
-                  .compareTo(hasanRaheemTitles.indexOf(b.title))),
+        songs: allSongs
+            .where((s) =>
+                s.title == 'Dard' ||
+                s.title == 'Accusations' ||
+                s.title == 'Post You' ||
+                s.title == 'E X E S' ||
+                s.title == 'Kanwal' ||
+                s.title == 'Faaslay' ||
+                s.title == 'Kaleji' ||
+                s.title == 'Dewana' ||
+                s.title == 'No More Care' ||
+                s.title == 'Dil K Parday' ||
+                s.title == 'Fly With Me' ||
+                s.title == 'Mehbooba' ||
+                s.title == 'Fana' ||
+                s.title == 'Pal Pal' ||
+                s.title == 'Dil Fareb' ||
+                s.title == 'Tareekhi' ||
+                s.title == 'IDK' ||
+                s.title == 'Fly With Me' ||
+                s.title == 'Hungama' ||
+                s.title == 'Aarzu' ||
+                s.title == 'Peanut Butter' ||
+                s.title == 'Dil Ruba' ||
+                s.title == 'Faltu Pyar' ||
+                s.title == 'Bayaan' ||
+                s.title == 'Wishes' ||
+                s.title == 'You' ||
+                s.title == 'Joona' ||
+                s.title == 'Disconnect' ||
+                s.title == 'Turri Jandi' ||
+                s.title == 'Roop' ||
+                s.title == 'Memories' ||
+                s.title == 'Radha')
+            .toList(),
       ),
       Playlist(
         name: 'Uzair Jaswal',
