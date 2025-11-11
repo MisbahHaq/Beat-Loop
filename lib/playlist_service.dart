@@ -5,42 +5,42 @@ class PlaylistService {
     return [
       Playlist(
         name: 'Hasan Raheem',
-        songs: allSongs
-            .where((s) =>
-                s.title == 'Dard' ||
-                s.title == 'Accusations' ||
-                s.title == 'Post You' ||
-                s.title == 'E X E S' ||
-                s.title == 'Back Ke' ||
-                s.title == 'Kanwal' ||
-                s.title == 'Faaslay' ||
-                s.title == 'Kaleji' ||
-                s.title == 'Dewana' ||
-                s.title == 'No More Care' ||
-                s.title == 'Dil K Parday' ||
-                s.title == 'Fly With Me' ||
-                s.title == 'Mehbooba' ||
-                s.title == 'Fana' ||
-                s.title == 'Pal Pal' ||
-                s.title == 'Dil Fareb' ||
-                s.title == 'Tareekhi' ||
-                s.title == 'IDK' ||
-                s.title == 'Fly With Me' ||
-                s.title == 'Hungama' ||
-                s.title == 'Aarzu' ||
-                s.title == 'Peanut Butter' ||
-                s.title == 'Dil Ruba' ||
-                s.title == 'Faltu Pyar' ||
-                s.title == 'Bayaan' ||
-                s.title == 'Wishes' ||
-                s.title == 'You' ||
-                s.title == 'Joona' ||
-                s.title == 'Disconnect' ||
-                s.title == 'Turri Jandi' ||
-                s.title == 'Roop' ||
-                s.title == 'Memories' ||
-                s.title == 'Radha')
-            .toList(),
+        songs: [
+          'Dard',
+          'Accusations',
+          'Post You',
+          'E X E S',
+          'Bach Ke',
+          'Kanwal',
+          'Paisa',
+          'Faaslay',
+          'Kaleji',
+          'Deewana',
+          'No More Care',
+          'Dil K Parday',
+          'Fly With Me',
+          'Mehbooba',
+          'Fana',
+          'Pal Pal',
+          'Dil Fareb',
+          'Tareekhi',
+          'IDK',
+          'Fly With Me',
+          'Hungama',
+          'Aarzu',
+          'Peanut Butter',
+          'Dil Ruba',
+          'Faltu Pyar',
+          'Bayaan',
+          'Wishes',
+          'You',
+          'Joona',
+          'Disconnect',
+          'Turri Jandi',
+          'Roop',
+          'Memories',
+          'Radha'
+        ].map((title) => allSongs.firstWhere((s) => s.title == title)).toList(),
       ),
       Playlist(
         name: 'Uzair Jaswal',

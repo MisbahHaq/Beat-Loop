@@ -248,6 +248,13 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762847834/PAISA_-_Talal_Qureshi_x_Hasan_Raheem_RohanYV___Arham_Ikram_yxiwwy.mp3',
+    artist: "Hasan Raheem",
+    title: 'Paisa',
+    image: 'assets/images/tur.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718056/flutter_audio_uploads/pgenxxbgwmifvzpaokgn.mp3',
     artist: "Hasan Raheem",
     title: 'Disconnect',
