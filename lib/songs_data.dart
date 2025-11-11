@@ -255,10 +255,45 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762853285/Umair_Hasan_Raheem_-_OBVIOUS_Official_Music_Video_ebanru.mp3',
+    artist: "Hasan Raheem",
+    title: 'Obvious',
+    image: 'assets/images/tur.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762853325/Sahiba_ieqvwc.mp3',
+    artist: "Aditya Rikhari ",
+    title: 'Sahiba',
+    image: 'assets/images/zim.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718056/flutter_audio_uploads/pgenxxbgwmifvzpaokgn.mp3',
     artist: "Hasan Raheem",
     title: 'Disconnect',
     image: 'assets/images/discon.webp',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762852841/Afusic_-_Pal_Pal_with_Talwiinder_Official_Visualiser_Prod._AliSoomroMusic_fxnhif.mp3',
+    artist: "Talwiinder x Afusic",
+    title: 'Pal Pal',
+    image: 'assets/images/tal.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762852951/Dhundhala_-_Yashraj_Talwiinder_Dropped_Out_Lyrics_English_Meaning_btuuyl.mp3',
+    artist: "Talwiinder",
+    title: 'Dhundhala',
+    image: 'assets/images/tal.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762853068/PYARI_AMAANAT_-_Arpit_Bala_aodgotit_angadsvirk_Official_Music_Video_afhgbn.mp3',
+    artist: "Arpit Bala",
+    title: 'Pyaari Amanat',
+    image: 'assets/images/arpit.jpg',
   ),
   Song(
     path:
