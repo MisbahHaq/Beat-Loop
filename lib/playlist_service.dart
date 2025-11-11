@@ -11,6 +11,7 @@ class PlaylistService {
                 s.title == 'Accusations' ||
                 s.title == 'Post You' ||
                 s.title == 'E X E S' ||
+                s.title == 'Back Ke' ||
                 s.title == 'Kanwal' ||
                 s.title == 'Faaslay' ||
                 s.title == 'Kaleji' ||

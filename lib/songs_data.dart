@@ -388,6 +388,13 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762847099/Talwiinder_x_Hasan_Raheem_x_NDS_-_BACH_KE_Official_Video_ugctzl.mp3',
+    artist: "Talwiinder x Hasan Raheem",
+    title: 'Bach Ke',
+    image: 'assets/images/tal.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718290/flutter_audio_uploads/zr0gowitfof4jid1a8qy.mp3',
     artist: "Luck Life",
     title: 'Namae Wo Yobu',
