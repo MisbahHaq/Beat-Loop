@@ -28,6 +28,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   bool isSearching = false;
   String searchQuery = '';
   List<Song> searchResults = [];
+  List<Song> recentlyPlayed = [];
 
   late LinearGradient currentGradient;
 
@@ -84,6 +85,16 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   void _playSong(int index) {
     audioService.playSong(index, currentSongs, _setCurrentSongIndex,
         _setIsPlaying, _rotationController);
+    // Track recently played songs
+    final song = currentSongs[index];
+    setState(() {
+      recentlyPlayed
+          .removeWhere((s) => s.title == song.title && s.artist == song.artist);
+      recentlyPlayed.insert(0, song);
+      if (recentlyPlayed.length > 10) {
+        recentlyPlayed = recentlyPlayed.take(10).toList();
+      }
+    });
   }
 
   void _downloadAllSongsWithProgress(BuildContext context) {
@@ -451,73 +462,95 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                         SizedBox(height: 10),
                                         Container(
                                           height: 130,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: allSongs.take(10).length,
-                                            itemBuilder: (context, index) {
-                                              final song = allSongs[index];
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    currentSongs = [
-                                                      allSongs[index]
-                                                    ];
-                                                    showingPlaylists = false;
-                                                    _currentSongIndex = 0;
-                                                  });
-                                                  audioService.playSong(
-                                                      0,
-                                                      currentSongs,
-                                                      _setCurrentSongIndex,
-                                                      _setIsPlaying,
-                                                      _rotationController);
-                                                },
-                                                child: Container(
-                                                  width: 120,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        width: 110,
-                                                        height: 110,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          image:
-                                                              DecorationImage(
-                                                            image: AssetImage(
-                                                                song.image),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 4),
-                                                      SizedBox(
-                                                        height: 14,
-                                                        child: Text(
-                                                          song.title,
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 11,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      ),
-                                                    ],
+                                          child: recentlyPlayed.isEmpty
+                                              ? Center(
+                                                  child: Text(
+                                                    "No recently played songs",
+                                                    style: TextStyle(
+                                                      color: Colors.white
+                                                          .withOpacity(0.7),
+                                                      fontSize: 14,
+                                                    ),
                                                   ),
+                                                )
+                                              : ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      recentlyPlayed.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    final song =
+                                                        recentlyPlayed[index];
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          currentSongs = [song];
+                                                          showingPlaylists =
+                                                              false;
+                                                          _currentSongIndex = 0;
+                                                        });
+                                                        audioService.playSong(
+                                                            0,
+                                                            currentSongs,
+                                                            _setCurrentSongIndex,
+                                                            _setIsPlaying,
+                                                            _rotationController);
+                                                      },
+                                                      child: Container(
+                                                        width: 120,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 8),
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              width: 110,
+                                                              height: 110,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image: AssetImage(
+                                                                      song.image),
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 4),
+                                                            SizedBox(
+                                                              height: 14,
+                                                              child: Text(
+                                                                song.title,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
-                                              );
-                                            },
-                                          ),
                                         ),
                                         SizedBox(height: 20),
                                       ],
