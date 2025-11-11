@@ -5,48 +5,20 @@ class PlaylistService {
     return [
       Playlist(
         name: 'Hasan Raheem',
-        songs: [
-          'Dard',
-          'Accusations',
-          'Post You',
-          'E X E S',
-          'Bach Ke',
-          'Kanwal',
-          'Paisa',
-          'Faaslay',
-          'Kaleji',
-          'Deewana',
-          'No More Care',
-          'Dil K Parday',
-          'Fly With Me',
-          'Mehbooba',
-          'Fana',
-          'Pal Pal',
-          'Dil Fareb',
-          'Tareekhi',
-          'IDK',
-          'Fly With Me',
-          'Hungama',
-          'Aarzu',
-          'Peanut Butter',
-          'Dil Ruba',
-          'Faltu Pyar',
-          'Bayaan',
-          'Wishes',
-          'You',
-          'Joona',
-          'Disconnect',
-          'Turri Jandi',
-          'Roop',
-          'Memories',
-          'Radha'
-        ].map((title) => allSongs.firstWhere((s) => s.title == title)).toList(),
+        songs:
+            allSongs.where((s) => s.artist.contains('Hasan Raheem')).toList(),
+      ),
+      Playlist(
+        name: 'Afusic',
+        songs: allSongs.where((s) => s.artist.contains('Afusic')).toList(),
+      ),
+      Playlist(
+        name: 'Talwiinder',
+        songs: allSongs.where((s) => s.artist.contains('Talwiinder')).toList(),
       ),
       Playlist(
         name: 'Uzair Jaswal',
-        songs: allSongs
-            .where((s) => s.image == 'assets/images/uzair.jpg')
-            .toList(),
+        songs: allSongs.where((s) => s.artist == 'Uzair Jaswal').toList(),
       ),
       Playlist(
         name: 'AMVs',
