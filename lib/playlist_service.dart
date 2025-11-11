@@ -11,10 +11,12 @@ class PlaylistService {
       Playlist(
         name: 'Afusic',
         songs: allSongs.where((s) => s.artist.contains('Afusic')).toList(),
+        image: 'assets/images/af.jpg',
       ),
       Playlist(
         name: 'Talwiinder',
         songs: allSongs.where((s) => s.artist.contains('Talwiinder')).toList(),
+        image: 'assets/images/tal.jpg',
       ),
       Playlist(
         name: 'Uzair Jaswal',

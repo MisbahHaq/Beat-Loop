@@ -15,5 +15,6 @@ class Song {
 class Playlist {
   final String name;
   final List<Song> songs;
-  Playlist({required this.name, required this.songs});
+  final String? image;
+  Playlist({required this.name, required this.songs, this.image});
 }

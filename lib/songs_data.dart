@@ -188,7 +188,7 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1760681064/Afusic_-_Pal_Pal_Official_Music_Video_Prod._AliSoomroMusic_qsl2qx.mp3',
     artist: "Afusic",
     title: 'Pal Pal',
-    image: 'assets/images/exes.jpg',
+    image: 'assets/images/af.jpg',
   ),
   Song(
     path:
@@ -280,6 +280,13 @@ final List<Song> allSongs = [
     artist: "Talwiinder x Afusic",
     title: 'Pal Pal',
     image: 'assets/images/tal.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762853703/Afusic_-_Heer_Official_Music_Video_Prod._AliSoomroMusic_wbu8dn.mp3',
+    artist: "Afusic",
+    title: 'Heer',
+    image: 'assets/images/af.jpg',
   ),
   Song(
     path:
