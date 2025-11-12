@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:workmanager/workmanager.dart';
 import '../models.dart';
 import '../audio_service.dart';
 import '../playlist_service.dart';
 import '../songs_data.dart';
+import '../download_worker.dart';
 
 class Apollo extends StatefulWidget {
   @override
@@ -82,23 +84,60 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   void _setIsShuffling(bool shuffling) =>
       setState(() => _isShuffling = shuffling);
 
-  void _playSong(int index) {
-    audioService.playSong(index, currentSongs, _setCurrentSongIndex,
-        _setIsPlaying, _rotationController);
-    // Track recently played songs
-    final song = currentSongs[index];
-    setState(() {
-      recentlyPlayed
-          .removeWhere((s) => s.title == song.title && s.artist == song.artist);
-      recentlyPlayed.insert(0, song);
-      if (recentlyPlayed.length > 10) {
-        recentlyPlayed = recentlyPlayed.take(10).toList();
-      }
-    });
+  void _playSong(int index) async {
+    try {
+      await audioService.playSong(index, currentSongs, _setCurrentSongIndex,
+          _setIsPlaying, _rotationController);
+      // Track recently played songs
+      final song = currentSongs[index];
+      setState(() {
+        recentlyPlayed.removeWhere(
+            (s) => s.title == song.title && s.artist == song.artist);
+        recentlyPlayed.insert(0, song);
+        if (recentlyPlayed.length > 10) {
+          recentlyPlayed = recentlyPlayed.take(10).toList();
+        }
+      });
+    } catch (e) {
+      // Silent error handling
+    }
   }
 
   void _downloadAllSongsWithProgress(BuildContext context) {
-    audioService.downloadAllSongsWithProgress(context, allSongs);
+    _scheduleBackgroundDownloads(context, allSongs);
+  }
+
+  void _scheduleBackgroundDownloads(
+      BuildContext context, List<Song> allSongs) async {
+    List<Song> toDownload = [];
+    for (final song in allSongs) {
+      final file = await audioService.getLocalFile(song);
+      if (!file.existsSync()) {
+        toDownload.add(song);
+      }
+    }
+
+    int scheduled = 0;
+    for (final song in toDownload) {
+      await Workmanager().registerOneOffTask(
+        'download_${song.title.hashCode}_${DateTime.now().millisecondsSinceEpoch}',
+        downloadTaskKey,
+        inputData: {
+          'songTitle': song.title,
+          'songPath': song.path,
+          'songImage': song.image,
+          'songArtist': song.artist,
+        },
+        constraints: Constraints(networkType: NetworkType.connected),
+      );
+      scheduled++;
+      // Delay between each task to avoid overwhelming the system
+      if (scheduled < toDownload.length) {
+        await Future.delayed(Duration(seconds: 2));
+      }
+    }
+
+    // Removed download notification as requested
   }
 
   void _pauseSong() {
@@ -483,19 +522,23 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                                                     final song =
                                                         recentlyPlayed[index];
                                                     return GestureDetector(
-                                                      onTap: () {
+                                                      onTap: () async {
                                                         setState(() {
                                                           currentSongs = [song];
                                                           showingPlaylists =
                                                               false;
                                                           _currentSongIndex = 0;
                                                         });
-                                                        audioService.playSong(
-                                                            0,
-                                                            currentSongs,
-                                                            _setCurrentSongIndex,
-                                                            _setIsPlaying,
-                                                            _rotationController);
+                                                        try {
+                                                          await audioService.playSong(
+                                                              0,
+                                                              currentSongs,
+                                                              _setCurrentSongIndex,
+                                                              _setIsPlaying,
+                                                              _rotationController);
+                                                        } catch (e) {
+                                                          // Silent error handling
+                                                        }
                                                       },
                                                       child: Container(
                                                         width: 120,

@@ -47,6 +47,15 @@ class AudioService {
       await _downloadFile(song.path, file);
     }
 
+    if (await file.exists()) {
+      final fileSize = await file.length();
+      if (fileSize == 0) {
+        throw Exception("Audio file is empty");
+      }
+    } else {
+      throw Exception("Audio file does not exist");
+    }
+
     await _audioPlayer.play(DeviceFileSource(file.path));
 
     setCurrentSongIndex(index);
@@ -134,16 +143,30 @@ class AudioService {
     return File('${dir.path}/$fileName');
   }
 
+  Future<File> getLocalFile(Song song) async {
+    return _getLocalFile(song);
+  }
+
   Future<void> _downloadFile(String url, File file) async {
     try {
       final response = await Dio().download(url, file.path);
       if (response.statusCode == 200) {
-        print("Download success: ${file.path}");
+        final fileSize = await file.length();
+        if (fileSize == 0) {
+          await file.delete();
+          throw Exception("Downloaded file is empty");
+        }
       } else {
-        print("Download failed with status ${response.statusCode}");
+        throw Exception("Download failed with status ${response.statusCode}");
       }
     } catch (e) {
-      print("Download error: $e");
+      if (await file.exists()) {
+        final fileSize = await file.length();
+        if (fileSize == 0) {
+          await file.delete();
+        }
+      }
+      rethrow;
     }
   }
 
