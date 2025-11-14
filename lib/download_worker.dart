@@ -48,26 +48,58 @@ Future<void> downloadSongInBackground(Song song) async {
     final file = File('${dir.path}/$fileName');
 
     if (file.existsSync()) {
-      print("Song already downloaded: ${song.title}");
+      final existingSize = file.lengthSync();
+      print(
+          "Song already downloaded: ${song.title}, size: $existingSize bytes");
       // Already downloaded
       return;
     }
 
     print("Downloading song: ${song.title} from ${song.path}");
-    final response = await Dio().download(song.path, file.path);
-
-    if (response.statusCode == 200) {
-      print("Download completed for song: ${song.title}");
-      // Update shared preferences or notify
-      final prefs = await SharedPreferences.getInstance();
-      final downloadedSongs = prefs.getStringList('downloadedSongs') ?? [];
-      if (!downloadedSongs.contains(song.title)) {
-        downloadedSongs.add(song.title);
-        await prefs.setStringList('downloadedSongs', downloadedSongs);
+    const int maxRetries = 3;
+    bool success = false;
+    for (int attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        print("Download attempt $attempt/$maxRetries for ${song.title}");
+        final response = await Dio().download(song.path, file.path);
+        print("Download response status: ${response.statusCode}");
+        if (response.statusCode == 200) {
+          final fileSize = file.lengthSync();
+          print(
+              "Download completed for song: ${song.title}, file size: $fileSize bytes");
+          // Check minimum size
+          const int minFileSize = 1048576; // 1MB
+          if (fileSize >= minFileSize) {
+            success = true;
+            // Update shared preferences or notify
+            final prefs = await SharedPreferences.getInstance();
+            final downloadedSongs =
+                prefs.getStringList('downloadedSongs') ?? [];
+            if (!downloadedSongs.contains(song.title)) {
+              downloadedSongs.add(song.title);
+              await prefs.setStringList('downloadedSongs', downloadedSongs);
+            }
+            break;
+          } else {
+            print("Downloaded file too small, retrying");
+            await file.delete();
+          }
+        } else {
+          throw Exception("Download failed with status ${response.statusCode}");
+        }
+      } catch (e) {
+        print("Download error on attempt $attempt: $e");
+        if (attempt == maxRetries) {
+          print("All download attempts failed for ${song.title}");
+        }
+        await Future.delayed(Duration(seconds: 1));
       }
-    } else {
-      print(
-          "Download failed for song: ${song.title}, status: ${response.statusCode}");
+    }
+    if (!success) {
+      // Clean up partial file
+      if (file.existsSync()) {
+        await file.delete();
+      }
     }
   } catch (e) {
     print("Error downloading song: ${song.title}, error: $e");

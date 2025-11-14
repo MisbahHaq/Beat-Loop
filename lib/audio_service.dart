@@ -49,8 +49,21 @@ class AudioService {
 
     if (await file.exists()) {
       final fileSize = await file.length();
+      print("Playing song: ${song.title}, file size: $fileSize bytes");
       if (fileSize == 0) {
         throw Exception("Audio file is empty");
+      }
+      // Check for minimum file size (1MB = 1048576 bytes) to detect incomplete downloads
+      const int minFileSize = 1048576; // 1MB
+      if (fileSize < minFileSize) {
+        print("File size too small, re-downloading: ${song.title}");
+        await file.delete();
+        await _downloadFile(song.path, file);
+        final newFileSize = await file.length();
+        print("Re-downloaded file size: $newFileSize bytes");
+        if (newFileSize < minFileSize) {
+          throw Exception("Re-downloaded file is still too small");
+        }
       }
     } else {
       throw Exception("Audio file does not exist");
@@ -97,17 +110,17 @@ class AudioService {
                 for (final song in allSongs) {
                   final file = await _getLocalFile(song);
                   if (!file.existsSync()) {
-                    await _downloadFile(song.path, file);
-                    completed++;
-                    setDialogState(() {}); // refresh dialog
+                    try {
+                      await _downloadFile(song.path, file);
+                      completed++;
+                      setDialogState(() {}); // refresh dialog
+                    } catch (e) {
+                      print("Failed to download ${song.title}: $e");
+                      // Continue to next song
+                    }
                   }
                 }
                 Navigator.of(context).pop(); // close dialog
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('All songs downloaded!')),
-                  );
-                }
               });
             }
 
@@ -118,7 +131,7 @@ class AudioService {
                 children: [
                   LinearProgressIndicator(value: completed / toDownload),
                   SizedBox(height: 16),
-                  Text("Downloading $completed of $toDownload"),
+                  Text("Remaining: ${toDownload - completed}"),
                 ],
               ),
               actions: [
@@ -148,25 +161,39 @@ class AudioService {
   }
 
   Future<void> _downloadFile(String url, File file) async {
-    try {
-      final response = await Dio().download(url, file.path);
-      if (response.statusCode == 200) {
-        final fileSize = await file.length();
-        if (fileSize == 0) {
-          await file.delete();
-          throw Exception("Downloaded file is empty");
+    print("Starting download for URL: $url to file: ${file.path}");
+    const int maxRetries = 3;
+    for (int attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        print("Download attempt $attempt/$maxRetries");
+        final response = await Dio().download(url, file.path);
+        print("Download response status: ${response.statusCode}");
+        if (response.statusCode == 200) {
+          final fileSize = await file.length();
+          print("Downloaded file size: $fileSize bytes");
+          if (fileSize == 0) {
+            await file.delete();
+            throw Exception("Downloaded file is empty");
+          }
+          return; // Success
+        } else {
+          throw Exception("Download failed with status ${response.statusCode}");
         }
-      } else {
-        throw Exception("Download failed with status ${response.statusCode}");
-      }
-    } catch (e) {
-      if (await file.exists()) {
-        final fileSize = await file.length();
-        if (fileSize == 0) {
-          await file.delete();
+      } catch (e) {
+        print("Download error on attempt $attempt: $e");
+        if (await file.exists()) {
+          final fileSize = await file.length();
+          print("File exists after error, size: $fileSize bytes");
+          if (fileSize == 0) {
+            await file.delete();
+          }
         }
+        if (attempt == maxRetries) {
+          rethrow;
+        }
+        // Wait before retry
+        await Future.delayed(Duration(seconds: 1));
       }
-      rethrow;
     }
   }
 

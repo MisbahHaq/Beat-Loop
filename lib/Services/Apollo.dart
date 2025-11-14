@@ -1,12 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:workmanager/workmanager.dart';
 import '../models.dart';
 import '../audio_service.dart';
 import '../playlist_service.dart';
 import '../songs_data.dart';
-import '../download_worker.dart';
 
 class Apollo extends StatefulWidget {
   @override
@@ -104,40 +102,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   }
 
   void _downloadAllSongsWithProgress(BuildContext context) {
-    _scheduleBackgroundDownloads(context, allSongs);
-  }
-
-  void _scheduleBackgroundDownloads(
-      BuildContext context, List<Song> allSongs) async {
-    List<Song> toDownload = [];
-    for (final song in allSongs) {
-      final file = await audioService.getLocalFile(song);
-      if (!file.existsSync()) {
-        toDownload.add(song);
-      }
-    }
-
-    int scheduled = 0;
-    for (final song in toDownload) {
-      await Workmanager().registerOneOffTask(
-        'download_${song.title.hashCode}_${DateTime.now().millisecondsSinceEpoch}',
-        downloadTaskKey,
-        inputData: {
-          'songTitle': song.title,
-          'songPath': song.path,
-          'songImage': song.image,
-          'songArtist': song.artist,
-        },
-        constraints: Constraints(networkType: NetworkType.connected),
-      );
-      scheduled++;
-      // Delay between each task to avoid overwhelming the system
-      if (scheduled < toDownload.length) {
-        await Future.delayed(Duration(seconds: 2));
-      }
-    }
-
-    // Removed download notification as requested
+    audioService.downloadAllSongsWithProgress(context, allSongs);
   }
 
   void _pauseSong() {
