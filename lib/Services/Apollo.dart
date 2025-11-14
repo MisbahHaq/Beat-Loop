@@ -163,10 +163,11 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
       end: Alignment.bottomCenter,
     );
     audioService.initializeAudioSession();
-    audioService.listenAudioPlayerEvents(
-        () => _nextSong(),
-        (duration) => setState(() => _currentPosition = duration),
-        (duration) => setState(() => _songDuration = duration));
+    audioService.listenAudioPlayerEvents(() => _nextSong(),
+        (duration) => setState(() => _currentPosition = duration), (duration) {
+      setState(() => _songDuration = duration);
+      print("DEBUG: Song duration set to: ${duration.inSeconds} seconds");
+    });
     playlists = PlaylistService.initializePlaylists(allSongs);
     currentSongs = [];
 

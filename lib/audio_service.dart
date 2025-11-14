@@ -39,33 +39,43 @@ class AudioService {
     await _audioPlayer.stop();
 
     final song = currentSongs[index];
+    print("DEBUG: Attempting to play song: ${song.title} by ${song.artist}");
     final file = await _getLocalFile(song);
 
     // 🔽 If file doesn't exist, download and show snackbar
     if (!file.existsSync()) {
+      print("DEBUG: File does not exist, downloading: ${song.title}");
       // Note: Snackbar needs context, so this will be handled in the widget
       await _downloadFile(song.path, file);
+    } else {
+      print("DEBUG: File exists for: ${song.title}");
     }
 
     if (await file.exists()) {
       final fileSize = await file.length();
-      print("Playing song: ${song.title}, file size: $fileSize bytes");
+      print("DEBUG: Playing song: ${song.title}, file size: $fileSize bytes");
       if (fileSize == 0) {
+        print("DEBUG: Audio file is empty for: ${song.title}");
         throw Exception("Audio file is empty");
       }
       // Check for minimum file size (1MB = 1048576 bytes) to detect incomplete downloads
       const int minFileSize = 1048576; // 1MB
       if (fileSize < minFileSize) {
-        print("File size too small, re-downloading: ${song.title}");
+        print(
+            "DEBUG: File size too small (${fileSize} bytes), re-downloading: ${song.title}");
         await file.delete();
         await _downloadFile(song.path, file);
         final newFileSize = await file.length();
-        print("Re-downloaded file size: $newFileSize bytes");
+        print(
+            "DEBUG: Re-downloaded file size: $newFileSize bytes for ${song.title}");
         if (newFileSize < minFileSize) {
+          print("DEBUG: Re-downloaded file still too small for: ${song.title}");
           throw Exception("Re-downloaded file is still too small");
         }
       }
     } else {
+      print(
+          "DEBUG: Audio file does not exist after download attempt for: ${song.title}");
       throw Exception("Audio file does not exist");
     }
 
@@ -161,34 +171,40 @@ class AudioService {
   }
 
   Future<void> _downloadFile(String url, File file) async {
-    print("Starting download for URL: $url to file: ${file.path}");
+    print("DEBUG: Starting download for URL: $url to file: ${file.path}");
     const int maxRetries = 3;
     for (int attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        print("Download attempt $attempt/$maxRetries");
+        print("DEBUG: Download attempt $attempt/$maxRetries for $url");
         final response = await Dio().download(url, file.path);
-        print("Download response status: ${response.statusCode}");
+        print(
+            "DEBUG: Download response status: ${response.statusCode} for $url");
         if (response.statusCode == 200) {
           final fileSize = await file.length();
-          print("Downloaded file size: $fileSize bytes");
+          print("DEBUG: Downloaded file size: $fileSize bytes for $url");
           if (fileSize == 0) {
+            print("DEBUG: Downloaded file is empty, deleting for $url");
             await file.delete();
             throw Exception("Downloaded file is empty");
           }
           return; // Success
         } else {
+          print(
+              "DEBUG: Download failed with status ${response.statusCode} for $url");
           throw Exception("Download failed with status ${response.statusCode}");
         }
       } catch (e) {
-        print("Download error on attempt $attempt: $e");
+        print("DEBUG: Download error on attempt $attempt for $url: $e");
         if (await file.exists()) {
           final fileSize = await file.length();
-          print("File exists after error, size: $fileSize bytes");
+          print(
+              "DEBUG: File exists after error, size: $fileSize bytes for $url");
           if (fileSize == 0) {
             await file.delete();
           }
         }
         if (attempt == maxRetries) {
+          print("DEBUG: All download attempts failed for $url");
           rethrow;
         }
         // Wait before retry
