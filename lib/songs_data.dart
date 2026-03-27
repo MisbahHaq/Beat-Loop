@@ -52,7 +52,8 @@ final List<Song> allSongs = [
   ),
   Song(
     artist: "Shae Gil",
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614116/Gila_yw8eoy.mp3',
     title: 'Gila',
     image: 'assets/images/shae.jpg',
   ),
@@ -65,7 +66,8 @@ final List<Song> allSongs = [
   ),
   Song(
     artist: "Uzair Jaswal",
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614182/Fursat_Uzair_Jaswal_2024_iuodz4.mp3',
     title: 'Fursat',
     image: 'assets/images/uzair.jpg',
   ),
@@ -118,12 +120,12 @@ final List<Song> allSongs = [
     title: 'Kanwal',
     image: 'assets/images/exes.jpg',
   ),
-  Song(
-    artist: "Talha Anjum",
-    path: '',
-    title: 'Jani',
-    image: 'assets/images/jani.jpg',
-  ),
+  // Song(
+  //   artist: "Talha Anjum",
+  //   path: '',
+  //   title: 'Jani',
+  //   image: 'assets/images/jani.jpg',
+  // ),
   Song(
     artist: "Hasan Raheem",
     path:
@@ -132,13 +134,15 @@ final List<Song> allSongs = [
     image: 'assets/images/discon.webp',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614268/Ud_jana_Uzair_Jaswal_2024_pxcedh.mp3',
     artist: "Uzair Jaswal",
     title: 'Ud Jana',
     image: 'assets/images/uzair.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614326/DEEWANA_-_Hasan_Raheem_Prod_by_Shehryar_Khan_qa2nuu.mp3',
     artist: "Hasan Raheem",
     title: 'Deewana',
     image: 'assets/images/exes.jpg',
@@ -150,14 +154,15 @@ final List<Song> allSongs = [
     title: 'Faltu Pyar',
     image: 'assets/images/pyar.jpg',
   ),
+  // Song(
+  //   path: '',
+  //   artist: "Maya Bee",
+  //   title: 'Maya Bee',
+  //   image: 'assets/images/maya.jpg',
+  // ),
   Song(
-    path: '',
-    artist: "Maya Bee",
-    title: 'Maya Bee',
-    image: 'assets/images/maya.jpg',
-  ),
-  Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614388/Piya_Piya_Calling_Coke_Studio_Pakistan_S15_Karpe_Kaifi_Khalil_Amanda_Delara_Quick_Style_zacsnm.mp3',
     artist: "Delara",
     title: 'Piya Calling',
     image: 'assets/images/piya.jpg',
@@ -170,25 +175,29 @@ final List<Song> allSongs = [
     image: 'assets/images/discon.webp',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614460/Tu_hai_tou_Uzair_Jaswal_2024_m2traq.mp3',
     artist: "Uzair Jaswal",
-    title: 'Tu Hai K Nhi',
+    title: 'Tu Hai Tou',
     image: 'assets/images/uzair.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614506/NO_MORE_CARE_Hasan_Raheem_Prod_by_Varqa_Faraid_yf5jqm.mp3',
     artist: "Hasan Raheem",
     title: 'No More Care',
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614551/Umair_Talha_Anjum_Talhah_Yunus_-_DEAR_BELOVED_Official_Audio_plfija.mp3',
     artist: "Talha Anjum",
     title: 'Beloved',
     image: 'assets/images/y.jfif',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614592/Hasan_Raheem_-_Tareekhi_Audio_za6ycu.mp3',
     artist: "Hasan Raheem",
     title: 'Tareekhi',
     image: 'assets/images/discon.webp',
@@ -215,12 +224,6 @@ final List<Song> allSongs = [
     image: 'assets/images/af.jpg',
   ),
   Song(
-    path: '',
-    artist: "Uzair Jaswal",
-    title: 'Tu Hai Tou',
-    image: 'assets/images/uzair.jpg',
-  ),
-  Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597443/Bayaan_Hasan_Raheem_Rovalio_-_Maand_Lyric_Video_hpwpgr.mp3',
     artist: "Hasan Raheem",
@@ -228,37 +231,43 @@ final List<Song> allSongs = [
     image: 'assets/images/bayaan.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614756/Lana_Del_Rey_-_West_Coast_ibfmc4.mp3',
     artist: "Lana Del Rey",
     title: 'West Coast',
     image: 'assets/images/lana.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614794/Hasan_Raheem_-_Wishes_ft_Talwiinder_Prod_by_Umair_Official_Lyric_Video_m3p5ct.mp3',
     artist: "Hasan Raheem",
     title: 'Wishes',
     image: 'assets/images/wish.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614831/Kaisa_Mai_xbsyq5.mp3',
     artist: "Arpit Bala",
     title: 'Kaisa Mein',
     image: 'assets/images/avg.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614872/Asim_Azhar_ft._Hassan_Raheem_-_YOU_Official_Music_Video_BEMATLAB_Album_lwju5o.mp3',
     artist: "Hasan Raheem",
     title: 'You',
     image: 'assets/images/you.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614935/Dil_ki_kahani_Uzair_Jaswal_2024_hjahrr.mp3',
     artist: "Uzair Jaswal",
     title: 'Dil Ki Kahani',
     image: 'assets/images/uzair.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614974/Hasan_Raheem_-_JOONA_ft._Abdullah_Kasumbi_ncahii.mp3',
     artist: "Hasan Raheem",
     title: 'Joona',
     image: 'assets/images/joon.jfif',
@@ -278,7 +287,8 @@ final List<Song> allSongs = [
     image: 'assets/images/tur.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615022/Sahiba_Official_Music_Video___Aditya_Rikhari_Ankita_Chhetri_T-Series_xesdrn.mp3',
     artist: "Aditya Rikhari ",
     title: 'Sahiba',
     image: 'assets/images/zim.jpg',
@@ -305,22 +315,18 @@ final List<Song> allSongs = [
   //   image: 'assets/images/tal.jpg',
   // ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615060/PYARI_AMAANAT_-_Arpit_Bala_aodgotit_angadsvirk_OfficialMusicVideo_ylomkf.mp3',
     artist: "Arpit Bala",
     title: 'Pyaari Amanat',
     image: 'assets/images/arpit.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615095/Zimmedaar-_Paradox_ft._Arpit_Bala_Prod._by_A.O.D._Overthink_EP_Official_Audio_bmcvgt.mp3',
     artist: "Arpit Bala",
     title: 'Zimmedaar',
     image: 'assets/images/zim.jpg',
-  ),
-  Song(
-    path: '',
-    artist: "Arijit Singh",
-    title: 'Tum Hi Ho',
-    image: 'assets/images/sha.jpg',
   ),
   Song(
     path:
@@ -337,7 +343,8 @@ final List<Song> allSongs = [
     image: 'assets/images/y.jfif',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615146/Bandar_-_Arpit_Bala_X_SangeetKir_gqzkyr.mp3',
     artist: "Arpit Bala",
     title: 'Bandar',
     image: 'assets/images/arpit.jpg',
@@ -357,7 +364,8 @@ final List<Song> allSongs = [
     image: 'assets/images/discon.webp',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615194/darcyx_arpitbaala_FUNKA_visualizer_prod_FatboiRaccoon_qqvff3.mp3',
     artist: "Arpit Bala",
     title: 'Full Funka',
     image: 'assets/images/funk.png',
@@ -384,7 +392,8 @@ final List<Song> allSongs = [
     image: 'assets/images/you.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615233/Desiigner_-_Tiimmy_Turner_Official_Audio_nkzyrj.mp3',
     artist: "Desiigner",
     title: 'Timmy Turner',
     image: 'assets/images/de.jpeg',
@@ -418,19 +427,22 @@ final List<Song> allSongs = [
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615317/JE_KOTA_DIN_TUMI_CHILE_PASHE_FULL_SONG_upyn4g.mp3',
     artist: "Anupam Roy",
     title: 'Je Kota Din',
     image: 'assets/images/maya.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615447/Trafalgar_D_Water_Law_AMV_Angel_One_Piece_ykxhnv.mp3',
     artist: "Theory of a Deadman",
     title: 'In Love With an Angel',
     image: 'assets/images/tra.jpg',
   ),
   Song(
-    path: '',
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615513/LiSA_-_Gurenge_Demon_Slayer__Kimetsu_no_Yaiba_OP_EngRom%E6%BC%A2%E5%AD%97_Lyrics_lrfbn5.mp3',
     artist: "L I S A",
     title: 'Gurenge',
     image: 'assets/images/Gurenge.jpg',
