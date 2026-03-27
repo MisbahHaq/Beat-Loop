@@ -27,19 +27,19 @@ final List<Song> allSongs = [
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591751/Murtaza_Qizilbash_Bhool_Official_Audio_trn6re.mp3',
     title: 'Bhool',
-    image: 'assets/images/exes.jpg',
+    image: 'assets/images/bhool.jpg',
   ),
   Song(
     artist: "Barney",
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591750/Barney_Sku_-_shey_jeno_ft._Tajwar_OFFICIAL_MUSIC_VIDEO_vdrtja.mp3',
     title: 'Shei Jeno',
-    image: 'assets/images/exes.jpg',
+    image: 'assets/images/barney.jpg',
   ),
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718212/flutter_audio_uploads/kwvresbginpk5nymxcss.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597886/Hasan_Raheem_-_Hungama_ft_Abdullah_Kasumbi_ehe5ou.mp3',
     title: 'Hungama',
     image: 'assets/images/hun.jpg',
   ),
@@ -60,7 +60,7 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680006/DIL_KAY_PARDAY_-_Hasan_Raheem___Prod_by_Shehryar_Khan_Lyrics_btrlw3.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597830/DIL_KAY_PARDAY_-_Hasan_Raheem_Prod_by_Shehryar_Khan_Lyrics_g5scsr.mp3',
     title: 'Dil K Parday',
     image: 'assets/images/exes.jpg',
   ),
@@ -95,7 +95,7 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680138/FLY_WITH_ME_-_Hasan_Raheem___Prod_by_Shehryar_Khan_Lyrics_gvl9zh.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597685/FLY_WITH_ME_-_Hasan_Raheem_Prod_by_Shehryar_Khan_Lyrics_xon81h.mp3',
     title: 'Fly With Me',
     image: 'assets/images/exes.jpg',
   ),
@@ -109,7 +109,7 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718052/flutter_audio_uploads/zsniujekdp6zpry5ix7w.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597623/Dil_Ruba_rlzeep.mp3',
     title: 'Dil Ruba',
     image: 'assets/images/dilruba.jpg',
   ),
@@ -130,7 +130,7 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1758534975/Faaslay_pdrhtt.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597562/Hasan_Raheem_-_Faaslay_Prod_by_Shehryar_Khan_fp5ias.mp3',
     title: 'Faaslay',
     image: 'assets/images/discon.webp',
   ),
@@ -215,7 +215,7 @@ final List<Song> allSongs = [
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596160/Afusic_-_Not_Enough_Official_Music_Video_Prod._AliSoomroMusic_vkctzn.mp3',
     artist: "Afusic",
-    title: 'Not Enuogh',
+    title: 'Not Enough',
     image: 'assets/images/af.jpg',
   ),
   Song(
@@ -234,9 +234,9 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718035/flutter_audio_uploads/dhhged7ryrlebqsoukuy.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597443/Bayaan_Hasan_Raheem_Rovalio_-_Maand_Lyric_Video_hpwpgr.mp3',
     artist: "Hasan Raheem",
-    title: 'Bayaan',
+    title: 'Maand',
     image: 'assets/images/bayaan.jpg',
   ),
   Song(
@@ -311,13 +311,6 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762852841/Afusic_-_Pal_Pal_with_Talwiinder_Official_Visualiser_Prod._AliSoomroMusic_fxnhif.mp3',
-    artist: "Talwiinder x Afusic",
-    title: 'Pal Pal',
-    image: 'assets/images/tal.jpg',
-  ),
-  Song(
-    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591466/Afusic_-_Heer_Official_Music_Video_Prod._AliSoomroMusic_cnl1rl.mp3',
     artist: "Afusic",
     title: 'Heer',
@@ -353,7 +346,7 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718374/flutter_audio_uploads/dn4cxjc8aryn4gopewmb.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597350/Turri_Jandi_Coke_Studio_Pakistan_Season_15_Shazia_Manzoor_x_Hasan_Raheem_qarc39.mp3',
     artist: "Hasan Raheem",
     title: 'Turri Jandi',
     image: 'assets/images/tur.jpg',
@@ -423,14 +416,14 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718286/flutter_audio_uploads/h6mshsr6llunvfy3bxo8.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597191/MEMORIES_-_Hasan_Raheem_ft_Justin_Bibis_Official_Music_Video_Latest_Urdu_Punjabi_Song_2025_lljvak.mp3',
     artist: "Hasan Raheem",
     title: 'Memories',
     image: 'assets/images/mem.png',
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718352/flutter_audio_uploads/smt2hf6i1eqotksmidst.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597272/Hasan_Raheem_-_Radha_Prod_by_UMAIR_havtte.mp3',
     artist: "Hasan Raheem",
     title: 'Radha',
     image: 'assets/images/radha.jpg',
