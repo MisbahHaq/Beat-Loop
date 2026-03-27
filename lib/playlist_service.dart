@@ -18,11 +18,11 @@ class PlaylistService {
         songs: allSongs.where((s) => s.artist.contains('Barney')).toList(),
         image: 'assets/images/af.jpg',
       ),
-      Playlist(
-        name: 'Talwiinder',
-        songs: allSongs.where((s) => s.artist.contains('Talwiinder')).toList(),
-        image: 'assets/images/tal.jpg',
-      ),
+      // Playlist(
+      //   name: 'Talwiinder',
+      //   songs: allSongs.where((s) => s.artist.contains('Talwiinder')).toList(),
+      //   image: 'assets/images/tal.jpg',
+      // ),
       Playlist(
         name: 'Uzair Jaswal',
         songs: allSongs.where((s) => s.artist == 'Uzair Jaswal').toList(),
