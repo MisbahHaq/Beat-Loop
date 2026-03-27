@@ -163,8 +163,18 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
       end: Alignment.bottomCenter,
     );
     audioService.initializeAudioSession();
-    audioService.listenAudioPlayerEvents(() => _nextSong(),
-        (duration) => setState(() => _currentPosition = duration), (duration) {
+    audioService.listenAudioPlayerEvents(() {
+      print(
+          "DEBUG: onPlayerComplete triggered. Current position: ${_currentPosition.inSeconds}s, Song duration: ${_songDuration.inSeconds}s, Song: ${currentSongs.isNotEmpty ? currentSongs[_currentSongIndex].title : 'N/A'}");
+      _nextSong();
+    }, (duration) {
+      setState(() => _currentPosition = duration);
+      // Log position every 30 seconds to avoid spam
+      if (duration.inSeconds % 30 == 0 && duration.inSeconds > 0) {
+        print(
+            "DEBUG: Playback position: ${duration.inSeconds}s / ${_songDuration.inSeconds}s");
+      }
+    }, (duration) {
       setState(() => _songDuration = duration);
       print("DEBUG: Song duration set to: ${duration.inSeconds} seconds");
     });

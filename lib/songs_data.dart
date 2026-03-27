@@ -4,7 +4,7 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760176728/DARD_-_Hasan_Raheem___Prod_by_Shamsher_Rana_Lyrics_hzrmnw.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591266/DARD_-_Hasan_Raheem_Prod_by_Shamsher_Rana_Lyrics_ns796h.mp3',
     title: 'Dard',
     image: 'assets/images/exes.jpg',
   ),
@@ -18,8 +18,22 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760679904/POST_YOU_-_Hasan_Raheem_ft_Afusic___Prod_by_Ali_Soomro_jkjkwb.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774590974/POST_YOU_-_Hasan_Raheem_ft_Afusic_Prod_by_Ali_Soomro_yzuqtu.mp3',
     title: 'Post You',
+    image: 'assets/images/exes.jpg',
+  ),
+  Song(
+    artist: "Murtaza Qizilbash",
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591751/Murtaza_Qizilbash_Bhool_Official_Audio_trn6re.mp3',
+    title: 'Bhool',
+    image: 'assets/images/exes.jpg',
+  ),
+  Song(
+    artist: "Barney",
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591750/Barney_Sku_-_shey_jeno_ft._Tajwar_OFFICIAL_MUSIC_VIDEO_vdrtja.mp3',
+    title: 'Shei Jeno',
     image: 'assets/images/exes.jpg',
   ),
   Song(
@@ -27,6 +41,13 @@ final List<Song> allSongs = [
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718212/flutter_audio_uploads/kwvresbginpk5nymxcss.mp3',
     title: 'Hungama',
+    image: 'assets/images/hun.jpg',
+  ),
+  Song(
+    artist: "Hasan Raheem",
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591748/Hasan_Raheem_-_Teray_Naam_ft_Raftaar_Prod_by_Shahrukh_Official_Lyric_Video_cy069l.mp3',
+    title: 'Tere Naam',
     image: 'assets/images/hun.jpg',
   ),
   Song(
@@ -60,14 +81,14 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718070/flutter_audio_uploads/efxhz2iefqxzzldtr6g2.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596162/EXES_-_Hasan_Raheem_ft_Talhah_Yunus_Talha_Anjum_Prod_by_Abdullah_Kasumbi_vxmacb.mp3',
     title: 'E X E S',
     image: 'assets/images/exes.jpg',
   ),
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718045/flutter_audio_uploads/xbaylg4m1wjz6ovzbs80.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591460/Peanut_Butter_dgdrqs.mp3',
     title: 'Peanut Butter',
     image: 'assets/images/butter.jpg',
   ),
@@ -81,7 +102,7 @@ final List<Song> allSongs = [
   Song(
     artist: "Annural Khalid",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718243/flutter_audio_uploads/hewivwsv14j4fgn1mk7f.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774595870/Maanu_-_Jhol_Acoustic_Annural_Khalid_Abdullah_Siddiqui_Asfand_iuec0f.mp3',
     title: 'Jhol',
     image: 'assets/images/jhol.jpg',
   ),
@@ -95,7 +116,7 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760680549/Kanwal_-_Afusic_ft._Hasan_Raheem_rvfdxi.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774590972/Kanwal_-_Afusic_ft._Hasan_Raheem_Official_Music_Video_Prod_AliSoomroMusic_vylqsk.mp3',
     title: 'Kanwal',
     image: 'assets/images/exes.jpg',
   ),
@@ -129,7 +150,7 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718074/flutter_audio_uploads/o7ajkztjixdzilaurewj.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591450/FALTU_PYAR_Official_Video_Hasan_Raheem_Natasha_Noorani_Talal_Qureshi_l5k8kv.mp3',
     artist: "Hasan Raheem",
     title: 'Faltu Pyar',
     image: 'assets/images/pyar.jpg',
@@ -150,7 +171,7 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1758535340/IDK_g8cnrp.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774595870/IDK_xd35gq.mp3',
     artist: "Hasan Raheem",
     title: 'IDK',
     image: 'assets/images/discon.webp',
@@ -185,9 +206,23 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1760681064/Afusic_-_Pal_Pal_Official_Music_Video_Prod._AliSoomroMusic_qsl2qx.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596161/Afusic_-_Pal_Pal_Official_Music_Video_Prod._AliSoomroMusic_kajc7t.mp3',
     artist: "Afusic",
     title: 'Pal Pal',
+    image: 'assets/images/af.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596160/Afusic_-_Not_Enough_Official_Music_Video_Prod._AliSoomroMusic_vkctzn.mp3',
+    artist: "Afusic",
+    title: 'Not Enuogh',
+    image: 'assets/images/af.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774590971/Afusic_-_Out_of_Your_Mind_-_Prod._AliSoomroMusic_Official_Visualizer_pomgda.mp3',
+    artist: "Afusic",
+    title: 'Out of Your Mind',
     image: 'assets/images/af.jpg',
   ),
   Song(
@@ -255,7 +290,7 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762853285/Umair_Hasan_Raheem_-_OBVIOUS_Official_Music_Video_ebanru.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774590975/Umair_Hasan_Raheem_-_OBVIOUS_Official_Music_Video_osdxy5.mp3',
     artist: "Hasan Raheem",
     title: 'Obvious',
     image: 'assets/images/tur.jpg',
@@ -283,7 +318,7 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1762853703/Afusic_-_Heer_Official_Music_Video_Prod._AliSoomroMusic_wbu8dn.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591466/Afusic_-_Heer_Official_Music_Video_Prod._AliSoomroMusic_cnl1rl.mp3',
     artist: "Afusic",
     title: 'Heer',
     image: 'assets/images/af.jpg',
@@ -325,7 +360,7 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051814/Talha_Anjum_-_Departure_Lane___Prod._by_Umair_Official_Music_Video_tclapz.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596161/Talha_Anjum_-_Departure_Lane_Prod._by_Umair_Official_Music_Video_nvp6sq.mp3',
     artist: "Talha Anjum",
     title: 'Departure Lane',
     image: 'assets/images/y.jfif',
@@ -346,9 +381,9 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1759053779/Mehbooba_nhfndj.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774595870/Umair_Hasan_Raheem_-_Gulabi_Official_Audio_jfwokv.mp3',
     artist: "Hasan Raheem",
-    title: 'Mehbooba',
+    title: 'Mosam Gulabi',
     image: 'assets/images/discon.webp',
   ),
   Song(
@@ -360,7 +395,7 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051303/Dil_Fareb_kp2pex.mp3',
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591748/Dil_Fareb_hvj1sn.mp3',
     artist: "Hasan Raheem",
     title: 'Dil Fareb',
     image: 'assets/images/exes.jpg',
@@ -405,6 +440,13 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1759051478/Kaleji_qgqrhc.mp3',
     artist: "Hasan Raheem",
     title: 'Kaleji',
+    image: 'assets/images/exes.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774595870/KAMLI_npvxme.mp3',
+    artist: "HYD",
+    title: 'Kamli',
     image: 'assets/images/exes.jpg',
   ),
   Song(

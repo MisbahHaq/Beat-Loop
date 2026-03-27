@@ -14,6 +14,11 @@ class PlaylistService {
         image: 'assets/images/af.jpg',
       ),
       Playlist(
+        name: 'Barney',
+        songs: allSongs.where((s) => s.artist.contains('Barney')).toList(),
+        image: 'assets/images/af.jpg',
+      ),
+      Playlist(
         name: 'Talwiinder',
         songs: allSongs.where((s) => s.artist.contains('Talwiinder')).toList(),
         image: 'assets/images/tal.jpg',

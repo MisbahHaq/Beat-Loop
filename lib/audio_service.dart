@@ -49,11 +49,36 @@ class AudioService {
       await _downloadFile(song.path, file);
     } else {
       print("DEBUG: File exists for: ${song.title}");
+      // Check integrity: get expected size and compare
+      int? expectedSize;
+      try {
+        final dio = Dio(BaseOptions(
+          connectTimeout: Duration(seconds: 10),
+        ));
+        final headResponse = await dio.head(song.path);
+        expectedSize =
+            int.tryParse(headResponse.headers['content-length']?.first ?? '');
+        print(
+            "DEBUG: Expected file size for existing file: $expectedSize bytes for ${song.title}");
+      } catch (e) {
+        print(
+            "DEBUG: Failed to get content-length for existing file ${song.title}: $e");
+      }
+      if (expectedSize != null) {
+        final fileSize = await file.length();
+        if (fileSize != expectedSize) {
+          print(
+              "DEBUG: Existing file size ($fileSize) does not match expected ($expectedSize), re-downloading: ${song.title}");
+          await file.delete();
+          await _downloadFile(song.path, file);
+        }
+      }
     }
 
     if (await file.exists()) {
       final fileSize = await file.length();
-      print("DEBUG: Playing song: ${song.title}, file size: $fileSize bytes");
+      print(
+          "DEBUG: Playing song: ${song.title}, file size: $fileSize bytes, source: ${song.path.contains('afusic') ? 'afusic' : song.path.contains('talwiinder') ? 'talwiinder' : 'other'}");
       if (fileSize == 0) {
         print("DEBUG: Audio file is empty for: ${song.title}");
         throw Exception("Audio file is empty");
@@ -172,11 +197,31 @@ class AudioService {
 
   Future<void> _downloadFile(String url, File file) async {
     print("DEBUG: Starting download for URL: $url to file: ${file.path}");
-    const int maxRetries = 3;
+
+    // First, get the expected content length
+    int? expectedSize;
+    try {
+      final dio = Dio(BaseOptions(
+        connectTimeout: Duration(seconds: 10),
+      ));
+      final headResponse = await dio.head(url);
+      expectedSize =
+          int.tryParse(headResponse.headers['content-length']?.first ?? '');
+      print(
+          "DEBUG: Expected file size from server: $expectedSize bytes for $url");
+    } catch (e) {
+      print("DEBUG: Failed to get content-length for $url: $e");
+    }
+
+    const int maxRetries = 5;
     for (int attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         print("DEBUG: Download attempt $attempt/$maxRetries for $url");
-        final response = await Dio().download(url, file.path);
+        final dio = Dio(BaseOptions(
+          receiveTimeout: Duration(seconds: 60),
+          connectTimeout: Duration(seconds: 10),
+        ));
+        final response = await dio.download(url, file.path);
         print(
             "DEBUG: Download response status: ${response.statusCode} for $url");
         if (response.statusCode == 200) {
@@ -186,6 +231,13 @@ class AudioService {
             print("DEBUG: Downloaded file is empty, deleting for $url");
             await file.delete();
             throw Exception("Downloaded file is empty");
+          }
+          // Check if file size matches expected size
+          if (expectedSize != null && fileSize != expectedSize) {
+            print(
+                "DEBUG: Downloaded file size ($fileSize) does not match expected size ($expectedSize), re-downloading for $url");
+            await file.delete();
+            throw Exception("Downloaded file size mismatch");
           }
           return; // Success
         } else {
