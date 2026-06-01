@@ -14,6 +14,19 @@ class PlaylistService {
         image: 'assets/images/af.jpg',
       ),
       Playlist(
+        name: 'Annural Khalid',
+        songs:
+            allSongs.where((s) => s.artist.contains('Annural Khalid')).toList(),
+        image: 'assets/images/jhol.jpg',
+      ),
+      Playlist(
+        name: 'Murtaza Qizilbash',
+        songs: allSongs
+            .where((s) => s.artist.contains('Murtaza Qizilbash'))
+            .toList(),
+        image: 'assets/images/murtaza.jpg',
+      ),
+      Playlist(
         name: 'Barney',
         songs: allSongs.where((s) => s.artist.contains('Barney')).toList(),
         image: 'assets/images/af.jpg',

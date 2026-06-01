@@ -154,6 +154,13 @@ final List<Song> allSongs = [
     title: 'Faltu Pyar',
     image: 'assets/images/pyar.jpg',
   ),
+  Song(
+    artist: "Annural Khalid",
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316868/CHAN_MAHIYA_vl1loe.mp3',
+    title: 'Chan Mahiya',
+    image: 'assets/images/jhol.jpg',
+  ),
   // Song(
   //   path: '',
   //   artist: "Maya Bee",
@@ -182,11 +189,25 @@ final List<Song> allSongs = [
     image: 'assets/images/uzair.jpg',
   ),
   Song(
+    artist: "Annural Khalid",
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780315501/madham_qsr44o.mp3',
+    title: 'Madham',
+    image: 'assets/images/jhol.jpg',
+  ),
+  Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614506/NO_MORE_CARE_Hasan_Raheem_Prod_by_Varqa_Faraid_yf5jqm.mp3',
     artist: "Hasan Raheem",
     title: 'No More Care',
     image: 'assets/images/exes.jpg',
+  ),
+  Song(
+    artist: "Annural Khalid",
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780317001/Chori_Chupke_j8aiwd.mp3',
+    title: 'Chori Chupke',
+    image: 'assets/images/jhol.jpg',
   ),
   Song(
     path:
@@ -211,6 +232,27 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316126/Hum_x4bzwd.mp3',
+    artist: "Murtaza Qizilbash",
+    title: 'Hum',
+    image: 'assets/images/murtaza.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780315596/Callin_eg3eb8.mp3',
+    artist: "Afusic",
+    title: 'Callin',
+    image: 'assets/images/af.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780315699/Not_Enough_w41gpc.mp3',
+    artist: "Afusic",
+    title: 'Not Enough',
+    image: 'assets/images/af.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596160/Afusic_-_Not_Enough_Official_Music_Video_Prod._AliSoomroMusic_vkctzn.mp3',
     artist: "Afusic",
     title: 'Not Enough',
@@ -229,6 +271,13 @@ final List<Song> allSongs = [
     artist: "Hasan Raheem",
     title: 'Maand',
     image: 'assets/images/bayaan.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316210/Tum_kbxx6k.mp3',
+    artist: "Murtaza Qizilbash",
+    title: 'Tum',
+    image: 'assets/images/murtaza.jpg',
   ),
   Song(
     path:
@@ -281,6 +330,13 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316255/Bhool_sl8trd.mp3',
+    artist: "Murtaza Qizilbash",
+    title: 'Bhool',
+    image: 'assets/images/murtaza.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774590975/Umair_Hasan_Raheem_-_OBVIOUS_Official_Music_Video_osdxy5.mp3',
     artist: "Hasan Raheem",
     title: 'Obvious',
@@ -298,6 +354,13 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774611177/Umair_Hasan_Raheem_Shamoon_Ismail_-_DISCONNECT_Official_Audio_grdadf.mp3',
     artist: "Hasan Raheem",
     title: 'Disconnect',
+    image: 'assets/images/discon.webp',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780317273/Maand_Acoustic_smqlxw.mp3',
+    artist: "Hasan Raheem",
+    title: 'Maand Acoustic',
     image: 'assets/images/discon.webp',
   ),
   Song(
@@ -327,6 +390,13 @@ final List<Song> allSongs = [
     artist: "Arpit Bala",
     title: 'Zimmedaar',
     image: 'assets/images/zim.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316305/Pyaar_Mein_ul1ftq.mp3',
+    artist: "Murtaza Qizilbash",
+    title: 'Pyaar Mein',
+    image: 'assets/images/murtaza.jpg',
   ),
   Song(
     path:
@@ -393,10 +463,24 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316766/Bewajah_c1nbq3.mp3',
+    artist: "Hasan Raheem",
+    title: 'Bewajah',
+    image: 'assets/images/you.jpg',
+  ),
+  Song(
+    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615233/Desiigner_-_Tiimmy_Turner_Official_Audio_nkzyrj.mp3',
     artist: "Desiigner",
     title: 'Timmy Turner',
     image: 'assets/images/de.jpeg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316682/Har_Baar_lblf7q.mp3',
+    artist: "Murtaza Qizilbash",
+    title: 'Har Bar',
+    image: 'assets/images/murtaza.jpg',
   ),
   Song(
     path:
