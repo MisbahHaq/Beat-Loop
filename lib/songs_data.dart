@@ -23,13 +23,6 @@ final List<Song> allSongs = [
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    artist: "Murtaza Qizilbash",
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591751/Murtaza_Qizilbash_Bhool_Official_Audio_trn6re.mp3',
-    title: 'Bhool',
-    image: 'assets/images/bhool.jpg',
-  ),
-  Song(
     artist: "Barney",
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591750/Barney_Sku_-_shey_jeno_ft._Tajwar_OFFICIAL_MUSIC_VIDEO_vdrtja.mp3',
@@ -81,23 +74,9 @@ final List<Song> allSongs = [
   Song(
     artist: "Hasan Raheem",
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596162/EXES_-_Hasan_Raheem_ft_Talhah_Yunus_Talha_Anjum_Prod_by_Abdullah_Kasumbi_vxmacb.mp3',
-    title: 'E X E S',
-    image: 'assets/images/exes.jpg',
-  ),
-  Song(
-    artist: "Hasan Raheem",
-    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591460/Peanut_Butter_dgdrqs.mp3',
     title: 'Peanut Butter',
     image: 'assets/images/butter.jpg',
-  ),
-  Song(
-    artist: "Hasan Raheem",
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597685/FLY_WITH_ME_-_Hasan_Raheem_Prod_by_Shehryar_Khan_Lyrics_xon81h.mp3',
-    title: 'Fly With Me',
-    image: 'assets/images/exes.jpg',
   ),
   Song(
     artist: "Annural Khalid",
@@ -120,12 +99,6 @@ final List<Song> allSongs = [
     title: 'Kanwal',
     image: 'assets/images/exes.jpg',
   ),
-  // Song(
-  //   artist: "Talha Anjum",
-  //   path: '',
-  //   title: 'Jani',
-  //   image: 'assets/images/jani.jpg',
-  // ),
   Song(
     artist: "Hasan Raheem",
     path:
@@ -148,25 +121,12 @@ final List<Song> allSongs = [
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591450/FALTU_PYAR_Official_Video_Hasan_Raheem_Natasha_Noorani_Talal_Qureshi_l5k8kv.mp3',
-    artist: "Hasan Raheem",
-    title: 'Faltu Pyar',
-    image: 'assets/images/pyar.jpg',
-  ),
-  Song(
     artist: "Annural Khalid",
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316868/CHAN_MAHIYA_vl1loe.mp3',
     title: 'Chan Mahiya',
     image: 'assets/images/jhol.jpg',
   ),
-  // Song(
-  //   path: '',
-  //   artist: "Maya Bee",
-  //   title: 'Maya Bee',
-  //   image: 'assets/images/maya.jpg',
-  // ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614388/Piya_Piya_Calling_Coke_Studio_Pakistan_S15_Karpe_Kaifi_Khalil_Amanda_Delara_Quick_Style_zacsnm.mp3',
@@ -253,13 +213,6 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596160/Afusic_-_Not_Enough_Official_Music_Video_Prod._AliSoomroMusic_vkctzn.mp3',
-    artist: "Afusic",
-    title: 'Not Enough',
-    image: 'assets/images/af.jpg',
-  ),
-  Song(
-    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774590971/Afusic_-_Out_of_Your_Mind_-_Prod._AliSoomroMusic_Official_Visualizer_pomgda.mp3',
     artist: "Afusic",
     title: 'Out of Your Mind',
@@ -277,6 +230,27 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316210/Tum_kbxx6k.mp3',
     artist: "Murtaza Qizilbash",
     title: 'Tum',
+    image: 'assets/images/murtaza.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1782904033/Khasara_Abdul_Hannan_Samar_Jafri_Official_Audio_gw3rvr.mp3',
+    artist: "Abdul Hannan",
+    title: 'Khasara',
+    image: 'assets/images/hannan.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1782904122/Sila_Abdul_Hannan_Murtaza_Qizilbash_Official_Audio_zutuze.mp3',
+    artist: "Abdul Hannan",
+    title: 'Sila',
+    image: 'assets/images/hannan.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1782903777/Murtaza_Qizilbash___Woh___Official_Lyric_Visualiser_ar4yll.mp3',
+    artist: "Murtaza Qizilbash",
+    title: 'Woh',
     image: 'assets/images/murtaza.jpg',
   ),
   Song(
@@ -299,13 +273,6 @@ final List<Song> allSongs = [
     artist: "Arpit Bala",
     title: 'Kaisa Mein',
     image: 'assets/images/avg.jpg',
-  ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614872/Asim_Azhar_ft._Hassan_Raheem_-_YOU_Official_Music_Video_BEMATLAB_Album_lwju5o.mp3',
-    artist: "Hasan Raheem",
-    title: 'You',
-    image: 'assets/images/you.jpg',
   ),
   Song(
     path:
@@ -370,40 +337,12 @@ final List<Song> allSongs = [
     title: 'Heer',
     image: 'assets/images/af.jpg',
   ),
-  // Song(
-  //   path:
-  //       'https://res.cloudinary.com/drcpslfrz/video/upload/v1762852951/Dhundhala_-_Yashraj_Talwiinder_Dropped_Out_Lyrics_English_Meaning_btuuyl.mp3',
-  //   artist: "Talwiinder",
-  //   title: 'Dhundhala',
-  //   image: 'assets/images/tal.jpg',
-  // ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615060/PYARI_AMAANAT_-_Arpit_Bala_aodgotit_angadsvirk_OfficialMusicVideo_ylomkf.mp3',
-    artist: "Arpit Bala",
-    title: 'Pyaari Amanat',
-    image: 'assets/images/arpit.jpg',
-  ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615095/Zimmedaar-_Paradox_ft._Arpit_Bala_Prod._by_A.O.D._Overthink_EP_Official_Audio_bmcvgt.mp3',
-    artist: "Arpit Bala",
-    title: 'Zimmedaar',
-    image: 'assets/images/zim.jpg',
-  ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316305/Pyaar_Mein_ul1ftq.mp3',
     artist: "Murtaza Qizilbash",
     title: 'Pyaar Mein',
     image: 'assets/images/murtaza.jpg',
-  ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597350/Turri_Jandi_Coke_Studio_Pakistan_Season_15_Shazia_Manzoor_x_Hasan_Raheem_qarc39.mp3',
-    artist: "Hasan Raheem",
-    title: 'Turri Jandi',
-    image: 'assets/images/tur.jpg',
   ),
   Song(
     path:
@@ -414,24 +353,10 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615146/Bandar_-_Arpit_Bala_X_SangeetKir_gqzkyr.mp3',
-    artist: "Arpit Bala",
-    title: 'Bandar',
-    image: 'assets/images/arpit.jpg',
-  ),
-  Song(
-    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774596201/GULABO_-_Arpit_Bala_BHAPPA_A.O.D._D-0_Official_Visualiser_hojide.mp3',
     artist: "Arpit Bala",
     title: 'Gulabo',
     image: 'assets/images/gul.jfif',
-  ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774595870/Umair_Hasan_Raheem_-_Gulabi_Official_Audio_jfwokv.mp3',
-    artist: "Hasan Raheem",
-    title: 'Mosam Gulabi',
-    image: 'assets/images/discon.webp',
   ),
   Song(
     path:
@@ -447,13 +372,6 @@ final List<Song> allSongs = [
     title: 'Dil Fareb',
     image: 'assets/images/exes.jpg',
   ),
-  // Song(
-  //   path:
-  //       'https://res.cloudinary.com/drcpslfrz/video/upload/v1756718356/flutter_audio_uploads/lcj1rkl7arpc9ybv7ohk.mp3',
-  //   artist: "Hasan Raheem",
-  //   title: 'Roop',
-  //   image: 'assets/images/has.jpg',
-  // ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774611059/Hasan_Raheem_-_Fana_ft_Jj47_Prod_by_Abdullah_Kasumbi_xabdae.mp3',
@@ -481,13 +399,6 @@ final List<Song> allSongs = [
     artist: "Murtaza Qizilbash",
     title: 'Har Bar',
     image: 'assets/images/murtaza.jpg',
-  ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597191/MEMORIES_-_Hasan_Raheem_ft_Justin_Bibis_Official_Music_Video_Latest_Urdu_Punjabi_Song_2025_lljvak.mp3',
-    artist: "Hasan Raheem",
-    title: 'Memories',
-    image: 'assets/images/mem.png',
   ),
   Song(
     path:
@@ -538,13 +449,6 @@ final List<Song> allSongs = [
     title: 'Unravel',
     image: 'assets/images/Unravel.jpg',
   ),
-  // Song(
-  //   path:
-  //       'https://res.cloudinary.com/drcpslfrz/video/upload/v1762847099/Talwiinder_x_Hasan_Raheem_x_NDS_-_BACH_KE_Official_Video_ugctzl.mp3',
-  //   artist: "Talwiinder x Hasan Raheem",
-  //   title: 'Bach Ke',
-  //   image: 'assets/images/tal.jpg',
-  // ),
   Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774613989/Luck_Life_-_Namae_wo_yobu_yo_lyrics_Bungou_Stray_Dogs_S1_ED_1_psaiql.mp3',
@@ -599,5 +503,26 @@ final List<Song> allSongs = [
     artist: "Daughtry",
     title: 'Its Not Over',
     image: 'assets/images/0016.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1782904618/LISA_Anitta_Rema_FIFA_Sound_-_Goals_FIFA_World_Cup_2026_Official_Music_Video_qirzvt.mp3',
+    artist: "LISA",
+    title: 'G O A L S',
+    image: 'assets/images/lisa.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1782904873/PinkPantheress_-_Stateside_Zara_Larsson_Official_Video_ksao2o.mp3',
+    artist: "PinkPantheress",
+    title: 'Stateside',
+    image: 'assets/images/pink.jpg',
+  ),
+  Song(
+    path:
+        'https://res.cloudinary.com/drcpslfrz/video/upload/v1782905077/CITIZEN_-_VERTIGO_Official_Music_Video_i6dytp.mp3',
+    artist: "CITIZEN",
+    title: 'VERTIGO',
+    image: 'assets/images/pink.jpg',
   ),
 ];
