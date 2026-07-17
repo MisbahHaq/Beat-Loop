@@ -23,13 +23,6 @@ final List<Song> allSongs = [
     image: 'assets/images/exes.jpg',
   ),
   Song(
-    artist: "Barney",
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774591750/Barney_Sku_-_shey_jeno_ft._Tajwar_OFFICIAL_MUSIC_VIDEO_vdrtja.mp3',
-    title: 'Shei Jeno',
-    image: 'assets/images/barney.jpg',
-  ),
-  Song(
     artist: "Hasan Raheem",
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597886/Hasan_Raheem_-_Hungama_ft_Abdullah_Kasumbi_ehe5ou.mp3',
@@ -56,13 +49,6 @@ final List<Song> allSongs = [
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774597830/DIL_KAY_PARDAY_-_Hasan_Raheem_Prod_by_Shehryar_Khan_Lyrics_g5scsr.mp3',
     title: 'Dil K Parday',
     image: 'assets/images/exes.jpg',
-  ),
-  Song(
-    artist: "Uzair Jaswal",
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614182/Fursat_Uzair_Jaswal_2024_iuodz4.mp3',
-    title: 'Fursat',
-    image: 'assets/images/uzair.jpg',
   ),
   Song(
     artist: "Hasan Raheem",
@@ -108,13 +94,6 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614268/Ud_jana_Uzair_Jaswal_2024_pxcedh.mp3',
-    artist: "Uzair Jaswal",
-    title: 'Ud Jana',
-    image: 'assets/images/uzair.jpg',
-  ),
-  Song(
-    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614326/DEEWANA_-_Hasan_Raheem_Prod_by_Shehryar_Khan_qa2nuu.mp3',
     artist: "Hasan Raheem",
     title: 'Deewana',
@@ -140,13 +119,6 @@ final List<Song> allSongs = [
     artist: "Hasan Raheem",
     title: 'IDK',
     image: 'assets/images/discon.webp',
-  ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614460/Tu_hai_tou_Uzair_Jaswal_2024_m2traq.mp3',
-    artist: "Uzair Jaswal",
-    title: 'Tu Hai Tou',
-    image: 'assets/images/uzair.jpg',
   ),
   Song(
     artist: "Annural Khalid",
@@ -276,13 +248,6 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614935/Dil_ki_kahani_Uzair_Jaswal_2024_hjahrr.mp3',
-    artist: "Uzair Jaswal",
-    title: 'Dil Ki Kahani',
-    image: 'assets/images/uzair.jpg',
-  ),
-  Song(
-    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774614974/Hasan_Raheem_-_JOONA_ft._Abdullah_Kasumbi_ncahii.mp3',
     artist: "Hasan Raheem",
     title: 'Joona',
@@ -388,13 +353,6 @@ final List<Song> allSongs = [
   ),
   Song(
     path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615233/Desiigner_-_Tiimmy_Turner_Official_Audio_nkzyrj.mp3',
-    artist: "Desiigner",
-    title: 'Timmy Turner',
-    image: 'assets/images/de.jpeg',
-  ),
-  Song(
-    path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1780316682/Har_Baar_lblf7q.mp3',
     artist: "Murtaza Qizilbash",
     title: 'Har Bar',
@@ -420,13 +378,6 @@ final List<Song> allSongs = [
     artist: "HYD",
     title: 'Kamli',
     image: 'assets/images/exes.jpg',
-  ),
-  Song(
-    path:
-        'https://res.cloudinary.com/drcpslfrz/video/upload/v1774615317/JE_KOTA_DIN_TUMI_CHILE_PASHE_FULL_SONG_upyn4g.mp3',
-    artist: "Anupam Roy",
-    title: 'Je Kota Din',
-    image: 'assets/images/maya.jpg',
   ),
   Song(
     path:
