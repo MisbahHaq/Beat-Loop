@@ -19,6 +19,10 @@ void main() async {
         androidNotificationChannelName: 'Beat Loop',
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
+        androidNotificationIcon: 'mipmap/ic_launcher',
+        notificationColor: Color(0xFF121212),
+        artDownscaleWidth: 512,
+        artDownscaleHeight: 512,
       ),
     );
   } catch (e) {

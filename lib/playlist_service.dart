@@ -5,9 +5,8 @@ class PlaylistService {
     return [
       Playlist(
         name: 'Hasan Raheem',
-        songs: allSongs
-            .where((s) => s.artist.contains('Hasan Raheem'))
-            .toList(),
+        songs:
+            allSongs.where((s) => s.artist.contains('Hasan Raheem')).toList(),
       ),
       Playlist(
         name: 'Afusic',
@@ -16,9 +15,8 @@ class PlaylistService {
       ),
       Playlist(
         name: 'Annural Khalid',
-        songs: allSongs
-            .where((s) => s.artist.contains('Annural Khalid'))
-            .toList(),
+        songs:
+            allSongs.where((s) => s.artist.contains('Annural Khalid')).toList(),
         image: 'assets/images/jhol.jpg',
       ),
       Playlist(
@@ -27,13 +25,6 @@ class PlaylistService {
             .where((s) => s.artist.contains('Murtaza Qizilbash'))
             .toList(),
         image: 'assets/images/murtaza.jpg',
-      ),
-      Playlist(
-        name: 'Abdul Hannan',
-        songs: allSongs
-            .where((s) => s.artist.contains('Abdul Hannan'))
-            .toList(),
-        image: 'assets/images/hannan.jpg',
       ),
       Playlist(
         name: 'AMVs',

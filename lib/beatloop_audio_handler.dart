@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'models.dart';
 
 class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
@@ -8,6 +11,7 @@ class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandl
   int _currentIndex = 0;
   Function(int)? _onPlaySong;
   bool _listening = false;
+  final Map<String, String> _artFileCache = {};
 
   void attachPlayer(AudioPlayer player) {
     if (_listening) return;
@@ -23,9 +27,7 @@ class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandl
       ));
     });
     _player!.onDurationChanged.listen((duration) {
-      playbackState.add(playbackState.value.copyWith(
-        processingState: AudioProcessingState.ready,
-      ));
+      _withDuration(duration);
     });
   }
 
@@ -37,20 +39,57 @@ class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandl
     _songs = songs;
     _currentIndex = index;
     _onPlaySong = onPlaySong;
-    queue.add(songs.map((s) => _mediaItemFromSong(s)).toList());
   }
 
-  MediaItem _mediaItemFromSong(Song song) {
+  MediaItem _mediaItemFromSong(Song song, {Duration? duration, Uri? artUri}) {
     return MediaItem(
       id: song.path,
       title: song.title,
       artist: song.artist,
-      artUri: Uri.parse('asset:///assets/images/${song.image.replaceFirst('assets/images/', '')}'),
+      album: 'Beat Loop',
+      duration: duration,
+      artUri: artUri ?? _assetArtUri(song.image),
     );
   }
 
-  void updateMetadata(Song song) {
-    mediaItem.add(_mediaItemFromSong(song));
+  Uri _assetArtUri(String imagePath) => Uri.parse(
+      'asset:///assets/images/${imagePath.replaceFirst('assets/images/', '')}');
+
+  Future<Uri> _resolveArtUri(String imagePath) async {
+    try {
+      var filePath = _artFileCache[imagePath];
+      if (filePath == null) {
+        final dir = await getApplicationDocumentsDirectory();
+        final artDir = await Directory('${dir.path}/art').create(recursive: true);
+        final fileName = imagePath.split('/').last;
+        final file = File('${artDir.path}/$fileName');
+        if (!file.existsSync()) {
+          final data = await rootBundle.load(imagePath);
+          await file.writeAsBytes(data.buffer.asUint8List());
+        }
+        filePath = file.path;
+        _artFileCache[imagePath] = filePath;
+      }
+      return Uri.file(filePath);
+    } catch (e) {
+      return _assetArtUri(imagePath);
+    }
+  }
+
+  Future<void> updateMetadata(Song song, {Duration? duration}) async {
+    final artUri = await _resolveArtUri(song.image);
+    mediaItem.add(_mediaItemFromSong(song, duration: duration, artUri: artUri));
+  }
+
+  void _withDuration(Duration duration) {
+    final current = mediaItem.value;
+    if (current == null || current.duration == duration) {
+      playbackState.add(playbackState.value.copyWith(
+        processingState: AudioProcessingState.ready,
+      ));
+      return;
+    }
+    mediaItem.add(current.copyWith(duration: duration));
   }
 
   void notifyPlay() {
@@ -61,6 +100,8 @@ class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandl
         MediaControl.pause,
         MediaControl.skipToNext,
       ],
+      systemActions: {MediaAction.play, MediaAction.pause, MediaAction.seek},
+      processingState: AudioProcessingState.ready,
     ));
   }
 
@@ -72,6 +113,7 @@ class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandl
         MediaControl.play,
         MediaControl.skipToNext,
       ],
+      systemActions: {MediaAction.play, MediaAction.pause, MediaAction.seek},
     ));
   }
 
