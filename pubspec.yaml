@@ -39,11 +39,11 @@ dependencies:
   video_player: ^2.9.2
   audio_session: ^0.1.10
   audioplayers: ^6.1.1
+  audio_service: ^0.18.17
   flutter_launcher_icons: ^0.14.3
   google_fonts: ^6.2.1
   path_provider: ^2.1.5
   dio: ^5.3.3
-  workmanager: ^0.10.9
 
 dev_dependencies:
   flutter_test:

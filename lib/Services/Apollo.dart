@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models.dart';
 import '../audio_service.dart';
+import '../main.dart' show audioHandler;
 import '../playlist_service.dart';
 import '../songs_data.dart';
 import '../theme.dart';
@@ -43,9 +44,12 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   void _setIsLooping(bool looping) => setState(() => _isLooping = looping);
   void _playSong(int index) async {
     try {
+      audioHandler?.updateIndex(index);
       await audioService.playSong(index, currentSongs, _setCurrentSongIndex,
           _setIsPlaying, _rotationController);
       final song = currentSongs[index];
+      audioHandler?.updateMetadata(song);
+      audioHandler?.notifyPlay();
       setState(() {
         recentlyPlayed.removeWhere(
             (s) => s.title == song.title && s.artist == song.artist);
@@ -93,15 +97,22 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     audioService.initializeAudioSession();
-    audioService.listenAudioPlayerEvents(() {
-      _nextSong();
-    }, (duration) {
+    audioService.listenAudioPlayerEvents(() {}, (duration) {
       setState(() => _currentPosition = duration);
     }, (duration) {
       setState(() => _songDuration = duration);
     });
     playlists = PlaylistService.initializePlaylists(allSongs);
     currentSongs = [];
+    final handler = audioHandler;
+    if (handler != null) {
+      audioService.attachHandler(handler);
+      handler.setCallbacks(
+        songs: currentSongs,
+        index: 0,
+        onPlaySong: _playSong,
+      );
+    }
 
     _rotationController = AnimationController(
       vsync: this,
@@ -429,10 +440,17 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 showingPlaylists = false;
                 _currentSongIndex = 0;
               });
+              audioHandler?.setCallbacks(
+                songs: currentSongs,
+                index: 0,
+                onPlaySong: _playSong,
+              );
               try {
                 await audioService.playSong(
                     0, currentSongs, _setCurrentSongIndex,
                     _setIsPlaying, _rotationController);
+                audioHandler?.updateMetadata(song);
+                audioHandler?.notifyPlay();
               } catch (e) {}
             },
             child: Container(
@@ -553,6 +571,11 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                           showingPlaylists = false;
                           selectedPlaylist = null;
                         });
+                        audioHandler?.setCallbacks(
+                          songs: currentSongs,
+                          index: index,
+                          onPlaySong: _playSong,
+                        );
                         _playSong(index);
                       },
                       child: Container(
@@ -661,6 +684,11 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 _currentPosition = Duration.zero;
                 _songDuration = Duration.zero;
               });
+              audioHandler?.setCallbacks(
+                songs: currentSongs,
+                index: 0,
+                onPlaySong: _playSong,
+              );
               _playSong(0);
             },
             child: Container(

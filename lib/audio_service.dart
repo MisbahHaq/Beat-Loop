@@ -6,12 +6,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'models.dart';
+import 'beatloop_audio_handler.dart';
 
 class AudioService {
   final AudioPlayer _audioPlayer = AudioPlayer();
   late AudioSession _audioSession;
+  BeatLoopAudioHandler? _handler;
 
   AudioPlayer get audioPlayer => _audioPlayer;
+
+  void attachHandler(BeatLoopAudioHandler handler) {
+    _handler = handler;
+    _handler!.attachPlayer(_audioPlayer);
+  }
 
   Future<void> initializeAudioSession() async {
     _audioSession = await AudioSession.instance;
@@ -106,6 +113,8 @@ class AudioService {
 
     await _audioPlayer.play(DeviceFileSource(file.path));
 
+    _handler?.updateMetadata(song);
+    _handler?.notifyPlay();
     setCurrentSongIndex(index);
     setIsPlaying(true);
     rotationController.repeat();
@@ -268,6 +277,7 @@ class AudioService {
   void pauseSong(
       Function(bool) setIsPlaying, AnimationController rotationController) {
     _audioPlayer.pause();
+    _handler?.notifyPause();
     setIsPlaying(false);
     rotationController.stop();
   }
@@ -275,6 +285,7 @@ class AudioService {
   void resumeSong(
       Function(bool) setIsPlaying, AnimationController rotationController) {
     _audioPlayer.resume();
+    _handler?.notifyPlay();
     setIsPlaying(true);
     rotationController.repeat();
   }

@@ -2,14 +2,29 @@ import 'package:beatloop/Services/Apollo.dart';
 import 'package:beatloop/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:workmanager/workmanager.dart';
-import 'download_worker.dart';
+import 'package:audio_service/audio_service.dart' as a_service;
+import 'package:beatloop/beatloop_audio_handler.dart';
+
+BeatLoopAudioHandler? audioHandler;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   debugPaintSizeEnabled = false;
 
-  await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+  try {
+    audioHandler = await a_service.AudioService.init(
+      builder: () => BeatLoopAudioHandler(),
+      config: const a_service.AudioServiceConfig(
+        androidNotificationChannelId: 'com.example.beatloop.channel.audio',
+        androidNotificationChannelName: 'Beat Loop',
+        androidNotificationOngoing: true,
+        androidStopForegroundOnPause: true,
+      ),
+    );
+  } catch (e) {
+    debugPrint('AudioService init failed: $e');
+    audioHandler = null;
+  }
 
   runApp(const MyApp());
 }
