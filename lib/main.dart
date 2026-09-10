@@ -1,4 +1,5 @@
 import 'package:beatloop/Services/Apollo.dart';
+import 'package:beatloop/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:workmanager/workmanager.dart';
@@ -23,6 +24,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Apollo());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.themeData,
+      home: Apollo(),
+    );
   }
 }
