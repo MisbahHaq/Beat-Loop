@@ -26,6 +26,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   int _currentSongIndex = 0;
   Duration _currentPosition = Duration.zero;
   Duration _songDuration = Duration.zero;
+  double _dragStartFraction = 0;
+  bool _isDraggingProgress = false;
   bool _isLooping = false;
   bool _isShuffling = false;
 
@@ -44,6 +46,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   void _setIsLooping(bool looping) => setState(() => _isLooping = looping);
   void _playSong(int index) async {
     try {
+      setState(() => _currentPosition = Duration.zero);
       audioHandler?.updateIndex(index);
       await audioService.playSong(index, currentSongs, _setCurrentSongIndex,
           _setIsPlaying, _rotationController);
@@ -98,6 +101,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     super.initState();
     audioService.initializeAudioSession();
     audioService.listenAudioPlayerEvents(() {}, (duration) {
+      if (_isDraggingProgress) return;
       setState(() => _currentPosition = duration);
     }, (duration) {
       setState(() => _songDuration = duration);
@@ -806,25 +810,10 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 ),
                 const SizedBox(height: 30),
 
-                // Album art with progress ring
+                // Album art
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    // Progress ring
-                    SizedBox(
-                      width: 260,
-                      height: 260,
-                      child: CircularProgressIndicator(
-                        value: _songDuration.inSeconds > 0
-                            ? _currentPosition.inSeconds /
-                                _songDuration.inSeconds
-                            : 0,
-                        strokeWidth: 6,
-                        backgroundColor: AppTheme.warmCream,
-                        valueColor:
-                            AlwaysStoppedAnimation(AppTheme.hotPink),
-                      ),
-                    ),
                     // Album art container
                     Container(
                       width: 240,
@@ -911,20 +900,8 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 ),
                 const SizedBox(height: 8),
 
-                // Time display
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _formatDuration(_currentPosition),
-                      style: AppTheme.mono.copyWith(color: AppTheme.dimText),
-                    ),
-                    Text(
-                      _formatDuration(_songDuration),
-                      style: AppTheme.mono.copyWith(color: AppTheme.dimText),
-                    ),
-                  ],
-                ),
+                // Progress bar with seek between start/end times
+                _buildProgressBar(),
                 const SizedBox(height: 20),
 
                 // Playback controls
@@ -948,6 +925,107 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  Widget _buildProgressBar() {
+    final progress = _songDuration.inMilliseconds > 0
+        ? (_currentPosition.inMilliseconds /
+                _songDuration.inMilliseconds)
+            .clamp(0.0, 1.0)
+        : 0.0;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 16,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return GestureDetector(
+                  onTapDown: (details) => _seekToFraction(
+                      details.localPosition.dx, constraints.maxWidth),
+                  onHorizontalDragStart: (_) {
+                    _dragStartFraction = progress;
+                    setState(() => _isDraggingProgress = true);
+                  },
+                  onHorizontalDragUpdate: (details) => setState(() {
+                    final fraction = (_dragStartFraction +
+                            (details.delta.dx / constraints.maxWidth))
+                        .clamp(0.0, 1.0);
+                    _currentPosition = Duration(
+                        milliseconds:
+                            (fraction * _songDuration.inMilliseconds).round());
+                  }),
+                  onHorizontalDragEnd: (_) {
+                    audioService.seekTo(_currentPosition);
+                    setState(() => _isDraggingProgress = false);
+                  },
+                  child: Stack(
+                    children: [
+                      // Track
+                      Container(
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: AppTheme.warmCream,
+                          border: Border.all(color: AppTheme.ink, width: 2),
+                        ),
+                      ),
+                      // Progress fill
+                      FractionallySizedBox(
+                        widthFactor: progress,
+                        child: Container(
+                          height: 16,
+                          decoration: BoxDecoration(
+                            color: AppTheme.hotPink,
+                            border: Border.all(color: AppTheme.ink, width: 2),
+                          ),
+                        ),
+                      ),
+                      // Thumb
+                      Positioned(
+                        left: (constraints.maxWidth * progress) - 6,
+                        top: 4,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: AppTheme.cyberYellow,
+                            border: Border.all(color: AppTheme.ink, width: 1.5),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _formatDuration(_currentPosition),
+                style: AppTheme.mono.copyWith(color: AppTheme.dimText),
+              ),
+              Text(
+                _formatDuration(_songDuration),
+                style: AppTheme.mono.copyWith(color: AppTheme.dimText),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _seekToFraction(double dx, double width) {
+    if (width <= 0 || _songDuration.inMilliseconds <= 0) return;
+    final fraction = (dx / width).clamp(0.0, 1.0);
+    final target = Duration(
+        milliseconds: (fraction * _songDuration.inMilliseconds).round());
+    audioService.seekTo(target);
+    setState(() => _currentPosition = target);
   }
 
   Widget _buildPlaybackControls() {

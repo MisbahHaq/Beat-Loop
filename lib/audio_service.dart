@@ -112,6 +112,7 @@ class AudioService {
     }
 
     await _audioPlayer.play(DeviceFileSource(file.path));
+    await _audioPlayer.seek(Duration.zero);
 
     _handler?.updateMetadata(song);
     _handler?.notifyPlay();
@@ -280,6 +281,10 @@ class AudioService {
     _handler?.notifyPause();
     setIsPlaying(false);
     rotationController.stop();
+  }
+
+  Future<void> seekTo(Duration position) async {
+    await _audioPlayer.seek(position);
   }
 
   void resumeSong(
