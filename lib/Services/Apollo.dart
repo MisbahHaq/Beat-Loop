@@ -181,7 +181,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                     child: Icon(Icons.close, color: Colors.white, size: 22),
                   ),
                 ),
-              if (!showingPlaylists && !isSearching)
+              if (showingPlaylists && !isSearching)
                 GestureDetector(
                   onTap: () => _downloadAllSongsWithProgress(context),
                   child: Container(
@@ -271,10 +271,11 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   // ─── PLAYLIST CARDS ───
   Widget _buildPlaylistSection() {
     return SizedBox(
-      height: 150,
+      height: 180,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 20),
+        clipBehavior: Clip.none,
         itemCount: playlists.length,
         itemBuilder: (context, index) {
           final playlist = playlists[index];
@@ -321,9 +322,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
           return GestureDetector(
             onTap: () {
               setState(() {
-                currentSongs = playlist.songs;
-                showingPlaylists = false;
-                _currentSongIndex = 0;
+                selectedPlaylist = playlist;
               });
             },
             child: Transform.rotate(
@@ -468,6 +467,159 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
             ),
           );
         },
+      ),
+    );
+  }
+
+  // ─── PLAYLIST DETAIL ───
+  Widget _buildPlaylistDetail(Playlist playlist) {
+    return Container(
+      color: AppTheme.cream,
+      child: Stack(
+        children: [
+          HalftoneBackground(
+            dotColor: AppTheme.ink,
+            dotSpacing: 28,
+            maxDotSize: 2.5,
+            child: const SizedBox.expand(),
+          ),
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => setState(() => selectedPlaylist = null),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppTheme.paperWhite,
+                          border: Border.all(color: AppTheme.ink, width: 3),
+                          boxShadow: [
+                            BoxShadow(color: AppTheme.ink, offset: Offset(2, 2)),
+                          ],
+                        ),
+                        child: Icon(Icons.arrow_back, color: AppTheme.ink, size: 22),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(playlist.name, style: AppTheme.headingMd),
+                          const SizedBox(height: 2),
+                          Text(
+                            "${playlist.songs.length} songs",
+                            style: AppTheme.monoSm.copyWith(color: AppTheme.dimText),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _downloadAllSongsWithProgress(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppTheme.electricCyan,
+                          border: Border.all(color: AppTheme.ink, width: 3),
+                          boxShadow: [
+                            BoxShadow(color: AppTheme.ink, offset: Offset(2, 2)),
+                          ],
+                        ),
+                        child: Icon(Icons.download, color: AppTheme.ink, size: 22),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  itemCount: playlist.songs.length,
+                  itemBuilder: (context, index) {
+                    final song = playlist.songs[index];
+                    final isCurrentSong = currentSongs.isNotEmpty &&
+                        _currentSongIndex < currentSongs.length &&
+                        currentSongs[_currentSongIndex].title == song.title &&
+                        currentSongs[_currentSongIndex].artist == song.artist;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          currentSongs = playlist.songs.toList();
+                          _currentSongIndex = index;
+                          showingPlaylists = false;
+                          selectedPlaylist = null;
+                        });
+                        _playSong(index);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: isCurrentSong
+                              ? AppTheme.cyberYellow.withOpacity(0.3)
+                              : AppTheme.paperWhite,
+                          border: Border.all(color: AppTheme.ink, width: 2),
+                          boxShadow: [
+                            BoxShadow(color: AppTheme.ink, offset: Offset(2, 2)),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              "${index + 1}",
+                              style: AppTheme.monoSm.copyWith(
+                                color: AppTheme.dimText,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppTheme.ink, width: 2),
+                                image: DecorationImage(
+                                  image: AssetImage(song.image),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    song.title,
+                                    style: AppTheme.bodyBold.copyWith(fontSize: 14),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    song.artist,
+                                    style: AppTheme.monoSm,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (isCurrentSong)
+                              Icon(Icons.equalizer, color: AppTheme.hotPink, size: 20),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -1003,6 +1155,10 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
 
     return WillPopScope(
       onWillPop: () async {
+        if (selectedPlaylist != null) {
+          setState(() => selectedPlaylist = null);
+          return false;
+        }
         if (!showingPlaylists) {
           setState(() => showingPlaylists = true);
           return false;
@@ -1011,11 +1167,13 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
       },
       child: Scaffold(
         backgroundColor: AppTheme.cream,
-        body: showingPlaylists
-            ? _buildPlaylistView(currentSong)
-            : (currentSong != null
-                ? _buildNowPlaying(currentSong)
-                : const SizedBox()),
+        body: selectedPlaylist != null
+            ? _buildPlaylistDetail(selectedPlaylist!)
+            : showingPlaylists
+                ? _buildPlaylistView(currentSong)
+                : (currentSong != null
+                    ? _buildNowPlaying(currentSong)
+                    : const SizedBox()),
       ),
     );
   }
@@ -1055,7 +1213,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                     _buildPlaylistSection(),
                   ],
                   if (!isSearching) ...[
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 40),
                     // Recently played heading
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
