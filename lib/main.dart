@@ -19,7 +19,7 @@ void main() async {
         androidNotificationChannelName: 'Beat Loop',
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
-        androidNotificationIcon: 'mipmap/ic_launcher',
+        androidNotificationIcon: 'drawable/ic_stat_musicplay',
         notificationColor: Color(0xFF121212),
         artDownscaleWidth: 512,
         artDownscaleHeight: 512,
