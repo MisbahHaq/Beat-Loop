@@ -121,11 +121,18 @@ class AudioService {
     rotationController.repeat();
   }
 
-  Future<void> downloadAllSongsWithProgress(
-      BuildContext context, List<Song> allSongs) async {
+  Future<void> downloadAllSongs(
+    List<Song> allSongs, {
+    void Function(int toDownload)? onStart,
+    void Function(int completed, int toDownload, String currentTitle)?
+        onProgress,
+    void Function(int completed, int toDownload, List<String> failed)?
+        onComplete,
+  }) async {
     // First, count how many need downloading
     int toDownload = 0;
     for (final song in allSongs) {
+      if (song.path.trim().isEmpty) continue;
       final file = await _getLocalFile(song);
       if (!file.existsSync()) {
         toDownload++;
@@ -133,63 +140,35 @@ class AudioService {
     }
 
     if (toDownload == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('All songs are already downloaded!')),
-      );
+      onStart?.call(toDownload);
+      onComplete?.call(0, 0, const []);
       return;
     }
 
+    onStart?.call(toDownload);
+
     int completed = 0;
-    bool started = false; // ✅ prevent multiple runs
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            // Start download ONCE
-            if (!started) {
-              started = true;
-              Future(() async {
-                for (final song in allSongs) {
-                  final file = await _getLocalFile(song);
-                  if (!file.existsSync()) {
-                    try {
-                      await _downloadFile(song.path, file);
-                      completed++;
-                      setDialogState(() {}); // refresh dialog
-                    } catch (e) {
-                      print("Failed to download ${song.title}: $e");
-                      // Continue to next song
-                    }
-                  }
-                }
-                Navigator.of(context).pop(); // close dialog
-              });
-            }
-
-            return AlertDialog(
-              title: Text("Downloading Songs"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  LinearProgressIndicator(value: completed / toDownload),
-                  SizedBox(height: 16),
-                  Text("Remaining: ${toDownload - completed}"),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  child: Text("Cancel"),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
-              ],
-            );
-          },
-        );
-      },
-    );
+    final failed = <String>[];
+    for (final song in allSongs) {
+      if (song.path.trim().isEmpty) {
+        print("Skipping ${song.title}: empty URL");
+        failed.add(song.title);
+        continue;
+      }
+      final file = await _getLocalFile(song);
+      if (!file.existsSync()) {
+        try {
+          await _downloadFile(song.path, file);
+        } catch (e) {
+          print("Failed to download ${song.title}: $e");
+          failed.add(song.title);
+          // Continue to next song
+        }
+        completed++;
+        onProgress?.call(completed, toDownload, song.title);
+      }
+    }
+    onComplete?.call(completed, toDownload, failed);
   }
 
   Future<File> _getLocalFile(Song song, [int? index]) async {
@@ -207,6 +186,11 @@ class AudioService {
 
   Future<void> _downloadFile(String url, File file) async {
     print("DEBUG: Starting download for URL: $url to file: ${file.path}");
+
+    if (url.trim().isEmpty) {
+      print("DEBUG: Empty URL, aborting download for ${file.path}");
+      throw Exception("No URL specified");
+    }
 
     // First, get the expected content length
     int? expectedSize;

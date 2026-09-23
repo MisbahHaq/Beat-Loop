@@ -443,12 +443,6 @@ final List<Song> allSongs = [
     image: 'assets/images/it.jpg',
   ),
   Song(
-    path: '',
-    artist: "Ashes Remain",
-    title: 'Call Me Now',
-    image: 'assets/images/ka.jpg',
-  ),
-  Song(
     path:
         'https://res.cloudinary.com/drcpslfrz/video/upload/v1774613040/Daughtry_-_It_s_Not_Over_ntmbkn.mp3',
     artist: "Daughtry",

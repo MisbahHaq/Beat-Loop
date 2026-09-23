@@ -64,8 +64,53 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     } catch (e) {}
   }
 
-  void _downloadAllSongsWithProgress(BuildContext context) {
-    audioService.downloadAllSongsWithProgress(context, allSongs);
+  OverlayEntry? _downloadOverlay;
+  ValueNotifier<_DownloadProgress>? _downloadProgressNotifier;
+
+  void _downloadAllSongs() {
+    if (_downloadOverlay != null) return;
+
+    final notifier = ValueNotifier<_DownloadProgress>(_DownloadProgress(0, 0, ''));
+    _downloadProgressNotifier = notifier;
+    _downloadOverlay = OverlayEntry(
+      builder: (_) => _DownloadProgressCard(
+        progress: notifier,
+        onCancel: _hideDownloadOverlay,
+      ),
+    );
+    Overlay.of(context).insert(_downloadOverlay!);
+
+    audioService.downloadAllSongs(
+      allSongs,
+      onStart: (total) {
+        notifier.value = _DownloadProgress(0, total, '');
+      },
+      onProgress: (completed, total, currentTitle) {
+        notifier.value = _DownloadProgress(completed, total, currentTitle);
+      },
+      onComplete: (completed, total, failed) {
+        _hideDownloadOverlay();
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              total == 0
+                  ? 'All songs are already downloaded!'
+                  : failed.isNotEmpty
+                      ? 'Downloaded $completed/$total songs (${failed.length} failed)'
+                      : 'All $completed songs downloaded!',
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _hideDownloadOverlay() {
+    _downloadOverlay?.remove();
+    _downloadOverlay = null;
+    _downloadProgressNotifier?.dispose();
+    _downloadProgressNotifier = null;
   }
 
   void _pauseSong() {
@@ -126,6 +171,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    _hideDownloadOverlay();
     _rotationController.dispose();
     audioService.dispose();
     super.dispose();
@@ -198,7 +244,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 ),
               if (showingPlaylists && !isSearching)
                 GestureDetector(
-                  onTap: () => _downloadAllSongsWithProgress(context),
+                  onTap: () => _downloadAllSongs(),
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -540,7 +586,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => _downloadAllSongsWithProgress(context),
+onTap: _downloadAllSongs,
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
@@ -1391,6 +1437,107 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
         if (currentSongs.isNotEmpty && showingPlaylists && currentSong != null)
           _buildMiniPlayer(currentSong),
       ],
+    );
+  }
+}
+
+class _DownloadProgress {
+  final int completed;
+  final int total;
+  final String currentTitle;
+  const _DownloadProgress(this.completed, this.total, this.currentTitle);
+}
+
+class _DownloadProgressCard extends StatefulWidget {
+  final ValueNotifier<_DownloadProgress> progress;
+  final VoidCallback onCancel;
+  const _DownloadProgressCard({
+    required this.progress,
+    required this.onCancel,
+  });
+
+  @override
+  State<_DownloadProgressCard> createState() => _DownloadProgressCardState();
+}
+
+class _DownloadProgressCardState extends State<_DownloadProgressCard> {
+  @override
+  void initState() {
+    super.initState();
+    widget.progress.addListener(_onChanged);
+  }
+
+  void _onChanged() => setState(() {});
+
+  @override
+  void dispose() {
+    widget.progress.removeListener(_onChanged);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = widget.progress.value;
+    final double value = p.total > 0 ? p.completed / p.total : 0;
+
+    return Positioned(
+      left: 16,
+      right: 16,
+      bottom: 84,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppTheme.paperWhite,
+          border: Border.all(color: AppTheme.ink, width: 3),
+          boxShadow: [BoxShadow(color: AppTheme.ink, offset: Offset(3, 3))],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.download, color: AppTheme.hotPink, size: 18),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    p.total == 0
+                        ? "Checking songs..."
+                        : "Downloading ${p.completed}/${p.total}",
+                    style: AppTheme.bodyBold.copyWith(fontSize: 13),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: widget.onCancel,
+                  child: Icon(Icons.close, color: AppTheme.ink, size: 18),
+                ),
+              ],
+            ),
+            if (p.total > 0) ...[
+              const SizedBox(height: 8),
+              Container(
+                height: 10,
+                decoration: BoxDecoration(
+                  color: AppTheme.warmCream,
+                  border: Border.all(color: AppTheme.ink, width: 1.5),
+                ),
+                child: FractionallySizedBox(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: value,
+                  child: Container(color: AppTheme.electricCyan),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                p.currentTitle.isNotEmpty ? p.currentTitle : "…",
+                style: AppTheme.monoSm.copyWith(fontSize: 9),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }
