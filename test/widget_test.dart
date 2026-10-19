@@ -1,30 +1,56 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:beatloop/Services/link_import_service.dart';
+import 'package:beatloop/models.dart';
+import 'package:beatloop/widgets/song_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:milife/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test('classifies YouTube and Spotify links', () {
+    expect(
+        LinkImportService.isYouTubeLink('https://www.youtube.com/watch?v=abc'),
+        isTrue);
+    expect(LinkImportService.isYouTubeLink('https://youtu.be/abc'), isTrue);
+    expect(
+        LinkImportService.isYouTubeLink('https://m.youtube.com/watch?v=abc'),
+        isTrue);
+    expect(
+        LinkImportService.isSpotifyLink('https://open.spotify.com/track/abc'),
+        isTrue);
+    expect(LinkImportService.isSpotifyLink('https://example.com/x'), isFalse);
+    expect(LinkImportService.isYouTubeLink('https://example.com/x'), isFalse);
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  test('song image provider routes url, file and asset paths', () {
+    expect(songImageProvider('https://res.cloudinary.com/x/y.jpg'),
+        isA<NetworkImage>());
+    expect(songImageProvider('http://example.com/a.png'), isA<NetworkImage>());
+    expect(songImageProvider('assets/images/exes.jpg'), isA<AssetImage>());
+    expect(songImageProvider('/data/user/0/app/art.jpg'), isA<FileImage>());
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  test('Song keeps optional sourceUrl', () {
+    final imported = Song(
+      path: 'https://res.cloudinary.com/x/video/upload/song.m4a',
+      title: 'Test Song',
+      image: 'assets/images/0016.jpg',
+      artist: 'Someone',
+      sourceUrl: 'https://youtu.be/abc',
+    );
+    expect(imported.sourceUrl, 'https://youtu.be/abc');
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final builtin = Song(
+      path: 'https://res.cloudinary.com/x/video/upload/song.mp3',
+      title: 'Dard',
+      image: 'assets/images/exes.jpg',
+      artist: 'Hasan Raheem',
+    );
+    expect(builtin.sourceUrl, isNull);
+  });
+
+  test('audio file names are filesystem safe', () {
+    final service = LinkImportService();
+    final name = service.audioFileName('Weird: Title?/ "Quoted" *');
+    expect(name.endsWith('.m4a'), isTrue);
+    expect(RegExp(r'[^\w.\-]').hasMatch(name), isFalse);
   });
 }

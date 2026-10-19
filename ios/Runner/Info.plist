@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Beat Loop needs access to your photos so you can pick cover art for songs you import.</string>
 </dict>
 </plist>

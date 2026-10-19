@@ -2,7 +2,7 @@ import 'models.dart';
 
 class PlaylistService {
   static List<Playlist> initializePlaylists(List<Song> allSongs) {
-    return [
+    final playlists = <Playlist>[
       Playlist(
         name: 'Hasan Raheem',
         songs:
@@ -51,5 +51,19 @@ class PlaylistService {
         songs: allSongs.toList()..sort((a, b) => a.title.compareTo(b.title)),
       ),
     ];
+
+    final imports =
+        allSongs.where((s) => s.sourceUrl != null).toList();
+    if (imports.isNotEmpty) {
+      playlists.insert(
+        playlists.length - 1,
+        Playlist(
+          name: 'Imports',
+          songs: imports..sort((a, b) => a.title.compareTo(b.title)),
+          image: 'assets/images/0016.jpg',
+        ),
+      );
+    }
+    return playlists;
   }
 }

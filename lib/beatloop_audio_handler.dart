@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'models.dart';
@@ -48,9 +49,12 @@ class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandl
       artist: song.artist,
       album: 'Beat Loop',
       duration: duration,
-      artUri: artUri ?? _assetArtUri(song.image),
+      artUri: artUri ?? _defaultArtUri(song.image),
     );
   }
+
+  Uri _defaultArtUri(String image) =>
+      image.startsWith('http') ? Uri.parse(image) : _assetArtUri(image);
 
   Uri _assetArtUri(String imagePath) => Uri.parse(
       'asset:///assets/images/${imagePath.replaceFirst('assets/images/', '')}');
@@ -61,17 +65,34 @@ class BeatLoopAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandl
       if (filePath == null) {
         final dir = await getApplicationDocumentsDirectory();
         final artDir = await Directory('${dir.path}/art').create(recursive: true);
-        final fileName = imagePath.split('/').last;
+        final isRemote = imagePath.startsWith('http');
+        final baseName = imagePath.split('/').last.split('?').first;
+        final fileName = isRemote
+            ? 'remote_${imagePath.hashCode}_${baseName.isEmpty ? 'art.jpg' : baseName}'
+            : baseName;
         final file = File('${artDir.path}/$fileName');
         if (!file.existsSync()) {
-          final data = await rootBundle.load(imagePath);
-          await file.writeAsBytes(data.buffer.asUint8List());
+          if (isRemote) {
+            final response = await Dio().get<List<int>>(
+              imagePath,
+              options: Options(responseType: ResponseType.bytes),
+            );
+            final bytes = response.data;
+            if (bytes == null || bytes.isEmpty) {
+              throw Exception('empty art response');
+            }
+            await file.writeAsBytes(bytes);
+          } else {
+            final data = await rootBundle.load(imagePath);
+            await file.writeAsBytes(data.buffer.asUint8List());
+          }
         }
         filePath = file.path;
         _artFileCache[imagePath] = filePath;
       }
       return Uri.file(filePath);
     } catch (e) {
+      if (imagePath.startsWith('http')) return Uri.parse(imagePath);
       return _assetArtUri(imagePath);
     }
   }

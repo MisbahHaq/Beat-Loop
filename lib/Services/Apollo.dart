@@ -12,6 +12,9 @@ import '../widgets/neo_brutalist_card.dart';
 import '../widgets/halftone_painter.dart';
 import '../widgets/smiley_badge.dart';
 import '../widgets/star_stamp.dart';
+import '../widgets/song_image.dart';
+import '../widgets/import_song_sheet.dart';
+import 'catalog_service.dart';
 
 class Apollo extends StatefulWidget {
   @override
@@ -32,6 +35,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
   bool _isShuffling = false;
 
   List<Playlist> playlists = [];
+  List<Song> library = allSongs;
   List<Song> currentSongs = [];
   Playlist? selectedPlaylist;
   bool showingPlaylists = true;
@@ -81,7 +85,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     Overlay.of(context).insert(_downloadOverlay!);
 
     audioService.downloadAllSongs(
-      allSongs,
+      library,
       onStart: (total) {
         notifier.value = _DownloadProgress(0, total, '');
       },
@@ -111,6 +115,23 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     _downloadOverlay = null;
     _downloadProgressNotifier?.dispose();
     _downloadProgressNotifier = null;
+  }
+
+  void _openImportSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => ImportSongSheet(
+        onImported: () {
+          if (!mounted) return;
+          setState(() {
+            library = CatalogService.library;
+            playlists = PlaylistService.initializePlaylists(library);
+          });
+        },
+      ),
+    );
   }
 
   void _pauseSong() {
@@ -151,7 +172,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
     }, (duration) {
       setState(() => _songDuration = duration);
     });
-    playlists = PlaylistService.initializePlaylists(allSongs);
+    playlists = PlaylistService.initializePlaylists(library);
     currentSongs = [];
     final handler = audioHandler;
     if (handler != null) {
@@ -162,6 +183,14 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
         onPlaySong: _playSong,
       );
     }
+
+    CatalogService.load().then((_) {
+      if (!mounted) return;
+      setState(() {
+        library = CatalogService.library;
+        playlists = PlaylistService.initializePlaylists(library);
+      });
+    }).catchError((_) {});
 
     _rotationController = AnimationController(
       vsync: this,
@@ -244,6 +273,21 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                 ),
               if (showingPlaylists && !isSearching)
                 GestureDetector(
+                  onTap: _openImportSheet,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppTheme.vibrantOrange,
+                      border: Border.all(color: AppTheme.ink, width: 3),
+                      boxShadow: [
+                        BoxShadow(color: AppTheme.ink, offset: Offset(2, 2)),
+                      ],
+                    ),
+                    child: Icon(Icons.add, color: Colors.white, size: 22),
+                  ),
+                ),
+              if (showingPlaylists && !isSearching)
+                GestureDetector(
                   onTap: () => _downloadAllSongs(),
                   child: Container(
                     padding: const EdgeInsets.all(8),
@@ -319,7 +363,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
         onChanged: (value) {
           setState(() {
             searchQuery = value.toLowerCase();
-            searchResults = allSongs
+            searchResults = library
                 .where((song) =>
                     song.title.toLowerCase().contains(searchQuery))
                 .toList();
@@ -517,7 +561,7 @@ class _ApolloState extends State<Apollo> with SingleTickerProviderStateMixin {
                         BoxShadow(color: AppTheme.ink, offset: Offset(2, 2)),
                       ],
                       image: DecorationImage(
-                        image: AssetImage(song.image),
+                        image: songImageProvider(song.image),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -656,7 +700,7 @@ onTap: _downloadAllSongs,
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppTheme.ink, width: 2),
                                 image: DecorationImage(
-                                  image: AssetImage(song.image),
+                                  image: songImageProvider(song.image),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -707,9 +751,9 @@ onTap: _downloadAllSongs,
             children: [
               SmileyBadge(size: 56, color: AppTheme.softPink, angle: -10),
               const SizedBox(height: 16),
-              Text("Ask Misbah to add it", style: AppTheme.handLg),
+              Text("Not in your library yet", style: AppTheme.handLg),
               const SizedBox(height: 4),
-              Text("¯\\_(ツ)_/¯", style: AppTheme.mono),
+              Text("tap + to import it from a link", style: AppTheme.mono),
             ],
           ),
         ),
@@ -759,7 +803,7 @@ onTap: _downloadAllSongs,
                     decoration: BoxDecoration(
                       border: Border.all(color: AppTheme.ink, width: 2),
                       image: DecorationImage(
-                        image: AssetImage(song.image),
+                        image: songImageProvider(song.image),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -875,8 +919,8 @@ onTap: _downloadAllSongs,
                       ),
                       child: RotationTransition(
                         turns: _rotationController,
-                        child: Image.asset(
-                          currentSong.image,
+                        child: Image(
+                          image: songImageProvider(currentSong.image),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -1214,7 +1258,7 @@ onTap: _downloadAllSongs,
                     decoration: BoxDecoration(
                       border: Border.all(color: AppTheme.ink, width: 2),
                       image: DecorationImage(
-                        image: AssetImage(currentSong.image),
+                        image: songImageProvider(currentSong.image),
                         fit: BoxFit.cover,
                       ),
                     ),

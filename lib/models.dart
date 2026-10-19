@@ -4,11 +4,13 @@ class Song {
   final String title;
   final String image;
   final String artist;
+  final String? sourceUrl;
   Song(
       {required this.path,
       required this.title,
       required this.image,
-      required this.artist});
+      required this.artist,
+      this.sourceUrl});
 }
 
 // Playlist Model
