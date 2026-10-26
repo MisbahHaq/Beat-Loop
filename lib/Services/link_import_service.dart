@@ -26,43 +26,194 @@ class LinkImportService {
     receiveTimeout: const Duration(seconds: 30),
   ));
 
+  static final RegExp _videoIdRegex = RegExp(r'^[a-zA-Z0-9_-]{11}$');
+
+  /// Extracts an 11-character YouTube video ID from any format:
+  /// - https://m.youtube.com/watch?v=VIDEO_ID
+  /// - https://www.youtube.com/watch?v=VIDEO_ID&si=...
+  /// - https://music.youtube.com/watch?v=VIDEO_ID
+  /// - https://youtu.be/VIDEO_ID?si=...
+  /// - https://youtube.com/shorts/VIDEO_ID?si=...
+  /// - https://youtube.com/live/VIDEO_ID
+  /// - Text containing a YouTube link: "Check out: https://youtu.be/..."
+  /// - Bare 11-character video ID
+  static String? extractVideoId(String input) {
+    final text = input.trim();
+    if (text.isEmpty) return null;
+
+    if (_videoIdRegex.hasMatch(text)) {
+      return text;
+    }
+
+    // Handles URLs embedded in text, watch?v=, shorts/, live/, embed/, youtu.be/
+    final match = RegExp(
+      r'(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|live\/|embed\/|v\/))([a-zA-Z0-9_-]{11})',
+      caseSensitive: false,
+    ).firstMatch(text);
+    if (match != null) {
+      return match.group(1);
+    }
+
+    var cleanUrl = text;
+    if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+      cleanUrl = 'https://$cleanUrl';
+    }
+
+    final parsed = VideoId.parseVideoId(cleanUrl);
+    if (parsed != null && _videoIdRegex.hasMatch(parsed)) {
+      return parsed;
+    }
+
+    final uri = Uri.tryParse(cleanUrl);
+    if (uri != null) {
+      final v = uri.queryParameters['v'];
+      if (v != null && _videoIdRegex.hasMatch(v)) {
+        return v;
+      }
+      final segments = uri.pathSegments;
+      if (segments.length >= 2) {
+        final prefix = segments[0].toLowerCase();
+        if (prefix == 'shorts' || prefix == 'live' || prefix == 'embed' || prefix == 'v') {
+          final id = segments[1];
+          if (_videoIdRegex.hasMatch(id)) return id;
+        }
+      }
+      if (uri.host.contains('youtu.be') && segments.isNotEmpty) {
+        final id = segments[0];
+        if (_videoIdRegex.hasMatch(id)) return id;
+      }
+    }
+
+    return null;
+  }
+
   static bool isYouTubeLink(String url) {
-    final host = Uri.tryParse(url)?.host.toLowerCase() ?? '';
+    if (extractVideoId(url) != null) return true;
+    final uri = Uri.tryParse(url.startsWith('http') ? url : 'https://$url');
+    if (uri == null) return false;
+    final host = uri.host.toLowerCase();
     return host.contains('youtube.com') ||
         host.contains('youtu.be') ||
         host.contains('music.youtube.com');
   }
 
-  Future<ResolvedLink> resolve(String rawUrl) async {
-    var url = rawUrl.trim();
-    if (url.isEmpty) throw Exception('Paste a link first');
-    if (!url.startsWith('http')) url = 'https://$url';
-    if (!isYouTubeLink(url)) {
-      throw Exception('Only YouTube song links are supported');
-    }
-    return _resolveYouTube(url);
+  static bool isSpotifyLink(String url) {
+    final uri = Uri.tryParse(url.startsWith('http') ? url : 'https://$url');
+    final host = uri?.host.toLowerCase() ?? '';
+    return host.contains('open.spotify.com') || host == 'spotify.link';
   }
 
-  Future<ResolvedLink> _resolveYouTube(String url) async {
-    final yt = YoutubeExplode();
+  Future<ResolvedLink> resolve(String rawUrl) async {
+    final text = rawUrl.trim();
+    if (text.isEmpty) throw Exception('Paste a link first');
+
+    final videoId = extractVideoId(text);
+    if (videoId != null) {
+      return _resolveYouTube(videoId);
+    }
+
+    var url = text;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://$url';
+    }
+
+    if (isSpotifyLink(url)) {
+      return _resolveSpotify(url);
+    }
+
+    if (isYouTubeLink(url)) {
+      return _resolveYouTube(url);
+    }
+
+    throw Exception('Only YouTube and Spotify song links are supported');
+  }
+
+  Future<ResolvedLink> _resolveSpotify(String url) async {
+    if (url.contains('/album/') ||
+        url.contains('/playlist/') ||
+        url.contains('/artist/') ||
+        url.contains('/episode/') ||
+        url.contains('/show/')) {
+      throw Exception(
+          'Only Spotify song links are supported (not albums or playlists)');
+    }
     try {
-      final video = await yt.videos
-          .get(url)
-          .timeout(const Duration(seconds: 30));
+      final response = await _dio.get(
+        'https://open.spotify.com/oembed?url=${Uri.encodeComponent(url)}',
+      );
+      final data = response.data as Map<String, dynamic>;
+      final title = (data['title'] as String?)?.trim() ?? '';
+      final artist = (data['author_name'] as String?)?.trim() ?? '';
+      final thumb = data['thumbnail_url'] as String?;
+      if (title.isEmpty) throw Exception('empty title');
       return ResolvedLink(
         sourceUrl: url,
-        title: video.title,
-        artist: video.author,
-        thumbnailUrl: video.thumbnails.maxResUrl,
-        needsSearch: false,
+        title: title,
+        artist: artist.isEmpty ? 'Unknown artist' : artist,
+        thumbnailUrl: thumb,
+        needsSearch: true,
       );
+    } catch (e) {
+      logLine('[import] spotify resolve error: $e');
+      throw Exception("Couldn't read that Spotify link");
+    }
+  }
+
+  Future<ResolvedLink> _resolveYouTube(String videoIdOrUrl) async {
+    final id = extractVideoId(videoIdOrUrl) ?? videoIdOrUrl;
+    final watchUrl = 'https://www.youtube.com/watch?v=$id';
+
+    // 1. Try youtube_explode first
+    try {
+      final yt = YoutubeExplode();
+      try {
+        final video = await yt.videos
+            .get(id)
+            .timeout(const Duration(seconds: 15));
+        return ResolvedLink(
+          sourceUrl: watchUrl,
+          title: video.title,
+          artist: video.author,
+          thumbnailUrl: video.thumbnails.maxResUrl,
+          needsSearch: false,
+        );
+      } finally {
+        yt.close();
+      }
     } on VideoUnavailableException {
       throw Exception('That YouTube video is unavailable');
     } catch (e) {
-      throw Exception("Couldn't read that YouTube link");
-    } finally {
-      yt.close();
+      logLine('[import] yt.videos.get failed ($e) — trying oEmbed fallback…');
     }
+
+    // 2. Fallback to YouTube's public oEmbed endpoint (never rate-limited by IP)
+    try {
+      final response = await _dio.get(
+        'https://www.youtube.com/oembed',
+        queryParameters: {
+          'url': watchUrl,
+          'format': 'json',
+        },
+      );
+      final data = response.data as Map<String, dynamic>;
+      final title = (data['title'] as String?)?.trim() ?? '';
+      final author = (data['author_name'] as String?)?.trim() ?? '';
+      final thumb = (data['thumbnail_url'] as String?) ??
+          'https://i.ytimg.com/vi/$id/hqdefault.jpg';
+      if (title.isNotEmpty) {
+        return ResolvedLink(
+          sourceUrl: watchUrl,
+          title: title,
+          artist: author,
+          thumbnailUrl: thumb,
+          needsSearch: false,
+        );
+      }
+    } catch (e) {
+      logLine('[import] youtube oEmbed failed: $e');
+    }
+
+    throw Exception("Couldn't read that YouTube link");
   }
 
   Future<List<Video>> search(String query, {int limit = 5}) async {
@@ -153,16 +304,17 @@ class LinkImportService {
     required int attempt,
   }) async {
     final yt = YoutubeExplode();
+    final cleanTarget = extractVideoId(videoIdOrUrl) ?? videoIdOrUrl;
     try {
       final started = DateTime.now();
-      logLine('[import] phase: fetching stream info for $videoIdOrUrl');
+      logLine('[import] phase: fetching stream info for $cleanTarget');
       onPhase?.call('Fetching stream info…');
       Object? firstError;
       StreamManifest? manifest;
       for (final requireWatchPage in [false, true]) {
         try {
           manifest = await yt.videos.streams
-              .getManifest(videoIdOrUrl)
+              .getManifest(cleanTarget, requireWatchPage: requireWatchPage)
               .timeout(const Duration(seconds: 40));
           logLine(
               '[import] manifest OK in ${DateTime.now().difference(started).inMilliseconds}ms');
@@ -172,7 +324,6 @@ class LinkImportService {
           logLine(
               '[import] manifest FAILED: ${e.runtimeType}: $e');
         }
-      }
       }
       if (manifest == null) {
         throw firstError ?? Exception("Couldn't read this video's streams");
@@ -215,7 +366,7 @@ class LinkImportService {
           onPhase?.call('Refreshing stream link…');
           try {
             final fresh = await yt.videos.streams
-                .getManifest(videoIdOrUrl)
+                .getManifest(cleanTarget)
                 .timeout(const Duration(seconds: 40));
             final freshAudio = fresh.audioOnly;
             if (freshAudio.isEmpty) break;
@@ -274,10 +425,9 @@ class LinkImportService {
       responseType: ResponseType.bytes,
       headers: {
         'user-agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.18 Safari/537.36',
-        'cookie': 'CONSENT=YES+cb',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'accept': '*/*',
-        'accept-language': 'en-US,en;q=0.5',
+        'accept-language': 'en-US,en;q=0.9',
       },
       validateStatus: (s) => s == 200 || s == 206,
     ));

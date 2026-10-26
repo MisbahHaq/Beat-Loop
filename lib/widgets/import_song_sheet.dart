@@ -347,7 +347,7 @@ class _ImportSongSheetState extends State<ImportSongSheet> {
   List<Widget> _buildEntry() {
     return [
       Text(
-        'paste a YouTube song link',
+        'paste a YouTube or Spotify song link',
         style: AppTheme.hand.copyWith(color: AppTheme.dimText),
       ),
       const SizedBox(height: 12),
@@ -366,7 +366,7 @@ class _ImportSongSheetState extends State<ImportSongSheet> {
           textInputAction: TextInputAction.go,
           onSubmitted: (_) => _fetch(),
           decoration: InputDecoration(
-            hintText: 'https://youtube.com/watch?v=…',
+            hintText: 'YouTube or Spotify link…',
             hintStyle: AppTheme.monoSm,
             border: InputBorder.none,
             contentPadding:
