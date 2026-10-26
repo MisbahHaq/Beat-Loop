@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('classifies YouTube and Spotify links', () {
+  test('classifies YouTube links', () {
     expect(
         LinkImportService.isYouTubeLink('https://www.youtube.com/watch?v=abc'),
         isTrue);
@@ -13,10 +13,6 @@ void main() {
     expect(
         LinkImportService.isYouTubeLink('https://m.youtube.com/watch?v=abc'),
         isTrue);
-    expect(
-        LinkImportService.isSpotifyLink('https://open.spotify.com/track/abc'),
-        isTrue);
-    expect(LinkImportService.isSpotifyLink('https://example.com/x'), isFalse);
     expect(LinkImportService.isYouTubeLink('https://example.com/x'), isFalse);
   });
 

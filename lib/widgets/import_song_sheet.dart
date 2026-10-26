@@ -83,7 +83,10 @@ class _ImportSongSheetState extends State<ImportSongSheet> {
 
       if (resolved.needsSearch) {
         _setStageText('Searching on YouTube…');
-        final query = '${resolved.title} ${resolved.artist}'.trim();
+        final artist = resolved.artist.trim();
+        final query = artist.isEmpty || artist.toLowerCase() == 'unknown artist'
+            ? resolved.title
+            : '${resolved.title} $artist';
         final results = await _service.search(query);
         if (!mounted) return;
         if (results.isEmpty) {
@@ -344,7 +347,7 @@ class _ImportSongSheetState extends State<ImportSongSheet> {
   List<Widget> _buildEntry() {
     return [
       Text(
-        'paste a YouTube or Spotify song link',
+        'paste a YouTube song link',
         style: AppTheme.hand.copyWith(color: AppTheme.dimText),
       ),
       const SizedBox(height: 12),
